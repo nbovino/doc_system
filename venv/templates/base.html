@@ -5,30 +5,12 @@
     <link href="static/styles/main.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-    <div class="main_container">
-        <div>
-            <h3>IT Inventory Tracker</h3>
+    <div id="main-container">
+        <div id="nav">
+            <p>This is the nav bar!</p>
         </div>
-        <div>
-            {% block content %}
-            <a href="{{ url_for('main_menu') }}">Login (will add later)</a>
-            {% endblock %}
-        </div>
-        <div id="bottom">
-            <div class="two_column">
-                <!-- make this so if user is logged in base says log out -->
-                {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('main_menu') }}">Main Menu</a>
-                {% endif %}
-            </div>
-            <div class="two_column">
-                {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('logout') }}">Log out</a>
-                {% endif %}
-                <span>     {{ time.strftime('%c') }}</span>
-            </div>
-        </div>
-
+        {% block content %}
+        {% endblock %}
     </div>
     <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="static/js/jquery-ui.js"></script>

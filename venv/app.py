@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import datetime
-import forms
+# import forms
 import db_connect
 import models
 import re
@@ -21,3 +21,12 @@ app.secret_key = 'nfj2984ijNDUUFH89()&&iJINOkf)(_@KLNFE:!#RefwkFpyio'
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+
+@app.route('/')
+def main():
+    return render_template('view_solution.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=DEBUG, host=HOST, port=PORT)
