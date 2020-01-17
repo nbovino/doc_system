@@ -6,11 +6,47 @@
 </head>
 <body>
     <div id="main-container">
-        <div id="nav">
-            <p>This is the nav bar!</p>
+        <h4>
+            <p><a href="{{ url_for('main') }}">Diamond Documentation System</a></p>
+        </h4>
+        <nav>
+            <table>
+                <tr>
+                    <td>
+                        {% if company == 'Diamond' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Diamond', solution_category=solution_category) }}">Diamond</a></span></td>
+                    <td>
+                        {% if company == 'Remedy Repack' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Remedy Repack', solution_category=solution_category) }}">Remedy Repack</a></span></td>
+                    <td>
+                        {% if company == 'Innova' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Innova', solution_category=solution_category) }}">Innova</a></span></td>
+                    <td>
+                       {% if company == 'Sapphire' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Sapphire', solution_category=solution_category) }}">Sapphire</a></span></td>
+                </tr>
+            </table>
+            <span>Search for Solution</span>
+        </nav>
+        <div class="left-column">
+            <h4>Solutions</h4>
+            <!--<div class="dropdown">-->
+                <!--<button class="dropbtn">3rd Party Desktop Applications</button>-->
+                <!--<div class="dropdown-content">-->
+                    <!--<a href="{{ url_for('main', software='Sage 300', company=company) }}">Sage 300</a></br>-->
+                    <!--<a href="{{ url_for('main', software='Adobe', company=company) }}">Adobe</a></br>-->
+                    <!--<a href="{{ url_for('main', software='MS Office', company=company) }}">MS Office</a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!-- sub menu with licensing etc -->
+            <p>{% if solution_category == '3rd Party Applications' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='3rd Party Applications', company=company) }}">3rd Party Applications</a></span></p>
+            <p>{% if solution_category == 'Sys Dev Applications' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Sys Dev Applications', company=company) }}">Sys Dev Applications</a></span></p>
+            <p>{% if solution_category == 'PCs' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='PCs', company=company) }}">PCs</a></span></p>
+            <p>{% if solution_category == 'Printers' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Printers', company=company) }}">Printers</a></span></p>
+            <p>{% if solution_category == 'Other Hardware' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Other Hardware', company=company) }}">Other hardware</a></span></p>
+            <p>{% if solution_category == 'Networks' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Networks', company=company) }}">Networks</a></span></p>
         </div>
         {% block content %}
         {% endblock %}
+        <div class="right-column">
+            <p>Passwords</p>
+        </div>
     </div>
     <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="static/js/jquery-ui.js"></script>

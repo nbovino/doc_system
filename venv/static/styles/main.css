@@ -5,17 +5,54 @@ body {
 .left-column {
     float: left;
     width: 15%;
+    height: 500px;
     background-color: #4E4E4E;
 }
 
 .right-column {
     float: right;
     width: 15%;
+    height: 500px;
     background-color: #4E4E4E;
 }
 
 .main-solution {
     float: left;
     width: 70%;
+    height: 400px;
     background-color: #BABABA;
+}
+
+nav {
+    padding: 15px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #AA7777
+    z-index: 1;
+}
+
+.dropdown-content a {
+    text-decoration: none;
+    display: block
+    background-color: #AA7777
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.nav-selected {
+    background-color: red;
+}
+
+.cat-selected {
+    background-color: green;
 }

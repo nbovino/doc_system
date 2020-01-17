@@ -23,9 +23,19 @@ login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main():
-    return render_template('view_solution.html')
+    if request.args.get('solution_category'):
+        solution_category = request.args.get('solution_category')
+    else:
+        solution_category = '0'
+    if request.args.get('company'):
+        company = request.args.get('company')
+    else:
+        company = '0'
+    return render_template('view_solution.html',
+                           solution_category=solution_category,
+                           company=company)
 
 
 if __name__ == '__main__':
