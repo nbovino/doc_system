@@ -37,6 +37,10 @@ def main():
                            solution_category=solution_category,
                            company=company)
 
+@app.route('/add_solution')
+def add_solution():
+    return render_template('add_solution.html')
+
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

@@ -42,8 +42,10 @@
             <p>{% if solution_category == 'Other Hardware' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Other Hardware', company=company) }}">Other hardware</a></span></p>
             <p>{% if solution_category == 'Networks' %} <span class="cat-selected"> {% endif %}<a href="{{ url_for('main', solution_category='Networks', company=company) }}">Networks</a></span></p>
         </div>
+        <div class="main-solution">
         {% block content %}
         {% endblock %}
+        </div>
         <div class="right-column">
             <p>Passwords</p>
         </div>

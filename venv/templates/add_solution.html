@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<form method="POST">
+    <div id="dynamic-input-steps">
+    </div>
+    <input type="button" value="Add Step" onClick="addInput('dynamic-input-steps');">
+</form>
+
+
+
+
+{% endblock %}
