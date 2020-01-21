@@ -2,10 +2,11 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
-<form method="POST">
+<form method="POST" action="{{ url_for('add_solution') }}" id="add-solution-form">
     <div id="dynamic-input-steps">
     </div>
-    <input type="button" value="Add Step" onClick="addInput('dynamic-input-steps');">
+    <input type="button" value="Add Step" class="add-step-field">
+    <input type="submit" value="Submit solution" id="add-solution-button">
 </form>
 
 

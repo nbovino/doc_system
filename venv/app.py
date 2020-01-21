@@ -37,8 +37,14 @@ def main():
                            solution_category=solution_category,
                            company=company)
 
-@app.route('/add_solution')
+@app.route('/add_solution', methods=['GET', 'POST'])
 def add_solution():
+
+    print(request.args)
+    for a in request.args:
+        print(a)
+
+
     return render_template('add_solution.html')
 
 
