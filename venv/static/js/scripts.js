@@ -18,16 +18,17 @@ function wait() {
 //};
 
 
-//$('#add-solution-form').submit(function(e){
-//    e.preventDefault();
-//    $.ajax({
-//        type: "POST",
-//        url: "add_solution.html",
-//        data: {data: $('form').serialize()},
-//        success: function(response){
-//            console.log("success!");
-//        }
-//});
+$('#add-solution-form').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "add_solution",
+        data: {data: $('form').serialize()},
+        success: function(response){
+            console.log("success!");
+        }
+    });
+});
 
 
 $(document).ready(function() {
