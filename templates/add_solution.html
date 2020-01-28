@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<form method="POST" action="/add_solution_post" id="add-solution-form" name="add-solution" role="form">
+    <div id="dynamic-input-steps">
+    </div>
+    <input type="button" value="Add Step" class="add-step-field">
+    <input type="button" value="Submit solution" id="add-solution-button">
+</form>
+<div id="added-steps"></div>
+{% if message != 0 %}
+<p>{{ message }}</p>
+{% endif %}
+
+{% endblock %}

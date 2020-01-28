@@ -4,12 +4,12 @@ from sqlalchemy import func
 from sqlalchemy import distinct
 from sqlalchemy import extract
 from sqlalchemy.orm import sessionmaker
-from models import Base
+from models import Base, Assets, AssetTypes, Solutions
 import os
 
 try:
-    engine = create_engine('sqlite:///docutest.db', echo=True)
-    # engine = create_engine(os.environ['LM_DB_ENGINE'])
+    # engine = create_engine('sqlite:///docutest.db', echo=True)
+    engine = create_engine('postgresql://postgres:unitedFries28@localhost/doc_system')
     print("Opened database successfully")
 
 except Exception as e:

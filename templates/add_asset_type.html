@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<div class="container">
+    <div>
+        <form method="POST" action="" class="form">
+            <label>Add Asset Type</label><br>
+            <p>New Asset Type: {{ form.asset_type }}</p>
+            {{ form.hidden_tag() }}
+            <button type="submit">Submit entry</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
