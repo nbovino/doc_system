@@ -61,6 +61,49 @@ $(document).ready(function() {
 
 });
 
+function showAddAssetType() {
+//    var x = document.getElementById("asset-type-buttons")
+    document.getElementById("asset-type-buttons").style.display = "block";
+    document.getElementById("new-asset-type").style.display = "none";
+};
+
+function hideAddAssetType() {
+    document.getElementById("asset-type-buttons").style.display = "none";
+    document.getElementById("new-asset-type").style.display = "block";
+};
+
+function addAssetType() {
+    console.log("Add asset type function in python to add this to database, then reload the page from JS")
+};
+
+//$(document.getElementById("new-asset-type")).click(function() {
+
+//    var assetButtons = document.getElementById("asset-type-buttons")
+//    var newHTML = "<p><button id='add-asset'>Add</button>  <button id='cancel-asset'>Cancel</button></p>";
+//    assetButtons.innerHTML = newHTML;
+//        console.log($('#add-solution-form').serialize());
+//    $.ajax({
+//        url: '/add_solution_post',
+//        data: $('form').serialize(),
+//        type: 'POST',
+//        success: function(response) {
+//            console.log(response);
+//        },
+//        error: function(error) {
+//            console.log(error);
+//        }
+//    });
+//    var xhr = new XMLHttpRequest();
+//    xhr.onreadystatechange = function() {
+//        console.log(this.responseText);
+//        wait();
+//        if (this.readyState == 4 && this.status == 200) {
+//            var myObj = JSON.parse(this.responseText);
+//            document.getElementById("added-steps").innerHTML = myObj;
+//        }
+//    }
+//});
+
 //fetch('/add_solution')
 //    .then(function (response) {
 //        document.getElementById("added-steps").innerHTML = response.text();
