@@ -42,13 +42,9 @@ def main():
 
 @app.route('/add_asset_type', methods=['GET', 'POST'])
 def add_asset_type():
-    form = forms.addAssetTypeForm()
-    all_asset_types = db_connect.query_all(models.AssetTypes)
-    if form.validate_on_submit():
-        db_connect.insert_db(models.AssetTypes(asset_type=form.asset_type.data))
-        return redirect(url_for('main'))
-    return render_template('add_asset_type.html', form=form,
-                           asset_types=all_asset_types)
+    data = request.form
+    db_connect.insert_db(models.AssetTypes(asset_type=data['new-asset-type']))
+    return str(data['new-asset-type'])
 
 
 @app.route('/add_solution', methods=['GET', 'POST'])
@@ -57,7 +53,9 @@ def add_solution():
         message = request.args.get('message')
     else:
         message = 0
-    return render_template('add_solution.html', message=message)
+    return render_template('add_solution.html',
+                           message=message,
+                           asset_types=db_connect.query_all(models.AssetTypes))
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])
@@ -78,7 +76,6 @@ def add_solution_post():
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
     return combined_steps
-
 
 
 if __name__ == '__main__':

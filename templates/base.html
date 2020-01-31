@@ -32,7 +32,15 @@
                 {% endfor %}
             </div>
             <!--Make this happen just in the page with javascript-->
-            <a href="{{ url_for('add_asset_type') }}">Add Asset Type</a>
+            <div id="asset-type-buttons" style="display: none;">
+                <form>
+                    <input type='text' name='new-asset-type' id="add-asset-type()" role="form">
+                </form>
+                <p><button id='add-asset' onClick="addAssetType()">Add</button>  <button id='cancel-asset' onClick="hideAddAssetType()">Cancel</button></p>
+            </div>
+            <!-- TODO: really only show this part when someone is logged in-->
+            <button id="new-asset-type" onClick="showAddAssetType()">New Asset Type</button>
+            <!--<a href="{{ url_for('add_asset_type') }}">Add Asset Type</a>-->
 
         </div>
         <div class="main-solution">
@@ -41,7 +49,7 @@
         </div>
         <div class="right-column">
             {% block right %}
-            <p>Passwords</p>
+            <h3>Related Info</h3>
             {% endblock %}
         </div>
     </div>

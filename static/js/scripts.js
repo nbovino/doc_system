@@ -57,6 +57,7 @@ $(document).ready(function() {
             }
         }
         window.location.href = '/add_solution?message=Solution Added';
+//        location.reload(true)
     });
 
 });
@@ -74,6 +75,18 @@ function hideAddAssetType() {
 
 function addAssetType() {
     console.log("Add asset type function in python to add this to database, then reload the page from JS")
+    $.ajax({
+        url: '/add_asset_type',
+        data: $('form').serialize(),
+        type: 'POST',
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+    location.reload(true);
 };
 
 //$(document.getElementById("new-asset-type")).click(function() {
