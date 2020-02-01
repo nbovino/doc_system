@@ -40,6 +40,15 @@ def main():
                            asset_types=all_asset_types)
 
 
+@app.route('/asset_types', methods=['GET', 'POST'])
+def asset_types():
+    if request.args.get('asset_type'):
+        asset_type = request.args.get('asset_type')
+    return render_template('asset_types.html',
+                           asset_type=asset_type,
+                           asset_types=db_connect.query_all(models.AssetTypes))
+
+
 @app.route('/add_asset_type', methods=['GET', 'POST'])
 def add_asset_type():
     data = request.form

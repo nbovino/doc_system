@@ -28,7 +28,7 @@
             <h3>Asset types</h3>
             <div id="asset-types">
                 {% for asset_type in asset_types %}
-                <p>{{ asset_type.asset_type }}</p>
+                <a href="{{ url_for('asset_types', asset_type=asset_type.asset_type) }}"><p>{{ asset_type.asset_type }}</p></a>
                 {% endfor %}
             </div>
             <!--Make this happen just in the page with javascript-->
