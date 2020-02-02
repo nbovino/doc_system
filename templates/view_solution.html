@@ -2,7 +2,8 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
-    <a href="{{ url_for('add_solution') }}">Add Solution</a>
+    <h2>Solutions for {{ asset_type }}s</h2>
+    <a href="{{ url_for('add_solution', asset_type=asset_type) }}">Add Solution</a>
 
 
 {% endblock %}

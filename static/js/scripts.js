@@ -56,8 +56,9 @@ $(document).ready(function() {
                 document.getElementById("added-steps").innerHTML = myObj;
             }
         }
-
-        window.location.href = '/add_solution?message=Solution Added';
+        let params = new URLSearchParams(location.search);
+//        console.log(params.get('asset_type'));
+        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
 //        location.reload(true)
     });
 

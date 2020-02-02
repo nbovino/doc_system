@@ -34,17 +34,17 @@ def main():
         company = request.args.get('company')
     else:
         company = '0'
-    return render_template('view_solution.html',
+    return render_template('base.html',
                            solution_category=solution_category,
                            company=company,
                            asset_types=all_asset_types)
 
 
-@app.route('/asset_types', methods=['GET', 'POST'])
-def asset_types():
+@app.route('/view_solutions', methods=['GET', 'POST'])
+def view_solutions():
     if request.args.get('asset_type'):
         asset_type = request.args.get('asset_type')
-    return render_template('asset_types.html',
+    return render_template('view_solution.html',
                            asset_type=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes))
 
@@ -62,8 +62,13 @@ def add_solution():
         message = request.args.get('message')
     else:
         message = 0
+    if request.args.get('asset_type'):
+        asset_type = request.args.get('asset_type')
+    else:
+        asset_type = 0
     return render_template('add_solution.html',
                            message=message,
+                           asset_type=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes))
 
 
@@ -82,6 +87,11 @@ def add_solution_post():
 
     combined_steps['Steps'] = temp_dict
     print(combined_steps)
+    db_connect.insert_db(models.Solutions(steps=combined_steps,
+                                          date_added=datetime.datetime.now(),
+                                          date_revised=datetime.datetime.now(),
+                                          user=1))
+
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
     return combined_steps

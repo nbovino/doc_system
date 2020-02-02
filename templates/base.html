@@ -28,7 +28,7 @@
             <h3>Asset types</h3>
             <div id="asset-types">
                 {% for asset_type in asset_types %}
-                <a href="{{ url_for('asset_types', asset_type=asset_type.asset_type) }}"><p>{{ asset_type.asset_type }}</p></a>
+                <a href="{{ url_for('view_solutions', asset_type=asset_type.asset_type) }}"><p>{{ asset_type.asset_type }}</p></a>
                 {% endfor %}
             </div>
             <!--Make this happen just in the page with javascript-->
@@ -45,6 +45,8 @@
         </div>
         <div class="main-solution">
         {% block content %}
+            <h1>Recently viewed solutions</h1>
+            <p>Lorem ipsem stuff</p>
         {% endblock %}
         </div>
         <div class="right-column">
