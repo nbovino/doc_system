@@ -3,6 +3,7 @@ from sqlalchemy import exc
 from sqlalchemy import func
 from sqlalchemy import distinct
 from sqlalchemy import extract
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import sessionmaker
 from models import Base, Assets, AssetTypes, Solutions
 import os
@@ -43,6 +44,12 @@ def query_filtered(model, model_column, v):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
     return session.query(model).filter(model_column == v).all()
+
+
+def query_latest_five(model):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    return session.query(model).order_by(desc(model.date_revised)).limit(5).all()
 
 
 def query_one_db(model, column, v):

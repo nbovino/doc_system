@@ -34,32 +34,33 @@ $(document).ready(function() {
     })
 
     $(submit_button).click(function() {
+        let params = new URLSearchParams(location.search);
+        var asset_type = params.get('asset_type');
 
-//        console.log($('#add-solution-form').serialize());
         $.ajax({
             url: '/add_solution_post',
-            data: $('form').serialize(),
+            data: {solution: $('#add-solution-form').serialize(), asset_type: asset_type},
             type: 'POST',
             success: function(response) {
                 console.log(response);
+//                alert('form was submitted!');
             },
             error: function(error) {
                 console.log(error);
             }
         });
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            console.log(this.responseText);
-            wait();
-            if (this.readyState == 4 && this.status == 200) {
-                var myObj = JSON.parse(this.responseText);
-                document.getElementById("added-steps").innerHTML = myObj;
-            }
-        }
-        let params = new URLSearchParams(location.search);
-//        console.log(params.get('asset_type'));
-        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
-//        location.reload(true)
+//        var xhr = new XMLHttpRequest();
+//        xhr.onreadystatechange = function() {
+//            console.log(this.responseText);
+//            wait();
+//            if (this.readyState == 4 && this.status == 200) {
+//                var myObj = JSON.parse(this.responseText);
+//                document.getElementById("added-steps").innerHTML = myObj;
+//            }
+//        }
+        wait();
+//        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
+        location.reload(true)
     });
 
 });

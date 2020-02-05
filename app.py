@@ -46,7 +46,9 @@ def view_solutions():
         asset_type = request.args.get('asset_type')
     return render_template('view_solution.html',
                            asset_type=asset_type,
-                           asset_types=db_connect.query_all(models.AssetTypes))
+                           asset_types=db_connect.query_all(models.AssetTypes),
+                           latest_five=db_connect.query_latest_five(models.Solutions)
+                           )
 
 
 @app.route('/add_asset_type', methods=['GET', 'POST'])
@@ -80,21 +82,54 @@ def add_solution_post():
     combined_steps = {}
     temp_dict = {}
     count = 1
-    for v in data.keys():
-        temp_dict[str(count)] = data[v]
-        count += 1
-        # print(v + " - " + data[v])
-
-    combined_steps['Steps'] = temp_dict
-    print(combined_steps)
-    db_connect.insert_db(models.Solutions(steps=combined_steps,
+    # TODO: Put in the asset type into a variable to put in the associated asset types column
+    # for v in data.keys():
+    #     print(type(data[v]))
+    #     print(v)
+    #     print(data[v])
+    #     temp_dict[str(count)] = data[v]
+    #         print(data['solution'][v])
+    #         count += 1
+    asset_type = db_connect.query_one_db(model=models.AssetTypes,
+                                         column=models.AssetTypes.asset_type,
+                                         v=data['asset_type'])
+    print(data['solution'])
+    solution = data['solution'].split('&')
+    for s in solution:
+        print(s)
+        if s[:4] == 'step':
+            temp_dict[str(count)] = s.split('=')[1]
+            print(s.split('=')[0] + ' - ' + s.split('=')[1])
+            count += 1
+        if 'solution_title' in s:
+            title = s.split('=')[1]
+    # print(data['asset_type'])
+    for i in temp_dict:
+        print(i, temp_dict[i])
+    print(asset_type.id, asset_type.asset_type)
+    # for i in temp_dict:
+    #     print(i)
+    # print(v + " - " + data[v])
+    # print(data['solution_title'])
+    # print(temp_dict)
+    # combined_steps['Steps'] = temp_dict
+    # print(combined_steps)
+    print(type(asset_type.id))
+    db_connect.insert_db(models.Solutions(solution_title=title,
+                                          steps=temp_dict,
                                           date_added=datetime.datetime.now(),
                                           date_revised=datetime.datetime.now(),
+                                          associated_asset_types=[asset_type.id],
                                           user=1))
 
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
     return combined_steps
+
+
+@app.route('/edit_solution', methods=['GET', 'POST'])
+def edit_solution():
+    pass
 
 
 if __name__ == '__main__':
