@@ -5,6 +5,9 @@ from sqlalchemy import exc
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import json
+from pathlib import Path
+import data_functions
 
 import datetime
 import forms
@@ -44,11 +47,38 @@ def main():
 def view_solutions():
     if request.args.get('asset_type'):
         asset_type = request.args.get('asset_type')
-    return render_template('view_solution.html',
+    type_id = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.asset_type, asset_type)
+    return render_template('view_solutions.html',
                            asset_type=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes),
-                           latest_five=db_connect.query_latest_five(models.Solutions)
+                           latest_five=db_connect.query_latest_five_by_asset_type(type_id.id)
                            )
+
+
+@app.route('/view_one_solution', methods=['GET', 'POST'])
+def view_one_solution():
+    if request.args.get('solution_id'):
+        solution_id = request.args.get('solution_id')
+    else:
+        solution_id = 0
+    solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+    associated_asset_types = solution.associated_asset_types
+    assoc_names = []
+    assoc_dict = {}
+    for t in associated_asset_types:
+        a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
+        assoc_names.append(a_type.asset_type)
+        assoc_dict[str(a_type.id)] = a_type.asset_type
+    data_folder = Path("static/data/assoc_types_for_solution.json")
+    with open(data_folder, 'w') as fp:
+        json.dump(assoc_dict, fp, indent=4)
+    data_functions.write_asset_types_to_json()
+    return render_template('view_one_solution.html',
+                           asset_types=db_connect.query_all(models.AssetTypes),
+                           associated_asset_types=assoc_names,
+                           solution_id=solution_id,
+                           steps=solution.steps,
+                           title=solution.solution_title)
 
 
 @app.route('/add_asset_type', methods=['GET', 'POST'])
@@ -98,11 +128,13 @@ def add_solution_post():
     for s in solution:
         print(s)
         if s[:4] == 'step':
-            temp_dict[str(count)] = s.split('=')[1]
+            step = s.replace("%20", " ")
+            temp_dict[str(count)] = step.split('=')[1]
             print(s.split('=')[0] + ' - ' + s.split('=')[1])
             count += 1
         if 'solution_title' in s:
             title = s.split('=')[1]
+            title = title.replace("%20", " ")
     # print(data['asset_type'])
     for i in temp_dict:
         print(i, temp_dict[i])

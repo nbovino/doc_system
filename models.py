@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey, Numeric, UnicodeText, TEXT, Boolean, JSON, ARRAY
+from sqlalchemy import Column, Integer, String, Float, Date, ForeignKey, Numeric, UnicodeText, TEXT, Boolean, JSON, DateTime
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 from flask_login import UserMixin
 
@@ -40,7 +41,7 @@ class Solutions(Base):
     solution_title = Column(String)
     steps = Column(JSON)
     date_added = Column(Date)
-    date_revised = Column(Date)
+    date_revised = Column(DateTime)
     user = Column(Integer)
     associated_solutions = Column(ARRAY(Integer, dimensions=1))
     associated_assets = Column(ARRAY(Integer, dimensions=1))

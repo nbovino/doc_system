@@ -49,11 +49,19 @@
             <p>Lorem ipsem stuff</p>
         {% endblock %}
         </div>
+        <div id="demo"></div>
         <div class="right-column">
-            {% block right %}
-            <h2>Related Info</h2>
-            <h4>Test</h4>
-            {% endblock %}
+            {% if solution_id %}
+                <h2>Related Info</h2>
+                <h3>Related Asset Types</h3>
+                {% for i in associated_asset_types %}
+                    <p>{{ i }}</p>
+                {% endfor %}
+                <div id="add-assoc-type-button">
+                </div>
+                <!-- TODO: really only show this part when someone is logged in-->
+                <button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>
+            {% endif %}
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
