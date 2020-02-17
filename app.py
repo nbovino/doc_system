@@ -73,6 +73,7 @@ def view_one_solution():
     with open(data_folder, 'w') as fp:
         json.dump(assoc_dict, fp, indent=4)
     data_functions.write_asset_types_to_json()
+    data_functions.one_solution_asset_types(solution_id)
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            associated_asset_types=assoc_names,

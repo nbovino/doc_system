@@ -24,27 +24,8 @@ function wait() {
 //}
 
 
-var assetData;
-function callback(response) {
-//TODO: I can put the form stuff in here to create the data and make the ajax call inside the function that is called when
-//TODO: the new asset type button is clicked. It should get both asset lists and compare them though to only put
-//TODO: the asset types that are not in the related field already to show in the form to be selected. Then when clicking "Add"
-//TODO: it will make an ajax call to update the column with updated associated asset types.
-    assetData = response;
-    console.log(assetData);
-    for(var key in assetData) {
-        console.log(key, assetData[key]);
-    }
-}
 
-$.ajax({
-    'type': 'GET',
-    'global': false,
-    'url': '/static/data/all_assoc_types.json',
-    'success': function(data){
-        callback(data);
-    }
-});
+
 
 //TODO: This below function works best so far, assetData is a json object!
 //var assetData = function() {
@@ -81,32 +62,7 @@ $.ajax({
 //console.log(getData().responseText);
 
 $(document).ready(function() {
-//    var asset_data;
-//    var asset_data = jQuery.get('static/data/all_assoc_types.json', function(data, textStatus) {
-//        console.log(data);
-//        for (var key in data) {
-//            console.log(key, data[key]);
-//        }
-//        console.log(data[2]);
-//    });
-//    console.log(asset_data);
-//    console.log(asset_data.responseText);
-//    for (var key in asset_data) {
-//        console.log(key);
-//    }
-//    var assets = JSON.parse(all_assoc_types);
-//    console.log(assets);
-//    readTextFile("/static/data/all_assoc_types.json", function(text) {
-//        var asset_data = JSON.parse(text);
-//        console.log(asset_data);
-//    });
-//    for (var key in asset_types) {
-//        if (asset_types.hasOwnProperty(key)) {
-//            console.log(key, asset_types[key]);
-//            console.log(key);
-//        }
-//    }
-//    console.log(asset_data[2]);
+
     var max_fields = 10;
     var wrapper = $("#dynamic-input-steps");
     var add_button = $(".add-step-field");
@@ -172,13 +128,64 @@ function hideAddAssetType() {
     document.getElementById("new-asset-type").style.display = "block";
 };
 
+
+
+
+
+
 function showAddAssocType() {
-    var newdiv = document.createElement('div');
-    newdiv.setAttribute("id", "inner-add-assoc-type-button")
+
+    function callback(response) {
+    //TODO: I can put the form stuff in here to create the data and make the ajax call inside the function that is called when
+    //TODO: the new asset type button is clicked. It should get both asset lists and compare them though to only put
+    //TODO: the asset types that are not in the related field already to show in the form to be selected. Then when clicking "Add"
+    //TODO: it will make an ajax call to update the column with updated associated asset types.
+        var assetData = response;
+    //    console.log(assetData);
+    //    for(var key in assetData) {
+    //        console.log(key, assetData[key]);
+    //    }
+    //    for(var k in assetData['all_asset_types']) {
+    //        console.log(k);
+    //    }
+    //    for(var k in assetData['solution_asset_types']) {
+    //        console.log(k);
+    //    }
+        var available_types = {};
+        for (k in assetData['all_asset_types']) {
+            if (k in assetData['solution_asset_types']) {
+            } else {
+                available_types[k] = assetData['all_asset_types'][k];
+            }
+        }
+        console.log(available_types);
+        var newdiv = document.createElement('div');
+        newdiv.setAttribute("id", "inner-add-assoc-type-button");
+        var formHTML = "<select id='add-assoc-type' multiple>";
+        for (k in available_types) {
+            formHTML = formHTML + "<option value=" + k + ">" + available_types[k] + "</option>";
+        }
+        formHTML = formHTML + "</select><p><button id='add-assoc' onClick='addAssocType()'>Add</button>  <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
+        newdiv.innerHTML = formHTML;
+        document.getElementById("add-assoc-type-button").appendChild(newdiv);
+        document.getElementById("new-assoc-type").style.display = "none";
+    }
+
+    $.ajax({
+    'type': 'GET',
+    'global': false,
+    'url': '/static/data/one_solution_data.json',
+    'success': function(data){
+        callback(data);
+    }
+    });
+
+//    var newdiv = document.createElement('div');
+//    newdiv.setAttribute("id", "inner-add-assoc-type-button")
     // This should really add in a drop down of a multi select box to pic new types you want to add to this solution.
-    newdiv.innerHTML = "<form><input type='text' name='new-assoc-type' id='add-assoc-type' role='form'></form><p><button id='add-assoc' onClick='addAssocType()'>Add</button>  <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
-    document.getElementById("add-assoc-type-button").appendChild(newdiv);
-    document.getElementById("new-assoc-type").style.display = "none";
+//    newdiv.innerHTML = "<form><input type='text' name='new-assoc-type' id='add-assoc-type' role='form'></form><p><button id='add-assoc' onClick='addAssocType()'>Add</button>  <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
+//    document.getElementById("add-assoc-type-button").appendChild(newdiv);
+//    document.getElementById("new-assoc-type").style.display = "none";
 };
 
 function hideAssocType() {
