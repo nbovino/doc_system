@@ -16,10 +16,37 @@ class Assets(Base):
     __tablename__ = 'Assets'#Tells what table using
     id = Column(Integer, primary_key=True)
     asset_type = Column(Integer)
+    manufacturer = Column(Integer)
+    model = Column(String)
+    serial_no = Column(String)
+    dia_asset_tag = Column(String)
     name = Column(String)
     description = Column(TEXT)
-    solutions = Column(ARRAY(Integer, dimensions=1))
     ip_address = Column(String)
+    solutions = Column(ARRAY(Integer, dimensions=1))
+    department = Column(Integer)
+    date_added = Column(Date)
+    date_revised = Column(DateTime)
+
+
+class Departments(Base):
+    __tablename__ = "departments"
+    id = Column(Integer, primary_key=True)
+    department = Column(String)
+
+
+class ItemModels(Base):
+    __tablename__ = "item_models"
+    id = Column(Integer, primary_key=True)
+    item_model = Column(String, unique=True)
+    manufacturer = Column(Integer, ForeignKey("manufacturers.id"))
+    item_desc = Column(TEXT)
+
+
+class Manufacturers(Base):
+    __tablename__ = 'manufacturers'
+    id = Column(Integer, primary_key=True)
+    manufacturer = Column(String, unique=True)
 
 
 class AssetTypes(Base):

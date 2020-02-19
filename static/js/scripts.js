@@ -180,12 +180,6 @@ function showAddAssocType() {
     }
     });
 
-//    var newdiv = document.createElement('div');
-//    newdiv.setAttribute("id", "inner-add-assoc-type-button")
-    // This should really add in a drop down of a multi select box to pic new types you want to add to this solution.
-//    newdiv.innerHTML = "<form><input type='text' name='new-assoc-type' id='add-assoc-type' role='form'></form><p><button id='add-assoc' onClick='addAssocType()'>Add</button>  <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
-//    document.getElementById("add-assoc-type-button").appendChild(newdiv);
-//    document.getElementById("new-assoc-type").style.display = "none";
 };
 
 function hideAssocType() {
@@ -195,18 +189,22 @@ function hideAssocType() {
 };
 
 function addAssocType() {
+    let params = new URLSearchParams(location.search);
+    var solution_id = params.get('solution_id');
     $.ajax({
         url: '/add_assoc_type',
-        data: $('$add-assoc-type').serialize(),
+        async: false,
+        data: {added_types: $('#add-assoc-type option:selected').val(), solution_id: solution_id},
         type: 'POST',
         success: function(response) {
             console.log(response);
+
         },
         error: function(error) {
             console.log(error);
         }
     });
-    location.reload(true);
+//    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
 }
 
 function addAssetType() {

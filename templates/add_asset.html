@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<div class="form-popup" id="new-asset_type">
+    <form action="" method="POST">
+        {{ add_asset_form.hidden_tag() }}
+        {{ add_asset_form.item_type }}<br><br>
+        {{ add_asset_form.type_submit }}    <button onclick="closeAssetTypeForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+</div><div class="form-popup" id="new-department">
+    <form action="" method="POST">
+        {{ add_department_form.hidden_tag() }}
+        {{ add_department_form.department }}<br><br>
+        {{ add_department_form.department_submit }}    <button onclick="closeAssetTypeForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+</div>
+<div class="form-popup" id="new-manufacturer">
+    <form action="" method="POST">
+        {{ add_manufacturer_form.hidden_tag() }}
+        {{ add_manufacturer_form.manufacturer }}<br><br>
+        {{ add_manufacturer_form.manufacturer_submit }}    <button onclick="closeManufacturerForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+</div>
+<form action="" method="POST">
+    {{ add_asset_form.hidden_tag() }}
+    {{ add_asset_form.asset_type }}    <span class="open-button" onclick="openAssetTypeForm()">New</span><br><!-- ideally this link should create a pop up to add new item -->
+    {{ add_asset_form.manufacturer }}    <span class="open-button" onclick="openManufacturerForm()">New</span><br><!-- this should do the same -->
+    {{ add_asset_form.model }}<br>
+    {{ add_asset_form.serial_no }}    <span id="department"></span><br>
+    {{ add_asset_form.dia_asset_tag }}<br>
+    {{ add_asset_form.name }}<br>
+    {{ add_asset_form.department }}<br>
+    {{ add_asset_form.description }}<br>
+    {{ add_asset_form.ip_address }}<br>
+    {{ add_asset_form.asset_submit }}<br>
+</form>
+
+{% endblock %}

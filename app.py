@@ -8,6 +8,7 @@ from plotly.subplots import make_subplots
 import json
 from pathlib import Path
 import data_functions
+import time
 
 import datetime
 import forms
@@ -89,6 +90,23 @@ def add_asset_type():
     return str(data['new-asset-type'])
 
 
+@app.route('/add_asset', methods=['GET', 'POST'])
+def add_asset():
+    add_asset_form = forms.AddAssetForm()
+    add_asset_type_form = forms.AddAssetTypeForm()
+    add_manufacturer_form = forms.AddManufacturerForm()
+    add_department_form = forms.AddDepartmentForm()
+    add_asset_form.department.choices = [('', 'Select Department')]
+    add_asset_form.manufacturer.choices = [('', 'Select Manufacturer')]
+    add_asset_form.asset_type.choices = [('', 'Select Asset Type')]
+    return render_template('add_asset.html',
+                           add_asset_form=add_asset_form,
+                           add_asset_type_form=add_asset_type_form,
+                           add_manufacturer_form=add_manufacturer_form,
+                           add_department_form=add_department_form
+                           )
+
+
 @app.route('/add_solution', methods=['GET', 'POST'])
 def add_solution():
     if request.args.get('message'):
@@ -158,6 +176,15 @@ def add_solution_post():
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
     return combined_steps
+
+
+@app.route('/add_assoc_type', methods=['GET', 'POST'])
+def add_assoc_type():
+    data = request.form
+    # solution_id = data['solution_id']
+    print(data['added_types'])
+    print('solution ID: ' + data['solution_id'])
+    return data
 
 
 @app.route('/edit_solution', methods=['GET', 'POST'])
