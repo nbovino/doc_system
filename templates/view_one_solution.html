@@ -6,5 +6,37 @@
     {% for step in steps %}
         <p>{{ step }} - {{ steps[step] }}</p>
     {% endfor %}
+    {% if solution_id %}
+    </div>
+    <div class="right-column">
+
+        <h2>Related Info</h2>
+        <h3>Related Asset Types</h3>
+        {% for i in associated_asset_types %}
+            <p>{{ associated_asset_types[i] }}</p>
+        {% endfor %}
+        <div class="form-popup" id="add-assoc-type-form">
+            <form action="" method="POST">
+                {{ add_asset_form.hidden_tag() }}
+                {{ add_asset_type_form.asset_type }}<br><br>
+                {{ add_asset_type_form.asset_type_submit }}    <button onclick="closeAddAssocTypeForm()">Cancel</button><br>
+                <!--<p>This is a test page</p>-->
+                <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+            </form>
+        </div>
+        {% for i in all_asset_types %}
+            {% if i not in associated_asset_types %}
+            <p>{{ i }} - {{ all_asset_types[i] }}</p>
+            {% endif %}
+        {% endfor %}
+
+        <div id="add-assoc-type-button">
+        </div>
+        <!-- TODO: really only show this part when someone is logged in-->
+        <!-- TODO: This is functionality that will be put in the python code for now-->
+        <!--<button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>-->
+    </div>
+    {% endif %}
+
 
 {% endblock %}

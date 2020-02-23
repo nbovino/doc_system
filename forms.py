@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, SelectField, IntegerField, FloatField, DecimalField, BooleanField, SubmitField
+from wtforms import StringField, TextAreaField, SelectField, IntegerField, FloatField, DecimalField, BooleanField, SubmitField, SelectMultipleField
 from wtforms.validators import (DataRequired, Email,
                                 Length, InputRequired)
 from wtforms.fields.html5 import DateField
@@ -31,3 +31,7 @@ class AddManufacturerForm(Form):
 class AddDepartmentForm(Form):
     department = StringField(validators=[DataRequired()], render_kw={"placeholder": "Department"})
     department_submit = SubmitField('Add Department')
+
+
+class AddAssetTypeToSolutionForm(Form):
+    asset_types = SelectMultipleField(validators=[DataRequired()])

@@ -35,20 +35,10 @@ function closeManufacturerForm() {
     document.getElementById("new-manufacturer").style.display = "none";
 }
 
-//function readTextFile(file, callback) {
-//    var rawFile = new XMLHttpRequest();
-//    rawFile.overrideMimeType("application/json");
-//    rawFile.open("GET", file, true);
-//    rawFile.onreadystatechange = function() {
-//        if (rawFile.readyState == 4 && rawFile.status == "200") {
-//            callback(rawFile.responseText);
-//        }
-//    }
-//    rawFile.send(null);
-//}
 
-
-
+function openAddAssocTypeForm() {
+    document.getElementById("add-assoc-type-form").style.display = "block";
+}
 
 
 //TODO: This below function works best so far, assetData is a json object!

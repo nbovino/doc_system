@@ -66,9 +66,9 @@ def view_one_solution():
     associated_asset_types = solution.associated_asset_types
     assoc_names = []
     assoc_dict = {}
+    addTypeToSolutionForm = forms.AddAssetTypeToSolutionForm()
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
-        assoc_names.append(a_type.asset_type)
         assoc_dict[str(a_type.id)] = a_type.asset_type
     data_folder = Path("static/data/assoc_types_for_solution.json")
     with open(data_folder, 'w') as fp:
@@ -77,7 +77,9 @@ def view_one_solution():
     data_functions.one_solution_asset_types(solution_id)
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
-                           associated_asset_types=assoc_names,
+                           associated_asset_types=data_functions.one_solution_asset_types(solution_id),
+                           all_asset_types=data_functions.write_asset_types_to_json(),
+                           add_type_to_solution_form=addTypeToSolutionForm,
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)
