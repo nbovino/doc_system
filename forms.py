@@ -7,17 +7,18 @@ from wtforms.fields.html5 import DateField
 
 class AddAssetTypeForm(Form):
     asset_type = StringField("Asset Type", validators=[DataRequired()], render_kw={"placeholder": "Asset Type"})
+    asset_type_submit = SubmitField("Add Asset Type")
 
 
 class AddAssetForm(Form):
-    asset_type = SelectField("Asset Type", validators=[DataRequired()])
-    manufacturer = SelectField("Manufacturer", validators=[DataRequired()])
-    model = StringField("Model Number")
-    serial_no = StringField("Serial Number")
-    dia_asset_tag = StringField("Diamond Asset Tag Number")
+    asset_type = SelectField(label="Asset Type", validators=[DataRequired()])
+    manufacturer = SelectField(validators=[DataRequired()])
+    model = StringField("Model Number",  render_kw={"placeholder": "Model Number"})
+    serial_no = StringField("Serial Number", render_kw={"placeholder": "Serial Number"})
+    dia_asset_tag = StringField("Diamond Asset Tag Number", render_kw={"placeholder": "Diamond Tag Number"})
     name = StringField("Name", render_kw={"placeholder": "Asset Name"})
-    department = SelectField("Department")
-    description = TextAreaField("Description such as: Model number")
+    department = SelectField("Department", render_kw={"placeholder": "Department"})
+    description = TextAreaField("Description such as: Model number", render_kw={"placeholder": "Description"})
     ip_address = StringField("IP", render_kw={"placeholder": "0.0.0.0"})
     asset_submit = SubmitField('Add Asset')
 

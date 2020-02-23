@@ -56,3 +56,15 @@ nav {
 .cat-selected {
     background-color: green;
 }
+
+.form-popup {
+    display: none;
+    position: fixed;
+/*    height: 10%;
+    width: 25%;*/
+    opacity: 100;
+    background: white;
+    border: 2px solid blue;
+    z-index: 0;
+    padding: 3px;
+}

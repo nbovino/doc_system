@@ -96,9 +96,53 @@ def add_asset():
     add_asset_type_form = forms.AddAssetTypeForm()
     add_manufacturer_form = forms.AddManufacturerForm()
     add_department_form = forms.AddDepartmentForm()
-    add_asset_form.department.choices = [('', 'Select Department')]
-    add_asset_form.manufacturer.choices = [('', 'Select Manufacturer')]
-    add_asset_form.asset_type.choices = [('', 'Select Asset Type')]
+    all_asset_types = []
+    all_departments = []
+    all_manufacturers = []
+    try:
+        for t in db_connect.query_all(models.AssetTypes):
+            all_asset_types.append((str(t.id), t.asset_type.title()))
+    except:
+        pass
+    try:
+        for d in db_connect.query_all(models.Departments):
+            all_departments.append((str(d.id), d.department.title()))
+    except:
+        pass
+    try:
+        for m in db_connect.query_all(models.Manufacturers):
+            all_manufacturers.append((str(m.id), m.manufacturer.title()))
+    except:
+        pass
+
+    if add_asset_type_form.asset_type_submit.data and add_asset_type_form.validate():
+        db_connect.insert_db(models.AssetTypes(asset_type=add_asset_type_form.asset_type.data))
+        return redirect(url_for('add_asset'))
+    if add_department_form.department_submit.data and add_department_form.validate():
+        db_connect.insert_db(models.Departments(department=add_department_form.department.data))
+        return redirect(url_for('add_asset'))
+    if add_manufacturer_form.manufacturer_submit.data and add_manufacturer_form.validate():
+        db_connect.insert_db(models.Manufacturers(manufacturer=add_manufacturer_form.manufacturer.data))
+        return redirect(url_for('add_asset'))
+
+    add_asset_form.asset_type.choices = [('', 'Select Asset Type')] + all_asset_types
+    add_asset_form.department.choices = [('', 'Select Department')] + all_departments
+    add_asset_form.manufacturer.choices = [('', 'Select Manufacturer')] + all_manufacturers
+    if add_asset_form.asset_submit.data and add_asset_form.validate():
+        db_connect.insert_db(models.Assets(asset_type=add_asset_form.asset_type.data,
+                                           manufacturer=add_asset_form.manufacturer.data,
+                                           model=add_asset_form.model.data,
+                                           serial_no=add_asset_form.serial_no.data,
+                                           dia_asset_tag=add_asset_form.dia_asset_tag.data,
+                                           name=add_asset_form.name.data,
+                                           description=add_asset_form.description.data,
+                                           ip_address=add_asset_form.ip_address.data,
+                                           department=add_asset_form.department.data,
+                                           date_added=datetime.datetime.now(),
+                                           date_revised=datetime.datetime.now()
+                                           )
+                             )
+
     return render_template('add_asset.html',
                            add_asset_form=add_asset_form,
                            add_asset_type_form=add_asset_type_form,

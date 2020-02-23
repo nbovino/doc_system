@@ -11,6 +11,30 @@ function wait() {
 }
 
 
+function openAssetTypeForm() {
+    document.getElementById("new-asset-type-form").style.display = "block";
+}
+
+function closeAssetTypeForm() {
+    document.getElementById("new-asset-type-form").style.display = "none";
+}
+
+function openDepartmentForm() {
+    document.getElementById("new-department").style.display = "block";
+}
+
+function closeDepartmentForm() {
+    document.getElementById("new-department").style.display = "none";
+}
+
+function openManufacturerForm() {
+    document.getElementById("new-manufacturer").style.display = "block";
+}
+
+function closeManufacturerForm() {
+    document.getElementById("new-manufacturer").style.display = "none";
+}
+
 //function readTextFile(file, callback) {
 //    var rawFile = new XMLHttpRequest();
 //    rawFile.overrideMimeType("application/json");

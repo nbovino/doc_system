@@ -10,7 +10,7 @@ import os
 
 try:
     # engine = create_engine('sqlite:///docutest.db', echo=True)
-    engine = create_engine('postgresql://postgres:unitedFries28@localhost/doc_system')
+    engine = create_engine(os.environ["DOC_SYSTEM"])
     print("Opened database successfully")
 
 except Exception as e:
