@@ -56,40 +56,68 @@ def view_solutions():
                            )
 
 
+# @app.route('/add_type_to_solution', methods=['GET', 'POST'])
+# def add_type_to_solution():
+#     form =  = request.add_type_to_solution_form['asset_types']
+#     for r in all_request:
+#         print(r)
+#     return redirect(url_for('main'))
+
+
 @app.route('/view_one_solution', methods=['GET', 'POST'])
 def view_one_solution():
+
+    add_type_to_solution_form = forms.AddAssetTypeToSolutionForm()
     if request.args.get('solution_id'):
         solution_id = request.args.get('solution_id')
     else:
         solution_id = 0
+    if request.args.get('asset_types'):
+        for r in request.args.get('asset_types'):
+            print(r)
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
     associated_asset_types = solution.associated_asset_types
-    assoc_names = []
     assoc_dict = {}
-    addTypeToSolutionForm = forms.AddAssetTypeToSolutionForm()
+    non_assoc_types = []
+    all_types = db_connect.query_all(models.AssetTypes)
+
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
         assoc_dict[str(a_type.id)] = a_type.asset_type
+
     data_folder = Path("static/data/assoc_types_for_solution.json")
     with open(data_folder, 'w') as fp:
         json.dump(assoc_dict, fp, indent=4)
     data_functions.write_asset_types_to_json()
+
     data_functions.one_solution_asset_types(solution_id)
+
+    add_type_to_solution_form.solution_id.data = solution_id
+
+    for t in all_types:
+        if t.id not in associated_asset_types:
+            non_assoc_types.append((str(t.id), t.asset_type))
+    add_type_to_solution_form.asset_types.choices = non_assoc_types
+
+    if add_type_to_solution_form.add_submit.data and add_type_to_solution_form.validate():
+        solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+        updated_list = solution.associated_asset_types
+        for t in add_type_to_solution_form.asset_types.data:
+            if t not in solution.associated_asset_types:
+                updated_list.append(int(t))
+                print(t)
+        db_connect.update_assoc_asset_types(sid=int(add_type_to_solution_form.solution_id.data), values=updated_list)
+        redirect(url_for('view_one_solution', solution_id=add_type_to_solution_form.solution_id.data))
+
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            associated_asset_types=data_functions.one_solution_asset_types(solution_id),
+                           non_assoc_types=non_assoc_types,
                            all_asset_types=data_functions.write_asset_types_to_json(),
-                           add_type_to_solution_form=addTypeToSolutionForm,
+                           add_type_to_solution_form=add_type_to_solution_form,
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)
-
-
-@app.route('/add_asset_type', methods=['GET', 'POST'])
-def add_asset_type():
-    data = request.form
-    db_connect.insert_db(models.AssetTypes(asset_type=data['new-asset-type']))
-    return str(data['new-asset-type'])
 
 
 @app.route('/add_asset', methods=['GET', 'POST'])
@@ -151,6 +179,13 @@ def add_asset():
                            add_manufacturer_form=add_manufacturer_form,
                            add_department_form=add_department_form
                            )
+
+
+@app.route('/add_asset_type', methods=['GET', 'POST'])
+def add_asset_type():
+    data = request.form
+    db_connect.insert_db(models.AssetTypes(asset_type=data['new-asset-type']))
+    return str(data['new-asset-type'])
 
 
 @app.route('/add_solution', methods=['GET', 'POST'])

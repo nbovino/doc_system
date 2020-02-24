@@ -15,21 +15,13 @@
         {% for i in associated_asset_types %}
             <p>{{ associated_asset_types[i] }}</p>
         {% endfor %}
-        <div class="form-popup" id="add-assoc-type-form">
-            <form action="" method="POST">
-                {{ add_asset_form.hidden_tag() }}
-                {{ add_asset_type_form.asset_type }}<br><br>
-                {{ add_asset_type_form.asset_type_submit }}    <button onclick="closeAddAssocTypeForm()">Cancel</button><br>
-                <!--<p>This is a test page</p>-->
-                <!--<button type="submit" onclick="closeForm()">Submit</button>-->
-            </form>
-        </div>
-        {% for i in all_asset_types %}
-            {% if i not in associated_asset_types %}
-            <p>{{ i }} - {{ all_asset_types[i] }}</p>
-            {% endif %}
-        {% endfor %}
 
+        <form action="" id="add-assoc-type-form" method="POST">
+            {{ add_type_to_solution_form.hidden_tag() }}
+            {{ add_type_to_solution_form.asset_types() }}
+            <span style="display: none">{{ add_type_to_solution_form.solution_id }}</span>
+            {{ add_type_to_solution_form.add_submit }}
+        </form>
         <div id="add-assoc-type-button">
         </div>
         <!-- TODO: really only show this part when someone is logged in-->

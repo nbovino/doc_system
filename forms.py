@@ -35,3 +35,5 @@ class AddDepartmentForm(Form):
 
 class AddAssetTypeToSolutionForm(Form):
     asset_types = SelectMultipleField(validators=[DataRequired()])
+    solution_id = StringField(validators=[DataRequired()])
+    add_submit = SubmitField('Add to Solution')

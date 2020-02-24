@@ -40,6 +40,10 @@ function openAddAssocTypeForm() {
     document.getElementById("add-assoc-type-form").style.display = "block";
 }
 
+function closeAddAssocTypeForm() {
+    document.getElementById("add-assoc-type-form").style.display = "none";
+}
+
 
 //TODO: This below function works best so far, assetData is a json object!
 //var assetData = function() {

@@ -70,3 +70,13 @@ def get_solution_asset_types(type_ids):
         r = query_one_db(AssetTypes, AssetTypes.id, i)
         type_names.append(r)
     return type_names
+
+
+def update_assoc_asset_types(sid, values):
+    try:
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+        session.query(Solutions).filter(Solutions.id == sid).update({Solutions.associated_asset_types: values})
+        session.commit()
+    except exc.IntegrityError:
+        print("Integrity Error!!!!!!!!!!!!!!!!!!!!!!!!!!")
