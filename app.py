@@ -75,15 +75,18 @@ def view_one_solution():
     if request.args.get('asset_types'):
         for r in request.args.get('asset_types'):
             print(r)
+    print("this is solution ID" + str(solution_id))
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
-    non_assoc_types = []
     all_types = db_connect.query_all(models.AssetTypes)
-
+    count = 0
+    # this is causing an issue when reloading the page. It is returning too many things.
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
         assoc_dict[str(a_type.id)] = a_type.asset_type
+        count += 1
+        print(count)
 
     data_folder = Path("static/data/assoc_types_for_solution.json")
     with open(data_folder, 'w') as fp:
@@ -93,20 +96,27 @@ def view_one_solution():
     data_functions.one_solution_asset_types(solution_id)
 
     add_type_to_solution_form.solution_id.data = solution_id
-
+    non_assoc_types = []
+    add_type_to_solution_form.asset_types.choices = non_assoc_types
     for t in all_types:
         if t.id not in associated_asset_types:
             non_assoc_types.append((str(t.id), t.asset_type))
-    add_type_to_solution_form.asset_types.choices = non_assoc_types
 
     if add_type_to_solution_form.add_submit.data and add_type_to_solution_form.validate():
-        solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+        solution = db_connect.query_one_db(model=models.Solutions,
+                                           column=models.Solutions.id,
+                                           v=solution_id)
         updated_list = solution.associated_asset_types
         for t in add_type_to_solution_form.asset_types.data:
             if t not in solution.associated_asset_types:
                 updated_list.append(int(t))
                 print(t)
-        db_connect.update_assoc_asset_types(sid=int(add_type_to_solution_form.solution_id.data), values=updated_list)
+        db_connect.update_assoc_asset_types(sid=int(add_type_to_solution_form.solution_id.data),
+                                            values=updated_list)
+        db_connect.update_column(model=models.Solutions,
+                                 id=solution_id,
+                                 column=models.Solutions.date_revised,
+                                 v=datetime.datetime.now())
         redirect(url_for('view_one_solution', solution_id=add_type_to_solution_form.solution_id.data))
 
     return render_template('view_one_solution.html',

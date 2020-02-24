@@ -2,33 +2,34 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
-    <h2>{{ title }}</h2>
-    {% for step in steps %}
-        <p>{{ step }} - {{ steps[step] }}</p>
+<h2>{{ title }}</h2> <button>Edit</button>
+{% for step in steps %}
+<p>{{ step }} - {{ steps[step] }}</p>
+{% endfor %}
+{% if solution_id %}
+</div>
+<div class="right-column">
+
+    <h2>Related Info</h2>
+    <h3>Related Asset Types</h3>
+    {% for i in associated_asset_types %}
+    <p>{{ associated_asset_types[i] }}</p>
     {% endfor %}
-    {% if solution_id %}
-    </div>
-    <div class="right-column">
 
-        <h2>Related Info</h2>
-        <h3>Related Asset Types</h3>
-        {% for i in associated_asset_types %}
-            <p>{{ associated_asset_types[i] }}</p>
-        {% endfor %}
-
-        <form action="" id="add-assoc-type-form" method="POST">
-            {{ add_type_to_solution_form.hidden_tag() }}
-            {{ add_type_to_solution_form.asset_types() }}
-            <span style="display: none">{{ add_type_to_solution_form.solution_id }}</span>
-            {{ add_type_to_solution_form.add_submit }}
-        </form>
-        <div id="add-assoc-type-button">
-        </div>
-        <!-- TODO: really only show this part when someone is logged in-->
-        <!-- TODO: This is functionality that will be put in the python code for now-->
-        <!--<button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>-->
+    <form action="" id="add-assoc-type-form" style="display: none" method="POST">
+        {{ add_type_to_solution_form.hidden_tag() }}
+        {{ add_type_to_solution_form.asset_types() }}
+        <span style="display: none">{{ add_type_to_solution_form.solution_id }}</span>
+        {{ add_type_to_solution_form.add_submit }} <button onClick="closeAddAssocTypeForm()">Cancel</button>
+    </form>
+    <div id="add-assoc-type-button">
+        <button class="open-button" id="solution-type-button" onclick="openAddAssocTypeForm()">Add New solution type</button>
     </div>
-    {% endif %}
+    <!-- TODO: really only show this part when someone is logged in-->
+    <!-- TODO: This is functionality that will be put in the python code for now-->
+    <!--<button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>-->
+</div>
+{% endif %}
 
 
 {% endblock %}

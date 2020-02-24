@@ -38,10 +38,12 @@ function closeManufacturerForm() {
 
 function openAddAssocTypeForm() {
     document.getElementById("add-assoc-type-form").style.display = "block";
+    document.getElementById("solution-type-button").style.display = "none";
 }
 
 function closeAddAssocTypeForm() {
     document.getElementById("add-assoc-type-form").style.display = "none";
+    document.getElementById("solution-type-button").style.display = "block";
 }
 
 
