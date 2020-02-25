@@ -76,7 +76,7 @@ def view_one_solution():
         for r in request.args.get('asset_types'):
             print(r)
     data_functions.one_solution_data(solution_id)
-    print("this is solution ID" + str(solution_id))
+    # print("this is solution ID" + str(solution_id))
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
@@ -210,6 +210,15 @@ def add_solution():
                            message=message,
                            asset_type=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes))
+
+
+@app.route('/edit_solution_post', methods=['GET', 'POST'])
+def edit_solution_post():
+    data = request.form
+    edited_solution = {}
+    for d in data:
+        print(d, data[d])
+    return "form edited"
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])

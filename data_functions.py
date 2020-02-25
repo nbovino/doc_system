@@ -3,6 +3,7 @@ import models
 from pathlib import Path
 import json
 
+
 def write_asset_types_to_json():
     asset_types = db_connect.query_all(models.AssetTypes)
     type_dict = {}
