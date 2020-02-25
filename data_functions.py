@@ -29,3 +29,15 @@ def one_solution_asset_types(solution_id):
     with open(data_folder, 'w') as fp:
         json.dump(all_solution_data, fp, indent=4)
     return solution_asset_types
+
+
+def one_solution_data(solution_id):
+    solution_data = {}
+    solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+    solution_data["Title"] = solution.solution_title
+    solution_data["Steps"] = solution.steps
+    solution_data["Associated_Asset_Types"] = solution.associated_asset_types
+    data_folder = Path("static/data/one_solution.json")
+    with open(data_folder, 'w') as fp:
+        json.dump(solution_data, fp, indent=4)
+    return None

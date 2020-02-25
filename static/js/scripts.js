@@ -81,6 +81,28 @@ function closeAddAssocTypeForm() {
 //
 //console.log(getData().responseText);
 
+
+$('#edit-solution-button').click(function(e) {
+
+    function edit_callback(response) {
+    var newHTML = "<form>";
+    newHTML = newHTML + "";
+
+    newHTML = newHTML + "</form>";
+    document.getElementById('js-solution').innerHTML = newHTML;
+    }
+
+    $.ajax({
+    'type': 'GET',
+    'global': false,
+    'url': '/static/data/one_solution.json',
+    'success': function(data){
+        edit_callback(data);
+    }
+    });
+});
+
+
 $(document).ready(function() {
 
     var max_fields = 10;
@@ -147,10 +169,6 @@ function hideAddAssetType() {
     document.getElementById("asset-type-buttons").style.display = "none";
     document.getElementById("new-asset-type").style.display = "block";
 };
-
-
-
-
 
 
 function showAddAssocType() {

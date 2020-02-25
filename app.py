@@ -75,18 +75,16 @@ def view_one_solution():
     if request.args.get('asset_types'):
         for r in request.args.get('asset_types'):
             print(r)
+    data_functions.one_solution_data(solution_id)
     print("this is solution ID" + str(solution_id))
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
     all_types = db_connect.query_all(models.AssetTypes)
-    count = 0
     # this is causing an issue when reloading the page. It is returning too many things.
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
         assoc_dict[str(a_type.id)] = a_type.asset_type
-        count += 1
-        print(count)
 
     data_folder = Path("static/data/assoc_types_for_solution.json")
     with open(data_folder, 'w') as fp:

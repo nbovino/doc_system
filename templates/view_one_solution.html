@@ -2,13 +2,15 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
-<h2>{{ title }}</h2> <button>Edit</button>
+<div id="js-solution">
+<h2>{{ title }}</h2> <button id="edit-solution-button">Edit</button>
 {% for step in steps %}
 <p>{{ step }} - {{ steps[step] }}</p>
 {% endfor %}
 {% if solution_id %}
 </div>
-<p>save</p>
+
+</div>
 <div class="right-column">
 
     <h2>Related Info</h2>
