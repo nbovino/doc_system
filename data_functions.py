@@ -13,6 +13,7 @@ def write_asset_types_to_json():
         json.dump(type_dict, fp, indent=4)
     return type_dict
 
+
 def one_solution_asset_types(solution_id):
     # This needs fixed. This should really call a function that just returns a dictionary of all asset types without writing json again
     all_asset_types = write_asset_types_to_json()
