@@ -35,20 +35,16 @@ function closeManufacturerForm() {
     document.getElementById("new-manufacturer").style.display = "none";
 }
 
-//function readTextFile(file, callback) {
-//    var rawFile = new XMLHttpRequest();
-//    rawFile.overrideMimeType("application/json");
-//    rawFile.open("GET", file, true);
-//    rawFile.onreadystatechange = function() {
-//        if (rawFile.readyState == 4 && rawFile.status == "200") {
-//            callback(rawFile.responseText);
-//        }
-//    }
-//    rawFile.send(null);
-//}
 
+function openAddAssocTypeForm() {
+    document.getElementById("add-assoc-type-form").style.display = "block";
+    document.getElementById("solution-type-button").style.display = "none";
+}
 
-
+function closeAddAssocTypeForm() {
+    document.getElementById("add-assoc-type-form").style.display = "none";
+    document.getElementById("solution-type-button").style.display = "block";
+}
 
 
 //TODO: This below function works best so far, assetData is a json object!
@@ -84,6 +80,28 @@ function closeManufacturerForm() {
 //console.log(getData());
 //
 //console.log(getData().responseText);
+
+
+$('#edit-solution-button').click(function(e) {
+
+    function edit_callback(response) {
+    var newHTML = "<form>";
+    newHTML = newHTML + "";
+
+    newHTML = newHTML + "</form>";
+    document.getElementById('js-solution').innerHTML = newHTML;
+    }
+
+    $.ajax({
+    'type': 'GET',
+    'global': false,
+    'url': '/static/data/one_solution.json',
+    'success': function(data){
+        edit_callback(data);
+    }
+    });
+});
+
 
 $(document).ready(function() {
 
@@ -151,10 +169,6 @@ function hideAddAssetType() {
     document.getElementById("asset-type-buttons").style.display = "none";
     document.getElementById("new-asset-type").style.display = "block";
 };
-
-
-
-
 
 
 function showAddAssocType() {
