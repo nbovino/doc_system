@@ -6,11 +6,6 @@ function getUrlParam(parameter, defaultvalue){
     return urlparameter;
 }
 
-function wait() {
-    return confirm("small pause");
-}
-
-
 function openAssetTypeForm() {
     document.getElementById("new-asset-type-form").style.display = "block";
 }
@@ -46,50 +41,48 @@ function closeAddAssocTypeForm() {
     document.getElementById("solution-type-button").style.display = "block";
 }
 
-
-//TODO: This below function works best so far, assetData is a json object!
-//var assetData = function() {
-//    var tmp = null;
-//    $.ajax({
-//        async: false,
-//        dataType: "json",
-//        url: '/static/data/all_assoc_types.json',
-//        success: function (data) {
-//            tmp = data;
-//            console.log(data);
-//        }
-//    });
-//    console.log(tmp);
-//    return tmp;
-//}();
-//
-//console.log(assetData);
-
-//TODO: This below function works. I just need to assign the ajax response to a variable
-//function getData() {
-//    $.ajax({
-//
-//        dataType: "json",
-//        url: '/static/data/all_assoc_types.json',
-    //    data: '/static/data/all_assoc_types.json',
-//        success: function(data) {
-//            console.log(data);
-//        }
-//    });
-//}
-//console.log(getData());
-//
-//console.log(getData().responseText);
-
+function backToSolution(sid) {
+    window.location.href = '/view_one_solution?solution_id=' + sid;
+}
 
 $('#edit-solution-button').click(function(e) {
+    let params = new URLSearchParams(location.search);
+    var solution_id = params.get('solution_id');
+    var update_submit_button = $("#update-solution-button");
+    $(update_submit_button).click(function() {
+        console.log(solution_id);
+        wait();
+    //    updateSolution(solution_id);
+        // Need to find out why this ajax request is going first before can get the solution_id variable to send
+        $.ajax({
+            url: '/edit_solution_post',
+            type: 'POST',
+            data: {solution: $('#edit-solution-form').serialize(), solution_id: solution_id},
+//            data: 'This is fake data',
+            success: function(response) {
+                window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+//        window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+    })
 
     function edit_callback(response) {
-    var newHTML = "<form>";
-    newHTML = newHTML + "";
-
-    newHTML = newHTML + "</form>";
-    document.getElementById('js-solution').innerHTML = newHTML;
+        var newHTML = "<form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>";
+        newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
+        //TODO: make my own function to escape a string in JS or find one...
+        newHTML = newHTML + "<input type='text' name='solution_title' required type='text' value='" + escape(response['Title']) + "'></br>";
+        newHTML = newHTML + "</br><p>Steps</p>";
+        for (step in response['Steps']) {
+            newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escape(response['Steps'][step]) + "'></br></br>";
+        }
+        newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
+        newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
+        newHTML = newHTML + "<button value='Update Solution' id='update-solution-button'>Update Solution</button>";
+        newHTML = newHTML + "</form>";
+        document.getElementById('js-solution').innerHTML = newHTML;
     }
 
     $.ajax({
@@ -101,7 +94,6 @@ $('#edit-solution-button').click(function(e) {
     }
     });
 });
-
 
 $(document).ready(function() {
 
@@ -143,18 +135,7 @@ $(document).ready(function() {
                 console.log(error);
             }
         });
-//        var xhr = new XMLHttpRequest();
-//        xhr.onreadystatechange = function() {
-//            console.log(this.responseText);
-//            wait();
-//            if (this.readyState == 4 && this.status == 200) {
-//                var myObj = JSON.parse(this.responseText);
-//                document.getElementById("added-steps").innerHTML = myObj;
-//            }
-//        }
-//        wait();
         window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
-//        location.reload(true)
     });
 
 });
@@ -243,7 +224,7 @@ function addAssocType() {
         }
     });
 //    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-}
+};
 
 function addAssetType() {
     console.log("Add asset type function in python to add this to database, then reload the page from JS")
