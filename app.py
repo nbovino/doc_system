@@ -215,10 +215,10 @@ def add_solution():
 @app.route('/edit_solution_post', methods=['GET', 'POST'])
 def edit_solution_post():
     data = request.form
-    edited_solution = {}
+    #TODO: Make this take the string and update the solution with the passed in data
     for d in data:
         print(d, data[d])
-    return "form edited"
+    return "other fake data"
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])
@@ -279,7 +279,7 @@ def add_solution_post():
 @app.route('/add_assoc_type', methods=['GET', 'POST'])
 def add_assoc_type():
     data = request.form
-    # solution_id = data['solution_id']
+    solution_id = data['solution_id']
     print(data['added_types'])
     print('solution ID: ' + data['solution_id'])
     return data

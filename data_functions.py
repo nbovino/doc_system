@@ -35,6 +35,7 @@ def one_solution_asset_types(solution_id):
 def one_solution_data(solution_id):
     solution_data = {}
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+    solution_data["Solution_id"] = solution.id
     solution_data["Title"] = solution.solution_title
     solution_data["Steps"] = solution.steps
     solution_data["Associated_Asset_Types"] = solution.associated_asset_types

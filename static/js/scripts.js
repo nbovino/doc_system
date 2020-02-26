@@ -45,55 +45,58 @@ function backToSolution(sid) {
     window.location.href = '/view_one_solution?solution_id=' + sid;
 }
 
-$('#edit-solution-button').click(function(e) {
-    let params = new URLSearchParams(location.search);
-    var solution_id = params.get('solution_id');
-    var update_submit_button = $("#update-solution-button");
-    $(update_submit_button).click(function() {
-        console.log(solution_id);
-        wait();
-    //    updateSolution(solution_id);
-        // Need to find out why this ajax request is going first before can get the solution_id variable to send
-        $.ajax({
-            url: '/edit_solution_post',
-            type: 'POST',
-            data: {solution: $('#edit-solution-form').serialize(), solution_id: solution_id},
-//            data: 'This is fake data',
-            success: function(response) {
-                window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-//        window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-    })
-
-    function edit_callback(response) {
-        var newHTML = "<form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>";
-        newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
-        //TODO: make my own function to escape a string in JS or find one...
-        newHTML = newHTML + "<input type='text' name='solution_title' required type='text' value='" + escape(response['Title']) + "'></br>";
-        newHTML = newHTML + "</br><p>Steps</p>";
-        for (step in response['Steps']) {
-            newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escape(response['Steps'][step]) + "'></br></br>";
-        }
-        newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
-        newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
-        newHTML = newHTML + "<button value='Update Solution' id='update-solution-button'>Update Solution</button>";
-        newHTML = newHTML + "</form>";
-        document.getElementById('js-solution').innerHTML = newHTML;
-    }
-
+function updateSolution(sid){
+    console.log("updating");
     $.ajax({
-    'type': 'GET',
-    'global': false,
-    'url': '/static/data/one_solution.json',
-    'success': function(data){
-        edit_callback(data);
-    }
+        url: '/edit_solution_post',
+        type: 'POST',
+        data: {solution: $('#edit-solution-form').serialize(), solution_id: sid},
+        success: function(response) {
+            console.log("Success in the ajax request");
+            location.reload(true);
+        },
+        error: function(error) {
+            console.log(error);
+        }
     });
-});
+//    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+};
+
+
+$(document).ready(function() {
+    $('#edit-solution-button').click(function(e) {
+
+        var update_submit_button = $("#update-solution-button");
+
+        function edit_callback(response) {
+            console.log("I got here!")
+            var newHTML = "<form method='POST' action='#' id='edit-solution-form' name='edit-solution' role='form'>";
+            newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
+            //TODO: make my own function to escape a string in JS or find one...
+            newHTML = newHTML + "<input type='text' name='solution_title' required type='text' value='" + escape(response['Title']) + "'></br>";
+            newHTML = newHTML + "</br><p>Steps</p>";
+            for (step in response['Steps']) {
+                newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escape(response['Steps'][step]) + "'></br></br>";
+            }
+            newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
+            newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
+            newHTML = newHTML + "<button type='button' onclick='updateSolution(" + response['Solution_id'] + ")'>Update Solution</button>";
+            newHTML = newHTML + "</form>";
+            document.getElementById('js-solution').innerHTML = newHTML;
+        }
+
+
+        $.ajax({
+        'type': 'GET',
+        'global': false,
+        'url': '/static/data/one_solution.json',
+        'success': function(data){
+            console.log("success");
+            edit_callback(data);
+        }
+        });
+    });
+})
 
 $(document).ready(function() {
 
