@@ -6,6 +6,10 @@ function getUrlParam(parameter, defaultvalue){
     return urlparameter;
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function openAssetTypeForm() {
     document.getElementById("new-asset-type-form").style.display = "block";
 }
@@ -62,6 +66,9 @@ function updateSolution(sid){
 //    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
 };
 
+// This is almost exactly copied code
+
+
 
 $(document).ready(function() {
     $('#edit-solution-button').click(function(e) {
@@ -73,16 +80,35 @@ $(document).ready(function() {
             var newHTML = "<form method='POST' action='#' id='edit-solution-form' name='edit-solution' role='form'>";
             newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
             //TODO: make my own function to escape a string in JS or find one...
-            newHTML = newHTML + "<input type='text' name='solution_title' required type='text' value='" + escape(response['Title']) + "'></br>";
-            newHTML = newHTML + "</br><p>Steps</p>";
+            newHTML = newHTML + '<input type="text" name="solution_title" required type="text" value="' + escapeRegExp(response["Title"]) + '"></br>';
+            newHTML = newHTML + "</br><p>Steps</p><div id='dynamic-input-steps'>";
+
             for (step in response['Steps']) {
-                newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escape(response['Steps'][step]) + "'></br></br>";
+                newHTML = newHTML + "<div>"
+                newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
+                newHTML = newHTML + "<a href='#' class='delete'>Delete</a></br></br></div>";
+                var totalSteps = step
             }
+            newHTML = newHTML + "</div><input type='button' value='Add Step' class='add-step-field'><br><br>";
             newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
             newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
             newHTML = newHTML + "<button type='button' onclick='updateSolution(" + response['Solution_id'] + ")'>Update Solution</button>";
             newHTML = newHTML + "</form>";
             document.getElementById('js-solution').innerHTML = newHTML;
+
+            $("#dynamic-input-steps").on("click", ".delete", function(e) {
+                e.preventDefault();
+                $(this).parent('div').remove();
+                totalSteps--;
+            })
+
+            $(".add-step-field").click(function(e) {
+                e.preventDefault();
+                totalSteps++;
+                var newdiv = document.createElement('div');
+                newdiv.innerHTML = "Step: " + totalSteps + " <br><input type='text' name='step" + totalSteps + "' ><a href='#' class='delete'>Delete</a>";
+                document.getElementById("dynamic-input-steps").appendChild(newdiv);
+            });
         }
 
 
@@ -96,6 +122,29 @@ $(document).ready(function() {
         }
         });
     });
+
+
+//this searches but returns odd results. Could really use this later if made better.
+$.ajaxSetup({ cache: false });
+ $('#search-solutions').keyup(function(){
+  $('#result').html('');
+  $('#state').val('');
+  var searchField = $('#search').val();
+  var expression = new RegExp(searchField, "i");
+  $.getJSON('static/data/all_solution_data.json', function(data) {
+   $.each(data, function(key, value){
+    if (value.title.search(expression) != -1)
+    {
+     $('#result').append('<li class="list-group-item link-class"> '+ value.title + '</span></li>');
+    }
+   });
+  });
+ });
+  $('#result').on('click', 'li', function() {
+  var click_text = $(this).text().split('|');
+  $('#search').val($.trim(click_text[0]));
+  $("#result").html('');
+ });
 })
 
 $(document).ready(function() {
@@ -113,7 +162,6 @@ $(document).ready(function() {
         newdiv.innerHTML = "Step: " + x + " <br><input type='text' name='step" + x + "' ><a href='#' class='delete'>Delete</a>";
         document.getElementById("dynamic-input-steps").appendChild(newdiv);
         x++;
-
     });
 
     $(wrapper).on("click", ".delete", function(e) {
@@ -220,7 +268,7 @@ function addAssocType() {
         type: 'POST',
         success: function(response) {
             console.log(response);
-
+            location.reload(true);
         },
         error: function(error) {
             console.log(error);

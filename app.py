@@ -30,6 +30,7 @@ app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 @app.route('/', methods=['GET', 'POST'])
 def main():
     all_asset_types = db_connect.query_all(models.AssetTypes)
+    data_functions.solution_title_table()
     if request.args.get('solution_category'):
         solution_category = request.args.get('solution_category')
     else:
@@ -38,6 +39,7 @@ def main():
         company = request.args.get('company')
     else:
         company = '0'
+
     return render_template('base.html',
                            solution_category=solution_category,
                            company=company,
@@ -215,10 +217,26 @@ def add_solution():
 @app.route('/edit_solution_post', methods=['GET', 'POST'])
 def edit_solution_post():
     data = request.form
-    #TODO: Make this take the string and update the solution with the passed in data
+    new_steps = {}
+    count = 1
     for d in data:
         print(d, data[d])
-    return "other fake data"
+    solution = data['solution'].split('&')
+    for s in solution:
+        print(s)
+        if s[:4] == 'step':
+            step = s.replace("%20", " ")
+            new_steps[str(count)] = step.split('=')[1]
+            print(s.split('=')[0] + ' - ' + s.split('=')[1])
+            count += 1
+        if 'solution_title' in s:
+            title = s.split('=')[1]
+            title = title.replace("%20", " ")
+    print(title, new_steps, id)
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title, v=title)
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised, v=datetime.datetime.now())
+    return new_steps
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])
