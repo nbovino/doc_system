@@ -124,25 +124,47 @@ $(document).ready(function() {
     });
 
 
+function showSnackbar() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function() { x.className = x.className.replace("show", "");
+    }, 2000);
+}
+
+
 //this searches but returns odd results. Could really use this later if made better.
 $.ajaxSetup({ cache: false });
  $('#search-solutions').keyup(function(){
+  var resultsFound = 0;
   $('#result').html('');
   $('#state').val('');
-  var searchField = $('#search').val();
+  var searchField = $('#search-solutions').val();
   var expression = new RegExp(searchField, "i");
-  $.getJSON('static/data/all_solution_data.json', function(data) {
-   $.each(data, function(key, value){
-    if (value.title.search(expression) != -1)
-    {
-     $('#result').append('<li class="list-group-item link-class"> '+ value.title + '</span></li>');
-    }
-   });
-  });
+  if (searchField != '') {
+      $.getJSON('static/data/all_solution_data.json', function(data) {
+       $.each(data, function(key, value){
+        if (value.title.search(expression) != -1)
+        {
+         resultsFound++;
+         console.log(resultsFound);
+         $('#result').append('<li class="list-group-item link-class"> '+ value.title + '</span></li>');
+        }
+       });
+      });
+      setTimeout(function() {
+        if (resultsFound == 0 && $('#result').html() == '') {
+            showSnackbar();
+        }
+      }, 2000);
+  } else {
+    $('#result').html('');
+  }
+
+
  });
   $('#result').on('click', 'li', function() {
-  var click_text = $(this).text().split('|');
-  $('#search').val($.trim(click_text[0]));
+  var click_text = $(this).text();
+  $('#search-solutions').val($.trim(click_text));
   $("#result").html('');
  });
 })
