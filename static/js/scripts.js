@@ -143,6 +143,17 @@ function newFunction(elem) {
     console.log(val, id);
 }
 
+function testLog() {
+    console.log("It is getting here!");
+}
+
+$('#result').on('click', 'li', function() {
+    var click_text = $(this).text();
+    var IDSelected = $(this)[0].value;
+    $('#search-solutions').val($.trim(click_text));
+    $("#result").html('');
+});
+
 
 //this searches but returns odd results. Could really use this later if made better.
 $.ajaxSetup({ cache: false });
@@ -187,14 +198,7 @@ $('#search-solutions').keyup(function(){
 //  $('#search-solutions').val($.trim(click_text[0]));
 //  $("#result").html('');
 // });
-   $('#result').on('click', 'li', function() {
-  var click_text = $(this).text();
-//  var selectedID = $(this)[0].value.toString();
-  console.log($(this)[0].value);
-//  console.log(selectedId);
-  $('#search-solutions').val($.trim(click_text));
-  $("#result").html('');
- });
+
 })
 
 $(document).ready(function() {
@@ -342,48 +346,3 @@ function addAssetType() {
     });
     location.reload(true);
 };
-
-//$(document.getElementById("new-asset-type")).click(function() {
-
-//    var assetButtons = document.getElementById("asset-type-buttons")
-//    var newHTML = "<p><button id='add-asset'>Add</button>  <button id='cancel-asset'>Cancel</button></p>";
-//    assetButtons.innerHTML = newHTML;
-//        console.log($('#add-solution-form').serialize());
-//    $.ajax({
-//        url: '/add_solution_post',
-//        data: $('form').serialize(),
-//        type: 'POST',
-//        success: function(response) {
-//            console.log(response);
-//        },
-//        error: function(error) {
-//            console.log(error);
-//        }
-//    });
-//    var xhr = new XMLHttpRequest();
-//    xhr.onreadystatechange = function() {
-//        console.log(this.responseText);
-//        wait();
-//        if (this.readyState == 4 && this.status == 200) {
-//            var myObj = JSON.parse(this.responseText);
-//            document.getElementById("added-steps").innerHTML = myObj;
-//        }
-//    }
-//});
-
-//fetch('/add_solution')
-//    .then(function (response) {
-//        document.getElementById("added-steps").innerHTML = response.text();
-//    }).then(function (text) {
-//        console.log('GET response text:');
-//        console.log(text);
-//    })
-
-//fetch('/add_solution')
-//    .then(function (response) {
-//        return response.json();
-//    })
-//    .then(function (json) {
-//        console.log('GET response as JSON:');
-//        console.log(json)
-//    })
