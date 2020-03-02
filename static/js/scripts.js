@@ -131,43 +131,68 @@ function showSnackbar() {
     }, 2000);
 }
 
+function newFunction(elem) {
+    var val = elem.value;
+    var id = elem.id;
+    console.log(val, id);
+}
+
+function newFunction(elem) {
+    var val = elem.value;
+    var id = elem.id;
+    console.log(val, id);
+}
+
 
 //this searches but returns odd results. Could really use this later if made better.
 $.ajaxSetup({ cache: false });
- $('#search-solutions').keyup(function(){
-  var resultsFound = 0;
-  $('#result').html('');
-  $('#state').val('');
-  var searchField = $('#search-solutions').val();
-  var expression = new RegExp(searchField, "i");
-  if (searchField != '') {
-      $.getJSON('static/data/all_solution_data.json', function(data) {
-       $.each(data, function(key, value){
+$('#search-solutions').keyup(function(){
+    var resultsFound = 0;
+    $('#result').html('');
+    $('#state').val('');
+    var searchField = $('#search-solutions').val();
+    var expression = new RegExp(searchField, "i");
+    if (searchField != '') {
+        $.getJSON('static/data/all_solution_data.json', function(data) {
+        $.each(data, function(key, value){
         if (value.title.search(expression) != -1)
-        {
-         resultsFound++;
-//         console.log(resultsFound);
-         $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
-        }
-       });
-      });
-      setTimeout(function() {
+            {
+            resultsFound++;
+//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '<span</li>');
+//          $('#result').append('<li class="list-group-item link-class" id="' + value.id + '"> '+ value.title + '<span</li>');
+            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
+//          console.log(resultsFound);
+//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
+            }
+        });
+    });
+    setTimeout(function() {
         if (resultsFound == 0 && $('#result').html() == '') {
             showSnackbar();
         }
-      }, 2000);
-  } else {
-    $('#result').html('');
-  }
+    }, 2000);
+
+    } else {
+        $('#result').html('');
+    }
+});
 
 
- });
-  $('#result').on('click', 'li', function() {
-//  var click_text = $(this).text();
-  var click_text = $('.list-group-item').text().split('|');
-  var selectedId = $('#sidvalue').attr('value');
-  console.log('selected ID is' + selectedId);
-  $('#search-solutions').val($.trim(click_text[0]));
+
+//  $('#result').on('click', 'li', function() {
+////  var click_text = $(this).text();
+//  var click_text = $('.list-group-item').text().split('|');
+//  var selectedId = $('#sidvalue').attr('value');
+//  console.log('selected ID is' + selectedId);
+//  $('#search-solutions').val($.trim(click_text[0]));
+//  $("#result").html('');
+// });
+   $('#result').on('click', 'li', function() {
+  var click_text = $(this).text();
+//  var selectedID = $(this)[0].value.toString();
+  console.log($(this)[0].value);
+//  console.log(selectedId);
+  $('#search-solutions').val($.trim(click_text));
   $("#result").html('');
  });
 })
