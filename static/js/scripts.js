@@ -6,6 +6,10 @@ function getUrlParam(parameter, defaultvalue){
     return urlparameter;
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function openAssetTypeForm() {
     document.getElementById("new-asset-type-form").style.display = "block";
 }
@@ -45,55 +49,157 @@ function backToSolution(sid) {
     window.location.href = '/view_one_solution?solution_id=' + sid;
 }
 
-$('#edit-solution-button').click(function(e) {
-    let params = new URLSearchParams(location.search);
-    var solution_id = params.get('solution_id');
-    var update_submit_button = $("#update-solution-button");
-    $(update_submit_button).click(function() {
-        console.log(solution_id);
-        wait();
-    //    updateSolution(solution_id);
-        // Need to find out why this ajax request is going first before can get the solution_id variable to send
+function updateSolution(sid){
+    console.log("updating");
+    $.ajax({
+        url: '/edit_solution_post',
+        type: 'POST',
+        data: {solution: $('#edit-solution-form').serialize(), solution_id: sid},
+        success: function(response) {
+            console.log("Success in the ajax request");
+            location.reload(true);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+//    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+};
+
+// This is almost exactly copied code
+
+
+
+$(document).ready(function() {
+    $('#edit-solution-button').click(function(e) {
+
+        var update_submit_button = $("#update-solution-button");
+
+        function edit_callback(response) {
+            console.log("I got here!")
+            var newHTML = "<form method='POST' action='#' id='edit-solution-form' name='edit-solution' role='form'>";
+            newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
+            //TODO: make my own function to escape a string in JS or find one...
+            newHTML = newHTML + '<input type="text" name="solution_title" required type="text" value="' + escapeRegExp(response["Title"]) + '"></br>';
+            newHTML = newHTML + "</br><p>Steps</p><div id='dynamic-input-steps'>";
+
+            for (step in response['Steps']) {
+                newHTML = newHTML + "<div>"
+                newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
+                newHTML = newHTML + "<a href='#' class='delete'>Delete</a></br></br></div>";
+                var totalSteps = step
+            }
+            newHTML = newHTML + "</div><input type='button' value='Add Step' class='add-step-field'><br><br>";
+            newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
+            newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
+            newHTML = newHTML + "<button type='button' onclick='updateSolution(" + response['Solution_id'] + ")'>Update Solution</button>";
+            newHTML = newHTML + "</form>";
+            document.getElementById('js-solution').innerHTML = newHTML;
+
+            $("#dynamic-input-steps").on("click", ".delete", function(e) {
+                e.preventDefault();
+                $(this).parent('div').remove();
+                totalSteps--;
+            })
+
+            $(".add-step-field").click(function(e) {
+                e.preventDefault();
+                totalSteps++;
+                var newdiv = document.createElement('div');
+                newdiv.innerHTML = "Step: " + totalSteps + " <br><input type='text' name='step" + totalSteps + "' ><a href='#' class='delete'>Delete</a>";
+                document.getElementById("dynamic-input-steps").appendChild(newdiv);
+            });
+        }
+
+
         $.ajax({
-            url: '/edit_solution_post',
-            type: 'POST',
-            data: {solution: $('#edit-solution-form').serialize(), solution_id: solution_id},
-//            data: 'This is fake data',
-            success: function(response) {
-                window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-            },
-            error: function(error) {
-                console.log(error);
+        'type': 'GET',
+        'global': false,
+        'url': '/static/data/one_solution.json',
+        'success': function(data){
+            console.log("success");
+            edit_callback(data);
+        }
+        });
+    });
+
+
+function showSnackbar() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function() { x.className = x.className.replace("show", "");
+    }, 2000);
+}
+
+function newFunction(elem) {
+    var val = elem.value;
+    var id = elem.id;
+    console.log(val, id);
+}
+
+function newFunction(elem) {
+    var val = elem.value;
+    var id = elem.id;
+    console.log(val, id);
+}
+
+function testLog() {
+    console.log("It is getting here!");
+}
+
+$('#result').on('click', 'li', function() {
+    var click_text = $(this).text();
+    var IDSelected = $(this)[0].value;
+    $('#search-solutions').val($.trim(click_text));
+    $("#result").html('');
+});
+
+
+//this searches but returns odd results. Could really use this later if made better.
+$.ajaxSetup({ cache: false });
+$('#search-solutions').keyup(function(){
+    var resultsFound = 0;
+    $('#result').html('');
+    $('#state').val('');
+    var searchField = $('#search-solutions').val();
+    var expression = new RegExp(searchField, "i");
+    if (searchField != '') {
+        $.getJSON('static/data/all_solution_data.json', function(data) {
+        $.each(data, function(key, value){
+        if (value.title.search(expression) != -1)
+            {
+            resultsFound++;
+//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '<span</li>');
+//          $('#result').append('<li class="list-group-item link-class" id="' + value.id + '"> '+ value.title + '<span</li>');
+            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
+//          console.log(resultsFound);
+//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
             }
         });
-//        window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-    })
-
-    function edit_callback(response) {
-        var newHTML = "<form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>";
-        newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
-        //TODO: make my own function to escape a string in JS or find one...
-        newHTML = newHTML + "<input type='text' name='solution_title' required type='text' value='" + escape(response['Title']) + "'></br>";
-        newHTML = newHTML + "</br><p>Steps</p>";
-        for (step in response['Steps']) {
-            newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escape(response['Steps'][step]) + "'></br></br>";
-        }
-        newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
-        newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
-        newHTML = newHTML + "<button value='Update Solution' id='update-solution-button'>Update Solution</button>";
-        newHTML = newHTML + "</form>";
-        document.getElementById('js-solution').innerHTML = newHTML;
-    }
-
-    $.ajax({
-    'type': 'GET',
-    'global': false,
-    'url': '/static/data/one_solution.json',
-    'success': function(data){
-        edit_callback(data);
-    }
     });
+    setTimeout(function() {
+        if (resultsFound == 0 && $('#result').html() == '') {
+            showSnackbar();
+        }
+    }, 2000);
+
+    } else {
+        $('#result').html('');
+    }
 });
+
+
+
+//  $('#result').on('click', 'li', function() {
+////  var click_text = $(this).text();
+//  var click_text = $('.list-group-item').text().split('|');
+//  var selectedId = $('#sidvalue').attr('value');
+//  console.log('selected ID is' + selectedId);
+//  $('#search-solutions').val($.trim(click_text[0]));
+//  $("#result").html('');
+// });
+
+})
 
 $(document).ready(function() {
 
@@ -110,7 +216,6 @@ $(document).ready(function() {
         newdiv.innerHTML = "Step: " + x + " <br><input type='text' name='step" + x + "' ><a href='#' class='delete'>Delete</a>";
         document.getElementById("dynamic-input-steps").appendChild(newdiv);
         x++;
-
     });
 
     $(wrapper).on("click", ".delete", function(e) {
@@ -217,7 +322,7 @@ function addAssocType() {
         type: 'POST',
         success: function(response) {
             console.log(response);
-
+            location.reload(true);
         },
         error: function(error) {
             console.log(error);
@@ -241,48 +346,3 @@ function addAssetType() {
     });
     location.reload(true);
 };
-
-//$(document.getElementById("new-asset-type")).click(function() {
-
-//    var assetButtons = document.getElementById("asset-type-buttons")
-//    var newHTML = "<p><button id='add-asset'>Add</button>  <button id='cancel-asset'>Cancel</button></p>";
-//    assetButtons.innerHTML = newHTML;
-//        console.log($('#add-solution-form').serialize());
-//    $.ajax({
-//        url: '/add_solution_post',
-//        data: $('form').serialize(),
-//        type: 'POST',
-//        success: function(response) {
-//            console.log(response);
-//        },
-//        error: function(error) {
-//            console.log(error);
-//        }
-//    });
-//    var xhr = new XMLHttpRequest();
-//    xhr.onreadystatechange = function() {
-//        console.log(this.responseText);
-//        wait();
-//        if (this.readyState == 4 && this.status == 200) {
-//            var myObj = JSON.parse(this.responseText);
-//            document.getElementById("added-steps").innerHTML = myObj;
-//        }
-//    }
-//});
-
-//fetch('/add_solution')
-//    .then(function (response) {
-//        document.getElementById("added-steps").innerHTML = response.text();
-//    }).then(function (text) {
-//        console.log('GET response text:');
-//        console.log(text);
-//    })
-
-//fetch('/add_solution')
-//    .then(function (response) {
-//        return response.json();
-//    })
-//    .then(function (json) {
-//        console.log('GET response as JSON:');
-//        console.log(json)
-//    })
