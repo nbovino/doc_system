@@ -146,8 +146,8 @@ $.ajaxSetup({ cache: false });
         if (value.title.search(expression) != -1)
         {
          resultsFound++;
-         console.log(resultsFound);
-         $('#result').append('<li class="list-group-item link-class"> '+ value.title + '</span></li>');
+//         console.log(resultsFound);
+         $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
         }
        });
       });
@@ -163,8 +163,11 @@ $.ajaxSetup({ cache: false });
 
  });
   $('#result').on('click', 'li', function() {
-  var click_text = $(this).text();
-  $('#search-solutions').val($.trim(click_text));
+//  var click_text = $(this).text();
+  var click_text = $('.list-group-item').text().split('|');
+  var selectedId = $('#sidvalue').attr('value');
+  console.log('selected ID is' + selectedId);
+  $('#search-solutions').val($.trim(click_text[0]));
   $("#result").html('');
  });
 })

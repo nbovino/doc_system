@@ -94,6 +94,10 @@ nav {
     background-color: #A7A7A7;
 }
 
+#sidvalue {
+    visibility: hidden;
+}
+
 .list-group-item:hover {
     background-color: #E0E0E0;
 }
