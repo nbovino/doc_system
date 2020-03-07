@@ -68,8 +68,8 @@ def view_solutions():
 
 @app.route('/view_one_solution', methods=['GET', 'POST'])
 def view_one_solution():
-
     add_type_to_solution_form = forms.AddAssetTypeToSolutionForm()
+    add_assoc_solution_form = forms.AddAssocSolutionForm()
     if request.args.get('solution_id'):
         solution_id = request.args.get('solution_id')
     else:
@@ -118,6 +118,10 @@ def view_one_solution():
                                  column=models.Solutions.date_revised,
                                  v=datetime.datetime.now())
         redirect(url_for('view_one_solution', solution_id=add_type_to_solution_form.solution_id.data))
+    #TODO: make this add to the database
+    if add_assoc_solution_form.assoc_solution_submit.data and add_assoc_solution_form.validate():
+        print(add_assoc_solution_form.assoc_solution_id.data + "will be added")
+        redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
@@ -125,6 +129,7 @@ def view_one_solution():
                            non_assoc_types=non_assoc_types,
                            all_asset_types=data_functions.write_asset_types_to_json(),
                            add_type_to_solution_form=add_type_to_solution_form,
+                           add_assoc_solution_form=add_assoc_solution_form,
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)

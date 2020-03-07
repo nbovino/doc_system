@@ -6,6 +6,10 @@ function getUrlParam(parameter, defaultvalue){
     return urlparameter;
 }
 
+function wait() {
+    alert("This was called!");
+}
+
 function escapeRegExp(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
@@ -131,29 +135,22 @@ function showSnackbar() {
     }, 2000);
 }
 
-function newFunction(elem) {
-    var val = elem.value;
-    var id = elem.id;
-    console.log(val, id);
-}
-
-function newFunction(elem) {
-    var val = elem.value;
-    var id = elem.id;
-    console.log(val, id);
-}
-
-function testLog() {
-    console.log("It is getting here!");
+function cancelAddAssocSolution() {
+    document.getElementById("assoc-solution-buttons").style.display = "none";
 }
 
 $('#result').on('click', 'li', function() {
+    let params = new URLSearchParams(location.search);
+    var url_solution_id = params.get('solution_id');
     var click_text = $(this).text();
     var IDSelected = $(this)[0].value;
     $('#search-solutions').val($.trim(click_text));
     $("#result").html('');
+    var solution_id_text = document.getElementById("assoc_solution_id");
+    solution_id_text.setAttribute("value", IDSelected);
+    $('#main_solution_id').val(url_solution_id);
+    document.getElementById("assoc-solution-buttons").style.display = "block";
 });
-
 
 //this searches but returns odd results. Could really use this later if made better.
 $.ajaxSetup({ cache: false });
@@ -187,17 +184,6 @@ $('#search-solutions').keyup(function(){
         $('#result').html('');
     }
 });
-
-
-
-//  $('#result').on('click', 'li', function() {
-////  var click_text = $(this).text();
-//  var click_text = $('.list-group-item').text().split('|');
-//  var selectedId = $('#sidvalue').attr('value');
-//  console.log('selected ID is' + selectedId);
-//  $('#search-solutions').val($.trim(click_text[0]));
-//  $("#result").html('');
-// });
 
 })
 
@@ -289,7 +275,7 @@ function showAddAssocType() {
         for (k in available_types) {
             formHTML = formHTML + "<option value=" + k + ">" + available_types[k] + "</option>";
         }
-        formHTML = formHTML + "</select><p><button id='add-assoc' onClick='addAssocType()'>Add</button>  <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
+        formHTML = formHTML + "</select><p> <button id='cancel-asset' onClick='hideAssocType()'>Cancel</button></p>";
         newdiv.innerHTML = formHTML;
         document.getElementById("add-assoc-type-button").appendChild(newdiv);
         document.getElementById("new-assoc-type").style.display = "none";
@@ -312,24 +298,25 @@ function hideAssocType() {
     document.getElementById("new-assoc-type").style.display = "block";
 };
 
-function addAssocType() {
-    let params = new URLSearchParams(location.search);
-    var solution_id = params.get('solution_id');
-    $.ajax({
-        url: '/add_assoc_type',
-        async: false,
-        data: {added_types: $('#add-assoc-type option:selected').val(), solution_id: solution_id},
-        type: 'POST',
-        success: function(response) {
-            console.log(response);
-            location.reload(true);
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
-//    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
-};
+// This is actually never called...
+//function addAssocType() {
+//    let params = new URLSearchParams(location.search);
+//    var solution_id = params.get('solution_id');
+//    $.ajax({
+//        url: '/add_assoc_type',
+//        async: false,
+//        data: {added_types: $('#add-assoc-type option:selected').val(), solution_id: solution_id},
+//        type: 'POST',
+//        success: function(response) {
+//            console.log(response);
+//            location.reload(true);
+//        },
+//        error: function(error) {
+//            console.log(error);
+//        }
+//    });
+////    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+//};
 
 function addAssetType() {
     console.log("Add asset type function in python to add this to database, then reload the page from JS")

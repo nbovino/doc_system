@@ -18,6 +18,16 @@
         <h3>Related Solutions</h3>
         <input type="text" name="search-solutions" id="search-solutions" placeholder="Search Solutions" class="">
         <div id="snackbar">No result</div>
+            <form action="" id="add-assoc-solution-form" method="POST">
+                <!--<span style="display: none">-->
+                <span>
+                    {{ add_assoc_solution_form.hidden_tag() }}
+                    <span style="display: none">{{ add_assoc_solution_form.assoc_solution_id() }}
+                    {{ add_assoc_solution_form.main_solution_id }}</span>
+                    <span id="assoc-solution-buttons" style="display: none">{{ add_assoc_solution_form.assoc_solution_submit() }}
+                    <button onClick="cancelAddAssocSolution()">Cancel</button></span>
+                </span>
+            </form>
         <ul class="list-group" id="result"></ul>
     </div>
     <div id="associated-asset-types">
@@ -28,8 +38,8 @@
         <form action="" id="add-assoc-type-form" style="display: none" method="POST">
             {{ add_type_to_solution_form.hidden_tag() }}
             {{ add_type_to_solution_form.asset_types() }}
-            <span style="display: none">{{ add_type_to_solution_form.solution_id }}</span>
-            {{ add_type_to_solution_form.add_submit }} <button onClick="closeAddAssocTypeForm()">Cancel</button>
+            {{ add_type_to_solution_form.add_submit }} <span style="display: none">{{ add_type_to_solution_form.solution_id }}</span>
+            <button onClick="closeAddAssocTypeForm()">Cancel</button>
         </form>
         <div id="add-assoc-type-button">
             <button class="open-button" id="solution-type-button" onclick="openAddAssocTypeForm()">Add New solution type</button>
