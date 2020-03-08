@@ -36,8 +36,8 @@ def insert_db(v):
         session.close()
     except exc.IntegrityError:
         pass
-    except:
-        print('Exeption!')
+    except exc.SQLAlchemyError:
+        print(exc.SQLAlchemyError.__name__)
 
 
 def query_all(v):

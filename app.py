@@ -30,7 +30,7 @@ app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 @app.route('/', methods=['GET', 'POST'])
 def main():
     all_asset_types = db_connect.query_all(models.AssetTypes)
-    data_functions.solution_title_table()
+    data_functions.write_all_solution_data()
     if request.args.get('solution_category'):
         solution_category = request.args.get('solution_category')
     else:
@@ -121,6 +121,26 @@ def view_one_solution():
     #TODO: make this add to the database
     if add_assoc_solution_form.assoc_solution_submit.data and add_assoc_solution_form.validate():
         print(add_assoc_solution_form.assoc_solution_id.data + "will be added")
+        update_column = db_connect.query_one_db(model=models.Solutions,
+                                                column=models.Solutions.id,
+                                                v=int(add_assoc_solution_form.main_solution_id.data))
+        print(update_column.id, add_assoc_solution_form.assoc_solution_id.data)
+
+        if int(add_assoc_solution_form.assoc_solution_id.data) == int(update_column.id):# or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
+            print("Caught to be the same solution!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+        else:
+            if update_column.associated_solutions is None:
+                associated_solutions = []
+            elif int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
+                print("Already an associated solution!!!!!!!!!!!!!!!!!!!!!!!")
+                redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+            else:
+                associated_solutions = update_column.associated_solutions
+            db_connect.update_column(model=models.Solutions,
+                                     id=int(add_assoc_solution_form.main_solution_id.data),
+                                     column=models.Solutions.associated_solutions,
+                                     v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
         redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     return render_template('view_one_solution.html',
@@ -241,6 +261,7 @@ def edit_solution_post():
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title, v=title)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised, v=datetime.datetime.now())
+    data_functions.write_all_solution_data()
     return new_steps
 
 
@@ -287,15 +308,18 @@ def add_solution_post():
     # combined_steps['Steps'] = temp_dict
     # print(combined_steps)
     print(type(asset_type.id))
+    #TODO: Make another column for primary asset type. Then make that the one referenced and also include it in the associated asset types.
     db_connect.insert_db(models.Solutions(solution_title=title,
                                           steps=temp_dict,
                                           date_added=datetime.datetime.now(),
                                           date_revised=datetime.datetime.now(),
+                                          primary_asset_type=asset_type.id,
                                           associated_asset_types=[asset_type.id],
                                           user=1))
 
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
+    data_functions.write_all_solution_data()
     return combined_steps
 
 
@@ -305,11 +329,13 @@ def add_assoc_type():
     solution_id = data['solution_id']
     print(data['added_types'])
     print('solution ID: ' + data['solution_id'])
+    data_functions.write_all_solution_data()
     return data
 
 
 @app.route('/edit_solution', methods=['GET', 'POST'])
 def edit_solution():
+    data_functions.write_all_solution_data()
     pass
 
 

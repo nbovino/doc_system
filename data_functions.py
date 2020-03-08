@@ -53,14 +53,16 @@ def one_solution_data(solution_id):
     return None
 
 
-def solution_title_table():
+def write_all_solution_data():
     all_solutions = db_connect.query_all(models.Solutions)
     solution_data = []
     for s in all_solutions:
+        main_asset_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=s.primary_asset_type)
         solution_data.append(
             {
              'id': s.id,
-             'title': s.solution_title
+             'title': s.solution_title,
+             'primary_asset_type': main_asset_type.asset_type
              }
         )
     data_folder = Path("static/data/all_solution_data.json")

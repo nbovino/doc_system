@@ -155,6 +155,8 @@ $('#result').on('click', 'li', function() {
 //this searches but returns odd results. Could really use this later if made better.
 $.ajaxSetup({ cache: false });
 $('#search-solutions').keyup(function(){
+    let params = new URLSearchParams(location.search);
+    var url_solution_id = params.get('solution_id');
     var resultsFound = 0;
     $('#result').html('');
     $('#state').val('');
@@ -166,11 +168,15 @@ $('#search-solutions').keyup(function(){
         if (value.title.search(expression) != -1)
             {
             resultsFound++;
-//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '<span</li>');
-//          $('#result').append('<li class="list-group-item link-class" id="' + value.id + '"> '+ value.title + '<span</li>');
-            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
-//          console.log(resultsFound);
-//          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
+            if (url_solution_id != value.id) {
+                var htmlString = '<span title="' + value.primary_asset_type + '">'
+                htmlString += '<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title;
+                htmlString += '</li></span>';
+                $('#result').append(htmlString);
+    //            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
+    //          console.log(resultsFound);
+    //          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
+                }
             }
         });
     });
