@@ -83,6 +83,7 @@ def view_one_solution():
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
     all_types = db_connect.query_all(models.AssetTypes)
+    # I believe the below comment is resolved. Leaving in just in case it is not.
     # this is causing an issue when reloading the page. It is returning too many things.
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
@@ -102,6 +103,7 @@ def view_one_solution():
         if t.id not in associated_asset_types:
             non_assoc_types.append((str(t.id), t.asset_type))
 
+    # Adds asset type to solution
     if add_type_to_solution_form.add_submit.data and add_type_to_solution_form.validate():
         solution = db_connect.query_one_db(model=models.Solutions,
                                            column=models.Solutions.id,
@@ -118,34 +120,46 @@ def view_one_solution():
                                  column=models.Solutions.date_revised,
                                  v=datetime.datetime.now())
         redirect(url_for('view_one_solution', solution_id=add_type_to_solution_form.solution_id.data))
-    #TODO: make this add to the database
+
+    # Adds associated solution
     if add_assoc_solution_form.assoc_solution_submit.data and add_assoc_solution_form.validate():
         print(add_assoc_solution_form.assoc_solution_id.data + "will be added")
         update_column = db_connect.query_one_db(model=models.Solutions,
                                                 column=models.Solutions.id,
                                                 v=int(add_assoc_solution_form.main_solution_id.data))
-        print(update_column.id, add_assoc_solution_form.assoc_solution_id.data)
+        print(str(update_column.id) + " added to " + str(add_assoc_solution_form.assoc_solution_id.data))
 
+        # This makes sure the associated solution is not the solution itself
         if int(add_assoc_solution_form.assoc_solution_id.data) == int(update_column.id):# or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
             print("Caught to be the same solution!!!!!!!!!!!!!!!!!!!!!!!!!!")
             redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
         else:
+            # If the solution IDs are not the same, check if there is an associated solution yet.
             if update_column.associated_solutions is None:
+                # If there are no associated solutions, make an empty list
+                print("No associated solutions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 associated_solutions = []
+            # If the solution IDs are not the same, make sure it is not already an associated solution
             elif int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
                 print("Already an associated solution!!!!!!!!!!!!!!!!!!!!!!!")
+                # If it is already an associated solution it will just reload the page. Can make a message later
+                # There might be a way to make the Array field have to be unique with sqlalchemy.
+                # In which case I could just but this in a try/except statement.
                 redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+            # If there are associated solutions, associated solutions becomes equal to the already associated solutions
             else:
                 associated_solutions = update_column.associated_solutions
+            print("Adding associated solution!!!!!!!!!!!!!!!!!!!!!!!")
             db_connect.update_column(model=models.Solutions,
                                      id=int(add_assoc_solution_form.main_solution_id.data),
                                      column=models.Solutions.associated_solutions,
                                      v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
-        redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+            redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            associated_asset_types=data_functions.one_solution_asset_types(solution_id),
+                           assoc_solutions=data_functions.get_associated_solutions(solution_id),
                            non_assoc_types=non_assoc_types,
                            all_asset_types=data_functions.write_asset_types_to_json(),
                            add_type_to_solution_form=add_type_to_solution_form,
@@ -308,7 +322,6 @@ def add_solution_post():
     # combined_steps['Steps'] = temp_dict
     # print(combined_steps)
     print(type(asset_type.id))
-    #TODO: Make another column for primary asset type. Then make that the one referenced and also include it in the associated asset types.
     db_connect.insert_db(models.Solutions(solution_title=title,
                                           steps=temp_dict,
                                           date_added=datetime.datetime.now(),

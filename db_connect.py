@@ -64,10 +64,18 @@ def query_latest_five(model):
     return q
 
 
+# This filters with .contains. Which searches if a value is in an ARRAY data type
 def query_latest_five_by_asset_type(asset_type):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
     q = session.query(Solutions).filter(Solutions.associated_asset_types.contains([asset_type])).order_by(desc(Solutions.date_revised)).limit(5)
+    session.close()
+    return q
+
+
+def query_by_associated_solution(solution_id):
+    session = create_session()
+    q = session.query(Solutions).filter(Solutions.associated_solutions.contains([solution_id])).all()
     session.close()
     return q
 
