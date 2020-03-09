@@ -146,6 +146,7 @@ def view_one_solution():
                 # There might be a way to make the Array field have to be unique with sqlalchemy.
                 # In which case I could just but this in a try/except statement.
                 redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+                pass
             # If there are associated solutions, associated solutions becomes equal to the already associated solutions
             else:
                 associated_solutions = update_column.associated_solutions
