@@ -15,6 +15,18 @@ def write_asset_types_to_json():
     return type_dict
 
 
+def get_associated_solutions(solution_id):
+    s = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
+    assoc_solutions = {}
+    if s.associated_solutions:
+        for r in s.associated_solutions:
+            asid = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=r)
+            assoc_solutions[asid.id] = asid.solution_title
+    else:
+        assoc_solutions = []
+    return assoc_solutions
+
+
 def one_solution_asset_types(solution_id):
     # This needs fixed. This should really call a function that just returns a dictionary of all asset types without writing json again
     all_asset_types = write_asset_types_to_json()
@@ -53,14 +65,16 @@ def one_solution_data(solution_id):
     return None
 
 
-def solution_title_table():
+def write_all_solution_data():
     all_solutions = db_connect.query_all(models.Solutions)
     solution_data = []
     for s in all_solutions:
+        main_asset_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=s.primary_asset_type)
         solution_data.append(
             {
              'id': s.id,
-             'title': s.solution_title
+             'title': s.solution_title,
+             'primary_asset_type': main_asset_type.asset_type
              }
         )
     data_folder = Path("static/data/all_solution_data.json")

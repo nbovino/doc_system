@@ -62,8 +62,9 @@ class Software(Base):
     software_version = Column(String)
 
 
+#TODO: Make another column for primary asset type. Mainly to show when searching to associate solutions
 class Solutions(Base):
-    __tablename__ = 'Solutions'#Tells what table using
+    __tablename__ = 'Solutions'  #Tells what table using
     id = Column(Integer, primary_key=True)
     solution_title = Column(String)
     steps = Column(JSON)
@@ -72,5 +73,6 @@ class Solutions(Base):
     user = Column(Integer)
     associated_solutions = Column(ARRAY(Integer, dimensions=1))
     associated_assets = Column(ARRAY(Integer, dimensions=1))
+    primary_asset_type = Column(Integer)
     associated_asset_types = Column(ARRAY(Integer, dimensions=1))
     associated_software = Column(ARRAY(Integer, dimensions=1))

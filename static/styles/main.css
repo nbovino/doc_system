@@ -106,7 +106,12 @@ ul {
     list-style-type: none;
 }
 
+.link-class:hover{
+background-color:#f1f1f1;
 }
-  .link-class:hover{
-   background-color:#f1f1f1;
+
+.scrollable {
+    height: 100px; /* or any value */
+    overflow: hidden;
+    overflow-y: scroll;
 }

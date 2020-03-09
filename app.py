@@ -30,7 +30,7 @@ app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 @app.route('/', methods=['GET', 'POST'])
 def main():
     all_asset_types = db_connect.query_all(models.AssetTypes)
-    data_functions.solution_title_table()
+    data_functions.write_all_solution_data()
     if request.args.get('solution_category'):
         solution_category = request.args.get('solution_category')
     else:
@@ -68,8 +68,8 @@ def view_solutions():
 
 @app.route('/view_one_solution', methods=['GET', 'POST'])
 def view_one_solution():
-
     add_type_to_solution_form = forms.AddAssetTypeToSolutionForm()
+    add_assoc_solution_form = forms.AddAssocSolutionForm()
     if request.args.get('solution_id'):
         solution_id = request.args.get('solution_id')
     else:
@@ -83,6 +83,7 @@ def view_one_solution():
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
     all_types = db_connect.query_all(models.AssetTypes)
+    # I believe the below comment is resolved. Leaving in just in case it is not.
     # this is causing an issue when reloading the page. It is returning too many things.
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
@@ -102,6 +103,7 @@ def view_one_solution():
         if t.id not in associated_asset_types:
             non_assoc_types.append((str(t.id), t.asset_type))
 
+    # Adds asset type to solution
     if add_type_to_solution_form.add_submit.data and add_type_to_solution_form.validate():
         solution = db_connect.query_one_db(model=models.Solutions,
                                            column=models.Solutions.id,
@@ -119,12 +121,49 @@ def view_one_solution():
                                  v=datetime.datetime.now())
         redirect(url_for('view_one_solution', solution_id=add_type_to_solution_form.solution_id.data))
 
+    # Adds associated solution
+    if add_assoc_solution_form.assoc_solution_submit.data and add_assoc_solution_form.validate():
+        print(add_assoc_solution_form.assoc_solution_id.data + "will be added")
+        update_column = db_connect.query_one_db(model=models.Solutions,
+                                                column=models.Solutions.id,
+                                                v=int(add_assoc_solution_form.main_solution_id.data))
+        print(str(update_column.id) + " added to " + str(add_assoc_solution_form.assoc_solution_id.data))
+
+        # This makes sure the associated solution is not the solution itself
+        if int(add_assoc_solution_form.assoc_solution_id.data) == int(update_column.id):# or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
+            print("Caught to be the same solution!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+        else:
+            # If the solution IDs are not the same, check if there is an associated solution yet.
+            if update_column.associated_solutions is None:
+                # If there are no associated solutions, make an empty list
+                print("No associated solutions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                associated_solutions = []
+                db_connect.update_column(model=models.Solutions,
+                                         id=int(add_assoc_solution_form.main_solution_id.data),
+                                         column=models.Solutions.associated_solutions,
+                                         v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
+            # If the solution IDs are not the same, make sure it is not already an associated solution
+            elif int(add_assoc_solution_form.assoc_solution_id.data) not in update_column.associated_solutions:
+                print("Adding to solution!!!!!!!!!!!!!!!!!!!!!!!")
+                # If it is already an associated solution it will just reload the page. Can make a message later
+                # There might be a way to make the Array field have to be unique with sqlalchemy.
+                # In which case I could just but this in a try/except statement.
+                associated_solutions = [int(add_assoc_solution_form.assoc_solution_id.data)]
+                db_connect.update_column(model=models.Solutions,
+                                         id=int(add_assoc_solution_form.main_solution_id.data),
+                                         column=models.Solutions.associated_solutions,
+                                         v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
+                redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            associated_asset_types=data_functions.one_solution_asset_types(solution_id),
+                           assoc_solutions=data_functions.get_associated_solutions(solution_id),
                            non_assoc_types=non_assoc_types,
                            all_asset_types=data_functions.write_asset_types_to_json(),
                            add_type_to_solution_form=add_type_to_solution_form,
+                           add_assoc_solution_form=add_assoc_solution_form,
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)
@@ -236,6 +275,7 @@ def edit_solution_post():
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title, v=title)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised, v=datetime.datetime.now())
+    data_functions.write_all_solution_data()
     return new_steps
 
 
@@ -286,11 +326,13 @@ def add_solution_post():
                                           steps=temp_dict,
                                           date_added=datetime.datetime.now(),
                                           date_revised=datetime.datetime.now(),
+                                          primary_asset_type=asset_type.id,
                                           associated_asset_types=[asset_type.id],
                                           user=1))
 
     # if request.method == 'GET':
     #     return jsonify(combined_steps)
+    data_functions.write_all_solution_data()
     return combined_steps
 
 
@@ -300,11 +342,13 @@ def add_assoc_type():
     solution_id = data['solution_id']
     print(data['added_types'])
     print('solution ID: ' + data['solution_id'])
+    data_functions.write_all_solution_data()
     return data
 
 
 @app.route('/edit_solution', methods=['GET', 'POST'])
 def edit_solution():
+    data_functions.write_all_solution_data()
     pass
 
 

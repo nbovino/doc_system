@@ -37,3 +37,9 @@ class AddAssetTypeToSolutionForm(Form):
     asset_types = SelectMultipleField(validators=[DataRequired()])
     solution_id = StringField(validators=[DataRequired()])
     add_submit = SubmitField('Add to Solution')
+
+
+class AddAssocSolutionForm(Form):
+    assoc_solution_id = StringField(validators=[DataRequired()])
+    main_solution_id = StringField(validators=[DataRequired()])
+    assoc_solution_submit = SubmitField('Add')
