@@ -111,7 +111,7 @@ background-color:#f1f1f1;
 }
 
 .scrollable {
-    height: 150px; /* or any value */
+    height: 100px; /* or any value */
     overflow: hidden;
     overflow-y: scroll;
 }
