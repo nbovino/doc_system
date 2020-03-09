@@ -73,7 +73,9 @@ function updateSolution(sid){
 // This is almost exactly copied code
 
 
-
+// This function allows you to edit the steps and title of a solution
+// TODO: Make it so the associated asset types and associated solutions are available.
+// TODO: Allow the user to change the primary asset type.
 $(document).ready(function() {
     $('#edit-solution-button').click(function(e) {
 

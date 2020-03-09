@@ -255,6 +255,7 @@ def add_solution():
 
 @app.route('/edit_solution_post', methods=['GET', 'POST'])
 def edit_solution_post():
+    # TODO: Be able to edit the associated solutions and associated assets
     data = request.form
     new_steps = {}
     count = 1
