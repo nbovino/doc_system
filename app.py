@@ -127,12 +127,12 @@ def view_one_solution():
         update_column = db_connect.query_one_db(model=models.Solutions,
                                                 column=models.Solutions.id,
                                                 v=int(add_assoc_solution_form.main_solution_id.data))
-        print(str(update_column.id) + " added to " + str(add_assoc_solution_form.assoc_solution_id.data))
+        print(str(add_assoc_solution_form.assoc_solution_id.data) + " added to " + str(update_column.id))
 
         # This makes sure the associated solution is not the solution itself
         if int(add_assoc_solution_form.assoc_solution_id.data) == int(update_column.id):# or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
             print("Caught to be the same solution!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+            return redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
         else:
             # If the solution IDs are not the same, check if there is an associated solution yet.
             if update_column.associated_solutions is None:
@@ -149,12 +149,16 @@ def view_one_solution():
                 # If it is already an associated solution it will just reload the page. Can make a message later
                 # There might be a way to make the Array field have to be unique with sqlalchemy.
                 # In which case I could just but this in a try/except statement.
-                associated_solutions = [int(add_assoc_solution_form.assoc_solution_id.data)]
+                associated_solutions = []
+                s = data_functions.get_associated_solutions(solution_id)
+                for i in s:
+                    associated_solutions.append(i)
+                print(associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
                 db_connect.update_column(model=models.Solutions,
                                          id=int(add_assoc_solution_form.main_solution_id.data),
                                          column=models.Solutions.associated_solutions,
                                          v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
-                redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+                # redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),

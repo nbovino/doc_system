@@ -18,7 +18,7 @@
         <h3>Related Solutions</h3>
         <div class="scrollable">
             {% for i in assoc_solutions %}
-            <p>{{ assoc_solutions[i] }}</p>
+            <p>{{ assoc_solutions[i] }} {{ i }}</p>
             {% endfor %}
         </div>
         <input type="text" name="search-solutions" id="search-solutions" placeholder="Search Solutions" class="">
