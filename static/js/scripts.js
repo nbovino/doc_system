@@ -82,6 +82,11 @@ $(document).ready(function() {
         var update_submit_button = $("#update-solution-button");
 
         function edit_callback(response) {
+            var deleteLink = document.getElementsByClassName('show-on-edit');
+            for (var i = 0; i < deleteLink.length; i ++) {
+                deleteLink[i].style.visibility = 'visible';
+            }
+
             console.log("I got here!")
             var newHTML = "<form method='POST' action='#' id='edit-solution-form' name='edit-solution' role='form'>";
             newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
