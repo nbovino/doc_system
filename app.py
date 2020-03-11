@@ -158,7 +158,7 @@ def view_one_solution():
                                          id=int(add_assoc_solution_form.main_solution_id.data),
                                          column=models.Solutions.associated_solutions,
                                          v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
-                # redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
+                redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
