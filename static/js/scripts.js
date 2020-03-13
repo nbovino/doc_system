@@ -73,6 +73,16 @@ function updateSolution(sid){
 // This is almost exactly copied code
 
 
+function removeAssocSolution(solution_id) {
+    console.log(solution_id);
+}
+
+
+function removeAssocAssetType(type_id) {
+    console.log(type_id);
+}
+
+
 // This function allows you to edit the steps and title of a solution
 // TODO: Make it so the associated asset types and associated solutions are available.
 // TODO: Allow the user to change the primary asset type.

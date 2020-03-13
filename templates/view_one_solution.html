@@ -18,7 +18,7 @@
         <h3>Related Solutions</h3>
         <div class="scrollable">
             {% for i in assoc_solutions %}
-            <p>{{ assoc_solutions[i] }} <span class="show-on-edit">Delete</span></p>
+            <p>{{ assoc_solutions[i] }} <span class="show-on-edit" onClick="removeAssocSolution({{ i }})">Delete</span></p>
             {% endfor %}
         </div>
         <input type="text" name="search-solutions" id="search-solutions" placeholder="Search Solutions" class="">
@@ -39,7 +39,8 @@
         <h3>Related Asset Types</h3>
         <div class="scrollable">
             {% for i in associated_asset_types %}
-            <p>{{ associated_asset_types[i] }}<span class="show-on-edit">Delete</span></p>
+            <!-- TODO: Add a conditional that if it is the primary asset type, do not give option to delete it -->
+            <p>{{ associated_asset_types[i] }} <span class="show-on-edit" onClick="removeAssocAssetType({{ i }})">Delete</span></p>
             {% endfor %}
         </div>
         <form action="" id="add-assoc-type-form" style="display: none" method="POST">
