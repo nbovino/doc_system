@@ -59,6 +59,7 @@ def one_solution_data(solution_id):
     solution_data["Title"] = solution.solution_title
     solution_data["Steps"] = solution.steps
     solution_data["Associated_Asset_Types"] = solution.associated_asset_types
+    solution_data["Primary_Asset_Type"] = solution.primary_asset_type
     data_folder = Path("static/data/one_solution.json")
     with open(data_folder, 'w') as fp:
         json.dump(solution_data, fp, indent=4)

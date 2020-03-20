@@ -74,12 +74,54 @@ function updateSolution(sid){
 
 
 function removeAssocSolution(solution_id) {
+    let params = new URLSearchParams(location.search);
+    var sid = params.get('solution_id');
     console.log(solution_id);
+    $.ajax({
+        url: '/edit_solution_remove_assoc_solution',
+        type: 'POST',
+        data: {sol_to_remove: solution_id, solution_id: sid},
+        success: function(response) {
+            console.log("Success in the ajax request");
+            location.reload(true);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
 }
 
 
 function removeAssocAssetType(type_id) {
+    let params = new URLSearchParams(location.search);
+    var sid = params.get('solution_id');
     console.log(type_id);
+    function edit_callback(response) {
+        if (response['Primary_Asset_Type'] == type_id) {
+            console.log('That is the primary asset type!');
+        } else {
+            $.ajax({
+                url: '/edit_solution_remove_rel_asset_type',
+                type: 'POST',
+                data: {type_to_remove: type_id, solution_id: sid},
+                success: function(response) {
+                    console.log("Success in the ajax request");
+                    location.reload(true);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+    $.ajax({
+        'type': 'GET',
+        'global': false,
+        'url': '/static/data/one_solution.json',
+        'success': function(data){
+            edit_callback(data);
+        }
+    });
 }
 
 

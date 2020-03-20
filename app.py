@@ -357,5 +357,39 @@ def edit_solution():
     pass
 
 
+@app.route('/edit_solution_remove_assoc_solution', methods=['GET', 'POST'])
+def edit_solution_remove_assoc_solution():
+    data = request.form
+    print("solution to remove: " + data['sol_to_remove'] + " | Solution ID: " + data['solution_id'])
+    solution_to_update = db_connect.query_one_db(model=models.Solutions,
+                                                 column=models.Solutions.id,
+                                                 v=data['solution_id'])
+    assoc_solutions = solution_to_update.associated_solutions
+    assoc_solutions.remove(int(data['sol_to_remove']))
+    db_connect.update_column(model=models.Solutions,
+                             column=models.Solutions.associated_solutions,
+                             id=int(data['solution_id']),
+                             v=assoc_solutions)
+    return data
+
+
+@app.route('/edit_solution_remove_rel_asset_type', methods=['GET', 'POST'])
+def edit_solution_remove_rel_asset_type():
+    data = request.form
+    print("Type to remove: " + data["type_to_remove"] + " | Solution ID: " + data['solution_id'])
+    solution_to_update = db_connect.query_one_db(model=models.Solutions,
+                                                 column=models.Solutions.id,
+                                                 v=data['solution_id'])
+    assoc_asset_types = solution_to_update.associated_asset_types
+    # Double checks it's not the same as the primary asset type before removing
+    if solution_to_update.primary_asset_type != int(data['type_to_remove']):
+        assoc_asset_types.remove(int(data['type_to_remove']))
+    db_connect.update_column(model=models.Solutions,
+                             column=models.Solutions.associated_asset_types,
+                             id=int(data['solution_id']),
+                             v=assoc_asset_types)
+    return data
+
+
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
