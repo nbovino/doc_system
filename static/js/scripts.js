@@ -39,6 +39,15 @@ function closeManufacturerForm() {
 }
 
 
+function openChangePrimaryForm() {
+    document.getElementById("change-primary-form").style.display = "block";
+}
+
+function closeChangePrimaryForm() {
+    document.getElementById("change-primary-form").style.display = "none";
+}
+
+
 function openAddAssocTypeForm() {
     document.getElementById("add-assoc-type-form").style.display = "block";
     document.getElementById("solution-type-button").style.display = "none";
@@ -50,6 +59,7 @@ function closeAddAssocTypeForm() {
 }
 
 function backToSolution(sid) {
+//    document.getElementById("change-primary-button").style.display = "block";
     window.location.href = '/view_one_solution?solution_id=' + sid;
 }
 
@@ -130,7 +140,7 @@ function removeAssocAssetType(type_id) {
 // TODO: Allow the user to change the primary asset type.
 $(document).ready(function() {
     $('#edit-solution-button').click(function(e) {
-
+        document.getElementById("change-primary-button").style.display = "block";
         var update_submit_button = $("#update-solution-button");
 
         function edit_callback(response) {

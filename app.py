@@ -70,6 +70,7 @@ def view_solutions():
 def view_one_solution():
     add_type_to_solution_form = forms.AddAssetTypeToSolutionForm()
     add_assoc_solution_form = forms.AddAssocSolutionForm()
+    change_primary_asset_type_form = forms.ChangePrimaryAssetTypeForm()
     if request.args.get('solution_id'):
         solution_id = request.args.get('solution_id')
     else:
@@ -88,7 +89,8 @@ def view_one_solution():
     for t in associated_asset_types:
         a_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=t)
         assoc_dict[str(a_type.id)] = a_type.asset_type
-
+    change_primary_choices = list(assoc_dict.items())
+    change_primary_asset_type_form.all_asset_types.choices = change_primary_choices
     data_folder = Path("static/data/assoc_types_for_solution.json")
     with open(data_folder, 'w') as fp:
         json.dump(assoc_dict, fp, indent=4)
@@ -102,7 +104,12 @@ def view_one_solution():
     for t in all_types:
         if t.id not in associated_asset_types:
             non_assoc_types.append((str(t.id), t.asset_type))
-
+    if change_primary_asset_type_form.change_primary_asset_type_submit.data and change_primary_asset_type_form.validate():
+        db_connect.update_column(model=models.Solutions,
+                                 column=models.Solutions.primary_asset_type,
+                                 id=solution_id,
+                                 v=change_primary_asset_type_form.all_asset_types.data)
+        data_functions.one_solution_data(solution_id)
     # Adds asset type to solution
     if add_type_to_solution_form.add_submit.data and add_type_to_solution_form.validate():
         solution = db_connect.query_one_db(model=models.Solutions,
@@ -168,6 +175,7 @@ def view_one_solution():
                            all_asset_types=data_functions.write_asset_types_to_json(),
                            add_type_to_solution_form=add_type_to_solution_form,
                            add_assoc_solution_form=add_assoc_solution_form,
+                           change_primary_asset_type_form=change_primary_asset_type_form,
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)

@@ -2,8 +2,10 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
+
 <div id="js-solution">
 <h2>{{ title }}</h2> <button id="edit-solution-button">Edit</button>
+
 {% for step in steps %}
 <p>{{ step }} - {{ steps[step] }}</p>
 {% endfor %}
@@ -36,7 +38,12 @@
         <ul class="list-group" id="result"></ul>
     </div>
     <div id="associated-asset-types">
-        <h3>Related Asset Types</h3>
+        <h3>Related Asset Types</h3>  <button id="change-primary-button" onClick="openChangePrimaryForm()" style="display: none">Change Primary</button>
+        <form action="" id="change-primary-form" class="form-popup" method="POST">
+            {{ change_primary_asset_type_form.hidden_tag() }}
+            {{ change_primary_asset_type_form.all_asset_types }}
+            {{ change_primary_asset_type_form.change_primary_asset_type_submit }}<button onclick="closeChangePrimaryForm()">Cancel</button><br>
+        </form>
         <div class="scrollable">
             {% for i in associated_asset_types %}
             <!-- TODO: Add a conditional that if it is the primary asset type, do not give option to delete it -->

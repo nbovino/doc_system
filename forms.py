@@ -43,3 +43,8 @@ class AddAssocSolutionForm(Form):
     assoc_solution_id = StringField(validators=[DataRequired()])
     main_solution_id = StringField(validators=[DataRequired()])
     assoc_solution_submit = SubmitField('Add')
+
+
+class ChangePrimaryAssetTypeForm(Form):
+    all_asset_types = SelectField(validators=[DataRequired()])
+    change_primary_asset_type_submit = SubmitField('Change')
