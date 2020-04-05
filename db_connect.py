@@ -64,6 +64,13 @@ def query_latest_five(model):
     return q
 
 
+def query_latest_five_better(model, column, v):
+    session = create_session()
+    q = session.query(model).filter(column == v).limit(5)
+    session.close()
+    return q
+
+
 # This filters with .contains. Which searches if a value is in an ARRAY data type
 def query_latest_five_by_asset_type(asset_type):
     DBSession = sessionmaker(bind=engine)

@@ -54,7 +54,10 @@ def view_solutions():
     return render_template('view_solutions.html',
                            asset_type=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes),
-                           latest_five=db_connect.query_latest_five_by_asset_type(type_id.id)
+                           latest_five=db_connect.query_latest_five_by_asset_type(type_id.id),
+                           latest_five_assets=db_connect.query_latest_five_better(model=models.Assets,
+                                                                                  column=models.Assets.id,
+                                                                                  v=type_id.id)
                            )
 
 

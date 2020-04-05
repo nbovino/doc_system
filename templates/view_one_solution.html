@@ -42,7 +42,7 @@
         <form action="" id="change-primary-form" class="form-popup" method="POST">
             {{ change_primary_asset_type_form.hidden_tag() }}
             {{ change_primary_asset_type_form.all_asset_types }}
-            {{ change_primary_asset_type_form.change_primary_asset_type_submit }}<button onclick="closeChangePrimaryForm()">Cancel</button><br>
+            {{ change_primary_asset_type_form.change_primary_asset_type_submit }}<span onclick="closeChangePrimaryForm()">Cancel</span><br>
         </form>
         <div class="scrollable">
             {% for i in associated_asset_types %}
