@@ -82,3 +82,11 @@ def write_all_solution_data():
     with open(data_folder, 'w') as fp:
         json.dump(solution_data, fp, indent=4)
     return None
+
+
+def manufacturers_as_dict():
+    all_manufacturers = db_connect.query_all(models.Manufacturers)
+    manufacturer_dict = {}
+    for m in all_manufacturers:
+        manufacturer_dict[m.id] = m.manufacturer
+    return manufacturer_dict

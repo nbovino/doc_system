@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+
+<div id="asset-info">
+    <h2>Asset info</h2>
+    {{ asset.id }} - {{ manufacturers[asset.manufacturer] }} - {{ asset.model }}
+    <br><button id="edit-asset-button">Edit</button>
+</div>
+
+</div>
+<div class="right-column">
+
+</div>
+
+{% endblock %}

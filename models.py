@@ -27,6 +27,8 @@ class Assets(Base):
     department = Column(Integer)
     date_added = Column(Date)
     date_revised = Column(DateTime)
+    checked_out = Column(Boolean)
+    location = Column(String)
 
 
 class Departments(Base):

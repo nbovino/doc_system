@@ -50,14 +50,15 @@ def main():
 def view_solutions():
     if request.args.get('asset_type'):
         asset_type = request.args.get('asset_type')
-    type_id = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.asset_type, asset_type)
+    this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.asset_type, asset_type)
     return render_template('view_solutions.html',
                            asset_type=asset_type,
+                           manufacturers=data_functions.manufacturers_as_dict(),
                            asset_types=db_connect.query_all(models.AssetTypes),
-                           latest_five=db_connect.query_latest_five_by_asset_type(type_id.id),
+                           latest_five=db_connect.query_latest_five_by_asset_type(this_asset_type.id),
                            latest_five_assets=db_connect.query_latest_five_better(model=models.Assets,
-                                                                                  column=models.Assets.id,
-                                                                                  v=type_id.id)
+                                                                                  column=models.Assets.asset_type,
+                                                                                  v=this_asset_type.id)
                            )
 
 
@@ -182,6 +183,23 @@ def view_one_solution():
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title)
+
+
+@app.route('/view_one_asset', methods=['GET', 'POST'])
+def view_one_asset():
+    if request.args.get('asset_id'):
+        asset_id = request.args.get('asset_id')
+    else:
+        asset_id = 0
+    asset = db_connect.query_one_db(model=models.Assets,
+                                    column=models.Assets.id,
+                                    v=asset_id)
+
+    return render_template('view_one_asset.html',
+                           asset_types=db_connect.query_all(models.AssetTypes),
+                           manufacturers=data_functions.manufacturers_as_dict(),
+                           asset_id=asset_id,
+                           asset=asset)
 
 
 @app.route('/add_asset', methods=['GET', 'POST'])
