@@ -53,7 +53,8 @@ def view_solutions():
         asset_type = request.args.get('asset_type')
     this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.id, asset_type)
     return render_template('view_solutions.html',
-                           asset_type=asset_type,
+                           # asset_type=asset_type,
+                           asset_type=this_asset_type.asset_type,
                            manufacturers=data_functions.manufacturers_as_dict(),
                            asset_types=db_connect.query_all(models.AssetTypes),
                            latest_five=db_connect.query_latest_five_by_asset_type(this_asset_type.id),
