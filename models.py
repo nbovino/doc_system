@@ -19,7 +19,7 @@ class Assets(Base):
     manufacturer = Column(Integer)
     model = Column(String)
     serial_no = Column(String)
-    dia_asset_tag = Column(String)
+    dia_asset_tag = Column(String, unique=True)
     name = Column(String)
     description = Column(TEXT)
     ip_address = Column(String)

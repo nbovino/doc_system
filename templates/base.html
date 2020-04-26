@@ -11,19 +11,16 @@
 <body>
     <div id="main-container">
         <h4>
-            <p><a href="{{ url_for('main') }}">Diamond Documentation System</a></p>
+            <p><a href="{{ url_for('main') }}">Universal Documentation System</a></p>
         </h4>
         <nav>
             <table>
                 <tr>
+                    {% for dept in all_departments %}
                     <td>
-                        {% if company == 'Diamond' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Diamond', solution_category=solution_category) }}">Diamond</a></span></td>
-                    <td>
-                        {% if company == 'Remedy Repack' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Remedy Repack', solution_category=solution_category) }}">Remedy Repack</a></span></td>
-                    <td>
-                        {% if company == 'Innova' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Innova', solution_category=solution_category) }}">Innova</a></span></td>
-                    <td>
-                       {% if company == 'Sapphire' %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company='Sapphire', solution_category=solution_category) }}">Sapphire</a></span></td>
+                        {% if company == dept.department %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company=dept.department, solution_category=solution_category) }}">{{ dept.department }}</a></span></td>
+                    </td>
+                    {% endfor %}
                 </tr>
             </table>
             <span>Search for Solution</span>
@@ -32,7 +29,7 @@
             <h3>Asset types</h3>
             <div id="asset-types">
                 {% for asset_type in asset_types %}
-                <a href="{{ url_for('view_solutions', asset_type=asset_type.asset_type) }}"><p>{{ asset_type.asset_type }}</p></a>
+                <a href="{{ url_for('view_solutions', asset_type=asset_type.id) }}"><p>{{ asset_type.asset_type }}</p></a>
                 {% endfor %}
             </div>
             <!--Make this happen just in the page with javascript-->

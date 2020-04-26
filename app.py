@@ -41,6 +41,7 @@ def main():
         company = '0'
 
     return render_template('base.html',
+                           all_departments=db_connect.query_all(models.Departments),
                            solution_category=solution_category,
                            company=company,
                            asset_types=all_asset_types)
@@ -50,7 +51,7 @@ def main():
 def view_solutions():
     if request.args.get('asset_type'):
         asset_type = request.args.get('asset_type')
-    this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.asset_type, asset_type)
+    this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.id, asset_type)
     return render_template('view_solutions.html',
                            asset_type=asset_type,
                            manufacturers=data_functions.manufacturers_as_dict(),
@@ -254,8 +255,10 @@ def add_asset():
                                            date_revised=datetime.datetime.now()
                                            )
                              )
+        return redirect(url_for('view_solutions', asset_type=add_asset_form.asset_type.data))
 
     return render_template('add_asset.html',
+                           asset_types=db_connect.query_all(models.AssetTypes),
                            add_asset_form=add_asset_form,
                            add_asset_type_form=add_asset_type_form,
                            add_manufacturer_form=add_manufacturer_form,
