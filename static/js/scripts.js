@@ -195,6 +195,20 @@ $(document).ready(function() {
         }
         });
     });
+    $('#edit-asset-button').click(function(e) {
+        function asset_callback(response) {
+            console.log(response["this_asset"]["Model"]);
+        }
+        $.ajax({
+        'type': 'GET',
+        'global': false,
+        'url': '/static/data/all_asset_data.json',
+        'success': function(data){
+            console.log("success");
+            asset_callback(data);
+        }
+        });
+    });
 
 
 function showSnackbar() {
