@@ -53,7 +53,6 @@ def view_solutions():
         asset_type = request.args.get('asset_type')
     this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.id, asset_type)
     return render_template('view_solutions.html',
-                           # asset_type=asset_type,
                            asset_type=this_asset_type.asset_type,
                            manufacturers=data_functions.manufacturers_as_dict(),
                            asset_types=db_connect.query_all(models.AssetTypes),
@@ -196,10 +195,13 @@ def view_one_asset():
     asset = db_connect.query_one_db(model=models.Assets,
                                     column=models.Assets.id,
                                     v=asset_id)
+    data_functions.write_asset_data_to_json(asset_id)
+    # data_functions.write_one_asset_data_to_json(asset_id)
 
     return render_template('view_one_asset.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            manufacturers=data_functions.manufacturers_as_dict(),
+                           departments=data_functions.departments_as_dict(),
                            asset_id=asset_id,
                            asset=asset)
 

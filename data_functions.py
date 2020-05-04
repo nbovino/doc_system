@@ -84,9 +84,74 @@ def write_all_solution_data():
     return None
 
 
+def write_one_asset_data_to_json(asset_id):
+    asset_data = {}
+    asset = db_connect.query_one_db(model=models.Assets, column=models.Assets.id, v=asset_id)
+    asset_data["Asset_Id"] = asset.id
+    asset_data["Asset_Type"] = asset.asset_type
+    asset_data["Manufacturer"] = asset.manufacturer
+    asset_data["Model"] = asset.model
+    asset_data["Serial_No"] = asset.serial_no
+    asset_data["Dia_Asset_Tag"] = asset.dia_asset_tag
+    asset_data["Description"] = asset.description
+    asset_data["Department"] = asset.department
+    asset_data["Location"] = asset.location
+    # data_folder = Path("static/data/one_asset.json")
+    # with open(data_folder, 'w') as fp:
+    #     json.dump(asset_data, fp, indent=4)
+    return asset_data
+
+
+def write_asset_data_to_json(asset_id=0):
+    if asset_id != 0:
+        asset_data = {}
+        all_types = []
+        all_manufacturers = []
+        all_departments = []
+        for t in db_connect.query_all(models.AssetTypes):
+            all_types.append(
+                {
+                    'id': t.id,
+                    'asset_type': t.asset_type
+                }
+            )
+        for m in db_connect.query_all(models.Manufacturers):
+            all_manufacturers.append(
+                {
+                    'id': m.id,
+                    'manufacturer': m.manufacturer
+                }
+            )
+        for d in db_connect.query_all(models.Departments):
+            all_departments.append(
+                {
+                    'id': d.id,
+                    'department': d.department
+                }
+            )
+        asset_data['all_types'] = all_types
+        asset_data['all_manufacturers'] = all_manufacturers
+        asset_data['all_departments'] = all_departments
+        asset_data['this_asset'] = write_one_asset_data_to_json(asset_id)
+        data_folder = Path("static/data/all_asset_data.json")
+        with open(data_folder, 'w') as fp:
+            json.dump(asset_data, fp, indent=4)
+        return None
+    else:
+        return None
+
+
 def manufacturers_as_dict():
     all_manufacturers = db_connect.query_all(models.Manufacturers)
     manufacturer_dict = {}
     for m in all_manufacturers:
         manufacturer_dict[m.id] = m.manufacturer
     return manufacturer_dict
+
+
+def departments_as_dict():
+    all_departments = db_connect.query_all(models.Departments)
+    dept_dict = {}
+    for d in all_departments:
+        dept_dict[d.id] = d.department
+    return dept_dict

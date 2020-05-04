@@ -4,11 +4,15 @@
 
 
 <div id="asset-info">
-    <h2>Asset info</h2>
-    {{ asset.id }} - {{ manufacturers[asset.manufacturer] }} - {{ asset.model }}
-    <br><button id="edit-asset-button">Edit</button>
+    <h2>{{ manufacturers[asset.manufacturer] }} - {{ asset.model }}</h2>
+    <button id="edit-asset-button">Edit</button>
 </div>
-
+<table>
+    <tr><td>Serial No.</td><td>{{ asset.serial_no }}</td></tr>
+    <tr><td>Diamond Tag</td><td>{{ asset.dia_asset_tag }}</td></tr>
+    <tr><td>Name</td><td>{{ asset.name }}</td></tr>
+    <tr><td>Department</td><td>{{ departments[asset.department] }}</td></tr>
+</table>
 </div>
 <div class="right-column">
 
