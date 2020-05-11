@@ -134,10 +134,7 @@ function removeAssocAssetType(type_id) {
     });
 }
 
-
 // This function allows you to edit the steps and title of a solution
-// TODO: Make it so the associated asset types and associated solutions are available.
-// TODO: Allow the user to change the primary asset type.
 $(document).ready(function() {
     $('#edit-solution-button').click(function(e) {
         document.getElementById("change-primary-button").style.display = "block";
@@ -195,21 +192,31 @@ $(document).ready(function() {
         }
         });
     });
-    $('#edit-asset-button').click(function(e) {
-        function asset_callback(response) {
-            console.log(response["this_asset"]["Model"]);
-        }
-        $.ajax({
-        'type': 'GET',
-        'global': false,
-        'url': '/static/data/all_asset_data.json',
-        'success': function(data){
-            console.log("success");
-            asset_callback(data);
-        }
-        });
-    });
 
+
+$('#hide-edit-asset-form').click(function(e) {
+    document.getElementById("edit-asset-info").style.display = "none";
+    document.getElementById("asset-info").style.display = "block";
+});
+
+
+$('#edit-asset-button').click(function(e) {
+    document.getElementById("asset-info").style.display = "none";
+    document.getElementById("edit-asset-info").style.display = "block";
+// Below is an attempt to do this in javascript. Likely just have to do this with Python.
+//    function asset_callback(response) {
+//        console.log(response["this_asset"]["Model"]);
+//    }
+//    $.ajax({
+//    'type': 'GET',
+//    'global': false,
+//    'url': '/static/data/all_asset_data.json',
+//    'success': function(data){
+//        console.log("success");
+//        asset_callback(data);
+//    }
+//    });
+});
 
 function showSnackbar() {
     var x = document.getElementById("snackbar");

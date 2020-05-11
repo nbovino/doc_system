@@ -6,13 +6,56 @@
 <div id="asset-info">
     <h2>{{ manufacturers[asset.manufacturer] }} - {{ asset.model }}</h2>
     <button id="edit-asset-button">Edit</button>
+    <table>
+        <tr><td>Serial No.</td><td>{{ asset.serial_no }}</td></tr>
+        <tr><td>Diamond Tag</td><td>{{ asset.dia_asset_tag }}</td></tr>
+        <tr><td>Name</td><td>{{ asset.name }}</td></tr>
+        <tr><td>Department</td><td>{{ departments[asset.department] }}</td></tr>
+    </table>
 </div>
-<table>
-    <tr><td>Serial No.</td><td>{{ asset.serial_no }}</td></tr>
-    <tr><td>Diamond Tag</td><td>{{ asset.dia_asset_tag }}</td></tr>
-    <tr><td>Name</td><td>{{ asset.name }}</td></tr>
-    <tr><td>Department</td><td>{{ departments[asset.department] }}</td></tr>
-</table>
+<div id="edit-asset-info" style="display: none">
+    <div class="form-popup" id="new-asset-type-form">
+    <form action="" method="POST">
+        {{ add_asset_type_form.hidden_tag() }}
+        {{ add_asset_type_form.asset_type }}<br><br>
+        {{ add_asset_type_form.asset_type_submit }}    <button onclick="closeAssetTypeForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+    </div>
+    <div class="form-popup" id="new-department">
+        <form action="" method="POST">
+            {{ add_department_form.hidden_tag() }}
+            {{ add_department_form.department }}<br><br>
+            {{ add_department_form.department_submit }}    <button onclick="closeDepartmentForm()">Cancel</button><br>
+            <!--<p>This is a test page</p>-->
+            <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+        </form>
+    </div>
+    <div class="form-popup" id="new-manufacturer">
+        <form action="" method="POST">
+            {{ add_manufacturer_form.hidden_tag() }}
+            {{ add_manufacturer_form.manufacturer }}<br><br>
+            {{ add_manufacturer_form.manufacturer_submit }}    <button onclick="closeManufacturerForm()">Cancel</button><br>
+            <!--<p>This is a test page</p>-->
+            <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+        </form>
+    </div>
+    <h2>Edit this asset</h2>
+    <form action="" method="POST">
+    {{ edit_asset_form.hidden_tag() }}
+    {{ edit_asset_form.asset_type.label }}: {{ edit_asset_form.asset_type }}    <span class="open-button" onclick="openAssetTypeForm()">New</span><br><!-- ideally this link should create a pop up to add new item -->
+    {{ edit_asset_form.manufacturer.label }}: {{ edit_asset_form.manufacturer }}    <span class="open-button" onclick="openManufacturerForm()">New</span><br><!-- this should do the same -->
+    {{ edit_asset_form.model.label }}: {{ edit_asset_form.model }}<br>
+    {{ edit_asset_form.serial_no.label }}: {{ edit_asset_form.serial_no }}<br>
+    {{ edit_asset_form.dia_asset_tag.label }}: {{ edit_asset_form.dia_asset_tag }}<br>
+    {{ edit_asset_form.name.label }}: {{ edit_asset_form.name }}<br>
+    {{ edit_asset_form.department.label }}: {{ edit_asset_form.department }}    <span class="open-button" onclick="openDepartmentForm()">New</span><br>
+    {{ edit_asset_form.description.label }}: {{ edit_asset_form.description }}<br>
+        {{ edit_asset_form.ip_address.label }}: {{ edit_asset_form.ip_address }}<br>
+    {{ edit_asset_form.asset_submit }}<button type='button' id="hide-edit-asset-form">Cancel</button><br>
+</form>
+</div>
 </div>
 <div class="right-column">
 

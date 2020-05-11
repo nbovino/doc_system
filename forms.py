@@ -15,11 +15,24 @@ class AddAssetForm(Form):
     manufacturer = SelectField(validators=[DataRequired()])
     model = StringField("Model Number",  render_kw={"placeholder": "Model Number"})
     serial_no = StringField("Serial Number", render_kw={"placeholder": "Serial Number"})
-    dia_asset_tag = StringField("Diamond Asset Tag Number", render_kw={"placeholder": "Diamond Tag Number"})
+    dia_asset_tag = StringField("Diamond Asset Tag", render_kw={"placeholder": "Diamond Tag Number"})
     name = StringField("Name", render_kw={"placeholder": "Asset Name"})
     department = SelectField("Department", render_kw={"placeholder": "Department"})
     description = TextAreaField("Description such as: Model number", render_kw={"placeholder": "Description"})
     ip_address = StringField("IP", render_kw={"placeholder": "0.0.0.0"})
+    asset_submit = SubmitField('Add Asset')
+
+
+class EditAssetForm(Form):
+    asset_type = SelectField(validators=[DataRequired()])
+    manufacturer = SelectField(validators=[DataRequired()])
+    model = StringField("Model Number")
+    serial_no = StringField("Serial Number")
+    dia_asset_tag = StringField("Diamond Asset Tag")
+    name = StringField("Name")
+    department = SelectField("Department")
+    description = TextAreaField("Description such as: Model number")
+    ip_address = StringField("IP")
     asset_submit = SubmitField('Add Asset')
 
 

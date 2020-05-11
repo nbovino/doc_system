@@ -196,13 +196,65 @@ def view_one_asset():
                                     column=models.Assets.id,
                                     v=asset_id)
     data_functions.write_asset_data_to_json(asset_id)
-    # data_functions.write_one_asset_data_to_json(asset_id)
+    add_asset_type_form = forms.AddAssetTypeForm()
+    add_manufacturer_form = forms.AddManufacturerForm()
+    add_department_form = forms.AddDepartmentForm()
+    all_asset_types = []
+    all_departments = []
+    all_manufacturers = []
+    try:
+        for t in db_connect.query_all(models.AssetTypes):
+            all_asset_types.append((str(t.id), t.asset_type.title()))
+    except:
+        pass
+    try:
+        for d in db_connect.query_all(models.Departments):
+            all_departments.append((str(d.id), d.department.title()))
+    except:
+        pass
+    try:
+        for m in db_connect.query_all(models.Manufacturers):
+            all_manufacturers.append((str(m.id), m.manufacturer.title()))
+    except:
+        pass
+
+    edit_asset_form = forms.EditAssetForm()
+    edit_asset_form.asset_type.choices = all_asset_types
+    edit_asset_form.asset_type.default = str(asset.asset_type)
+    edit_asset_form.process()
+    edit_asset_form.department.choices = all_departments
+    edit_asset_form.department.default = str(asset.department)
+    edit_asset_form.process()
+    edit_asset_form.manufacturer.choices = all_manufacturers
+    edit_asset_form.manufacturer.selected = str(asset.manufacturer)
+    edit_asset_form.process()
+    edit_asset_form.model.default = asset.model
+    edit_asset_form.process()
+    if asset.serial_no:
+        edit_asset_form.serial_no.default = asset.serial_no
+        edit_asset_form.process()
+    if asset.dia_asset_tag:
+        edit_asset_form.dia_asset_tag.default = asset.dia_asset_tag
+        edit_asset_form.process()
+    if asset.name:
+        edit_asset_form.name.default = asset.name
+        edit_asset_form.process()
+    if asset.description:
+        edit_asset_form.description = asset.description
+        edit_asset_form.process()
+    if asset.ip_address:
+        edit_asset_form.ip_address = asset.ip_address
+        edit_asset_form.process()
 
     return render_template('view_one_asset.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            manufacturers=data_functions.manufacturers_as_dict(),
                            departments=data_functions.departments_as_dict(),
                            asset_id=asset_id,
+                           add_asset_type_form=add_asset_type_form,
+                           add_manufacturer_form=add_manufacturer_form,
+                           add_department_form=add_department_form,
+                           edit_asset_form=edit_asset_form,
                            asset=asset)
 
 
