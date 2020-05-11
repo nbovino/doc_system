@@ -22,6 +22,8 @@ HOST = '0.0.0.0'
 
 app = Flask(__name__)
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
+
+
 # login_manager = LoginManager()
 # login_manager.login_view = 'login'
 # login_manager.init_app(app)
@@ -142,7 +144,8 @@ def view_one_solution():
         print(str(add_assoc_solution_form.assoc_solution_id.data) + " added to " + str(update_column.id))
 
         # This makes sure the associated solution is not the solution itself
-        if int(add_assoc_solution_form.assoc_solution_id.data) == int(update_column.id):# or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
+        if int(add_assoc_solution_form.assoc_solution_id.data) == int(
+                update_column.id):  # or update_column.associated_solutions is None or int(add_assoc_solution_form.assoc_solution_id.data) in update_column.associated_solutions:
             print("Caught to be the same solution!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
         else:
@@ -245,6 +248,8 @@ def view_one_asset():
     if asset.ip_address:
         edit_asset_form.ip_address = asset.ip_address
         edit_asset_form.process()
+
+    # TODO: Handle the form when it is submitted to update the asset information
 
     return render_template('view_one_asset.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
@@ -364,9 +369,11 @@ def edit_solution_post():
             title = s.split('=')[1]
             title = title.replace("%20", " ")
     print(title, new_steps, id)
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title, v=title)
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title,
+                             v=title)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised, v=datetime.datetime.now())
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised,
+                             v=datetime.datetime.now())
     data_functions.write_all_solution_data()
     return new_steps
 
