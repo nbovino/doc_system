@@ -155,7 +155,7 @@ $(document).ready(function() {
 
             for (step in response['Steps']) {
                 newHTML = newHTML + "<div>"
-                newHTML = newHTML + "<input type='text' name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
+                newHTML = newHTML + "<input type='textarea' name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
                 newHTML = newHTML + "<a href='#' class='delete'>Delete</a></br></br></div>";
                 var totalSteps = step
             }
@@ -283,6 +283,7 @@ $('#search-solutions').keyup(function(){
 
 })
 
+// This allows one to add steps to a solutions
 $(document).ready(function() {
 
     var max_fields = 10;
@@ -295,7 +296,7 @@ $(document).ready(function() {
     $(add_button).click(function(e) {
         e.preventDefault();
         var newdiv = document.createElement('div');
-        newdiv.innerHTML = "Step: " + x + " <br><input type='text' name='step" + x + "' ><a href='#' class='delete'>Delete</a>";
+        newdiv.innerHTML = "Step: " + x + " <br><textarea name='step" + x + "' ></textarea><a href='#' class='delete'>Delete</a>";
         document.getElementById("dynamic-input-steps").appendChild(newdiv);
         x++;
     });

@@ -56,6 +56,7 @@ def view_solutions():
     this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.id, asset_type)
     return render_template('view_solutions.html',
                            asset_type=this_asset_type.asset_type,
+                           asset_type_id=this_asset_type.id,
                            manufacturers=data_functions.manufacturers_as_dict(),
                            asset_types=db_connect.query_all(models.AssetTypes),
                            latest_five=db_connect.query_latest_five_by_asset_type(this_asset_type.id),
@@ -363,11 +364,13 @@ def add_solution():
         message = 0
     if request.args.get('asset_type'):
         asset_type = request.args.get('asset_type')
+        this_asset_type = db_connect.query_one_db(model=models.AssetTypes, column=models.AssetTypes.id, v=asset_type)
     else:
         asset_type = 0
     return render_template('add_solution.html',
                            message=message,
-                           asset_type=asset_type,
+                           asset_type_name=this_asset_type.asset_type,
+                           asset_type_id=asset_type,
                            asset_types=db_connect.query_all(models.AssetTypes))
 
 
@@ -417,7 +420,7 @@ def add_solution_post():
     #         print(data['solution'][v])
     #         count += 1
     asset_type = db_connect.query_one_db(model=models.AssetTypes,
-                                         column=models.AssetTypes.asset_type,
+                                         column=models.AssetTypes.id,
                                          v=data['asset_type'])
     print(data['solution'])
     solution = data['solution'].split('&')
@@ -434,7 +437,7 @@ def add_solution_post():
     # print(data['asset_type'])
     for i in temp_dict:
         print(i, temp_dict[i])
-    print(asset_type.id, asset_type.asset_type)
+    print(asset_type)
     # for i in temp_dict:
     #     print(i)
     # print(v + " - " + data[v])
@@ -442,7 +445,7 @@ def add_solution_post():
     # print(temp_dict)
     # combined_steps['Steps'] = temp_dict
     # print(combined_steps)
-    print(type(asset_type.id))
+    print(type(asset_type))
     db_connect.insert_db(models.Solutions(solution_title=title,
                                           steps=temp_dict,
                                           date_added=datetime.datetime.now(),
