@@ -33,7 +33,7 @@ class EditAssetForm(Form):
     department = SelectField("Department")
     description = TextAreaField("Description such as: Model number")
     ip_address = StringField("IP")
-    asset_submit = SubmitField('Add Asset')
+    edit_asset_submit = SubmitField('Update Asset')
 
 
 class AddManufacturerForm(Form):

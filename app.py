@@ -223,13 +223,37 @@ def view_one_asset():
 
     edit_asset_form = forms.EditAssetForm()
     edit_asset_form.asset_type.choices = all_asset_types
+    edit_asset_form.department.choices = all_departments
+    edit_asset_form.manufacturer.choices = all_manufacturers
+
+    if add_asset_type_form.asset_type_submit.data and add_asset_type_form.validate():
+        db_connect.insert_db(models.AssetTypes(asset_type=add_asset_type_form.asset_type.data))
+        return redirect(url_for('view_one_asset', asset_id=asset_id))
+    if add_department_form.department_submit.data and add_department_form.validate():
+        db_connect.insert_db(models.Departments(department=add_department_form.department.data))
+        return redirect(url_for('view_one_asset', asset_id=asset_id))
+    if add_manufacturer_form.manufacturer_submit.data and add_manufacturer_form.validate():
+        db_connect.insert_db(models.Manufacturers(manufacturer=add_manufacturer_form.manufacturer.data))
+        return redirect(url_for('view_one_asset', asset_id=asset_id))
+
+    if edit_asset_form.edit_asset_submit.data and edit_asset_form.validate():
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.asset_type, v=edit_asset_form.asset_type.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.manufacturer, v=edit_asset_form.manufacturer.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.model, v=edit_asset_form.model.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.serial_no, v=edit_asset_form.serial_no.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.dia_asset_tag, v=edit_asset_form.dia_asset_tag.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.name, v=edit_asset_form.name.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.description, v=edit_asset_form.description.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.ip_address, v=edit_asset_form.ip_address.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.department, v=edit_asset_form.department.data)
+        db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.date_revised, v=datetime.datetime.now())
+        return redirect(url_for('view_one_asset', asset_id=asset_id))
+
     edit_asset_form.asset_type.default = str(asset.asset_type)
     edit_asset_form.process()
-    edit_asset_form.department.choices = all_departments
     edit_asset_form.department.default = str(asset.department)
     edit_asset_form.process()
-    edit_asset_form.manufacturer.choices = all_manufacturers
-    edit_asset_form.manufacturer.selected = str(asset.manufacturer)
+    edit_asset_form.manufacturer.default = str(asset.manufacturer)
     edit_asset_form.process()
     edit_asset_form.model.default = asset.model
     edit_asset_form.process()
@@ -248,8 +272,6 @@ def view_one_asset():
     if asset.ip_address:
         edit_asset_form.ip_address = asset.ip_address
         edit_asset_form.process()
-
-    # TODO: Handle the form when it is submitted to update the asset information
 
     return render_template('view_one_asset.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
