@@ -248,6 +248,14 @@ def view_one_asset():
         db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.ip_address, v=edit_asset_form.ip_address.data)
         db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.department, v=edit_asset_form.department.data)
         db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.date_revised, v=datetime.datetime.now())
+        if edit_asset_form.decommissioned.data:
+            db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.decommissioned, v=datetime.datetime.now())
+        else:
+            db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.decommissioned, v=None)
+        if edit_asset_form.deployed.data:
+            db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.deployed, v=True)
+        else:
+            db_connect.update_column(model=models.Assets, id=asset_id, column=models.Assets.deployed, v=False)
         return redirect(url_for('view_one_asset', asset_id=asset_id))
 
     edit_asset_form.asset_type.default = str(asset.asset_type)
@@ -272,6 +280,9 @@ def view_one_asset():
         edit_asset_form.process()
     if asset.ip_address:
         edit_asset_form.ip_address = asset.ip_address
+        edit_asset_form.process()
+    if asset.decommissioned:
+        edit_asset_form.decommissioned.default = True
         edit_asset_form.process()
 
     return render_template('view_one_asset.html',

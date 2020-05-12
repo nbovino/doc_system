@@ -29,6 +29,8 @@ class Assets(Base):
     date_revised = Column(DateTime)
     checked_out = Column(Boolean)
     location = Column(String)
+    deployed = Column(Boolean)
+    decommissioned = Column(DateTime)
 
 
 class Departments(Base):

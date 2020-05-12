@@ -155,8 +155,8 @@ $(document).ready(function() {
 
             for (step in response['Steps']) {
                 newHTML = newHTML + "<div>"
-                newHTML = newHTML + "<input type='textarea' name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
-                newHTML = newHTML + "<a href='#' class='delete'>Delete</a></br></br></div>";
+                newHTML = newHTML + "<textarea 'name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
+                newHTML = newHTML + "</textarea><a href='#' class='delete'>Delete</a></br></br></div>";
                 var totalSteps = step
             }
             newHTML = newHTML + "</div><input type='button' value='Add Step' class='add-step-field'><br><br>";

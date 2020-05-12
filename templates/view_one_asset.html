@@ -11,6 +11,14 @@
         <tr><td>Diamond Tag</td><td>{{ asset.dia_asset_tag }}</td></tr>
         <tr><td>Name</td><td>{{ asset.name }}</td></tr>
         <tr><td>Department</td><td>{{ departments[asset.department] }}</td></tr>
+        {% if asset.deployed %}
+        <tr><td><span>Deployed</span></td></tr>
+        {% else %}
+        <tr><td><span>In Inventory</span></td></tr>
+        {% endif %}
+        {% if asset.decommissioned %}
+        <tr><td><span class="notice">Decommissioned: {{ asset.decommissioned.strftime( '%#m-%#d-%Y' ) }}</span></td></tr>
+        {% endif %}
     </table>
 </div>
 <div id="edit-asset-info" style="display: none">
@@ -53,6 +61,8 @@
     {{ edit_asset_form.department.label }}: {{ edit_asset_form.department }}    <span class="open-button" onclick="openDepartmentForm()">New</span><br>
     {{ edit_asset_form.description.label }}: {{ edit_asset_form.description }}<br>
         {{ edit_asset_form.ip_address.label }}: {{ edit_asset_form.ip_address }}<br>
+        {{ edit_asset_form.deployed.label }}: {{ edit_asset_form.deployed }}<br>
+        {{ edit_asset_form.decommissioned.label }}: {{ edit_asset_form.decommissioned }}<br>
     {{ edit_asset_form.edit_asset_submit }}<button type='button' id="hide-edit-asset-form">Cancel</button><br>
 </form>
 </div>

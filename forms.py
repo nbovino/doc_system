@@ -21,6 +21,7 @@ class AddAssetForm(Form):
     description = TextAreaField("Description such as: Model number", render_kw={"placeholder": "Description"})
     ip_address = StringField("IP", render_kw={"placeholder": "0.0.0.0"})
     asset_submit = SubmitField('Add Asset')
+    deployed = BooleanField('Deployed')
 
 
 class EditAssetForm(Form):
@@ -34,6 +35,8 @@ class EditAssetForm(Form):
     description = TextAreaField("Description such as: Model number")
     ip_address = StringField("IP")
     edit_asset_submit = SubmitField('Update Asset')
+    deployed = BooleanField('Deployed')
+    decommissioned = BooleanField('Decommissioned')
 
 
 class AddManufacturerForm(Form):
