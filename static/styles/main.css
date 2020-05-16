@@ -123,3 +123,31 @@ background-color:#f1f1f1;
 .notice {
     color: #CF0000;
 }
+
+#dynamic-input-steps {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+}
+
+#dynamic-input-steps li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    height: 1.5em;
+}
+
+#dynamic-input-steps-edit {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+}
+
+#dynamic-input-steps-edit li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    height: 1.5em;
+}
