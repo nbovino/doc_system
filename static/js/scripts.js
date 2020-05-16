@@ -82,7 +82,7 @@ function updateSolution(sid){
             console.log(error);
         }
     });
-//    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
+    window.location.href = '/view_one_solution?solution_id=' + params.get('solution_id');
 };
 
 // This is almost exactly copied code
@@ -161,7 +161,7 @@ $(document).ready(function() {
     //              var newul = document.createElement('ul');
     //              newul.setAttribute('id', 'sortable')
                     var innerHTML = "";
-                    innerHTML = "<li class='ui-state-default'><textarea></textarea><a href='#' class='delete'>Delete</a></li>";
+                    innerHTML = "<li class='ui-state-default'><textarea name='step'></textarea><a href='#' class='delete'>Delete</a></li>";
     //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
                     $("#dynamic-input-steps-edit").append(innerHTML);
                     innerHTML = "";

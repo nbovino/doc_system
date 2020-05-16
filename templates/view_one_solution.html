@@ -12,19 +12,19 @@
 {% if solution_id %}
 </div>
 <div id="edit-solution-form-container" style="display: none">
-    <form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>
+    <form method='POST' action='' id='edit-solution-form' name='edit-solution' role='form'>
         <label for="solution_title">Solution Title:</label>
-        <input type="text" name="solution+title" required value="{{ title }}">
+        <input type="text" name="solution_title" required value="{{ title }}">
 
         <p>Steps</p>
         <ul id="dynamic-input-steps-edit">
             {% for step in steps %}
-            <li class='ui-state-default'><textarea name='step" + x + "' >{{ steps[step] }}</textarea><a href='#' class='delete'>Delete</a></li>
+            <li class='ui-state-default'><textarea name='step' >{{ steps[step] }}</textarea><a href='#' class='delete'>Delete</a></li>
             {% endfor %}
         </ul>
         <input type="button" value="Add Step" class="add-edit-step-field">
         <input type='button' value="Cancel" onclick="closeEditSolutionForm()"></button>
-        <input type="button" value="Submit solution" id="add-solution-button">
+        <button type='button' onclick='updateSolution({{ solution_id }})'>Update Solution</button>
     </form>
 </div>
 </div>
