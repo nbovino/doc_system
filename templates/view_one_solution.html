@@ -2,29 +2,29 @@
 {% from 'macros.html' import render_field %}
 {% block content %}
 
-
 <div id="js-solution">
-<h2>{{ title }} </h2> <button id="edit-solution-button">Edit</button>
+    <h2>{{ title }} </h2> <button onclick="showEditSolutionForm()">Edit</button>
 
-{% for step in steps %}
-<p>{{ step }} - {{ steps[step] }}</p>
-{% endfor %}
-{% if solution_id %}
+    {% for step in steps %}
+    <p>{{ step }} - {{ steps[step] }}</p>
+    {% endfor %}
+    {% if solution_id %}
 </div>
+
 <div id="edit-solution-form-container" style="display: none">
     <form method='POST' action='' id='edit-solution-form' name='edit-solution' role='form'>
         <label for="solution_title">Solution Title:</label>
         <input type="text" name="solution_title" required value="{{ title }}">
 
         <p>Steps</p>
-        <ul id="dynamic-input-steps-edit">
+        <ul id="dynamic-input-steps">
             {% for step in steps %}
             <li class='ui-state-default'><textarea name='step' >{{ steps[step] }}</textarea><a href='#' class='delete'>Delete</a></li>
             {% endfor %}
         </ul>
-        <input type="button" value="Add Step" class="add-edit-step-field">
+        <input type="button" value="Add Step" onclick="addEditSolutionStep()">
         <input type='button' value="Cancel" onclick="closeEditSolutionForm()"></button>
-        <button type='button' onclick='updateSolution({{ solution_id }})'>Update Solution</button>
+        <button type='button' onclick="updateSolution({{ solution_id }})">Update Solution</button>
     </form>
 </div>
 </div>

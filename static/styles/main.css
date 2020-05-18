@@ -127,19 +127,23 @@ background-color:#f1f1f1;
 #dynamic-input-steps {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 2px;
     width: 60%;
 }
 
 #dynamic-input-steps li {
-    margin: 0 5px 5px 5px;
+    margin: 5px 5px 5px 5px;
+    border-top: 1px solid black;
+    list-style-position:outside;
     padding: 5px;
     font-size: 1.2em;
     height: 1.5em;
 }
 
+
 #dynamic-input-steps-edit {
     list-style-type: none;
+    list-style-position: inside;
     margin: 0;
     padding: 0;
     width: 60%;
@@ -147,6 +151,7 @@ background-color:#f1f1f1;
 
 #dynamic-input-steps-edit li {
     margin: 0 5px 5px 5px;
+    border: 1px solid black;
     padding: 5px;
     font-size: 1.2em;
     height: 1.5em;
