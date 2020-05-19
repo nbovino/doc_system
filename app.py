@@ -190,6 +190,17 @@ def view_one_solution():
                            title=solution.solution_title)
 
 
+@app.route('/public_solution', methods=['GET', 'POST'])
+def public_solution():
+    if request.args.get('solution_id'):
+        sid = request.args.get('solution_id')
+    else:
+        redirect(url_for('main'))
+    solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
+    return render_template('public_solution.html',
+                           solution_info = solution)
+
+
 @app.route('/view_one_asset', methods=['GET', 'POST'])
 def view_one_asset():
     if request.args.get('asset_id'):
