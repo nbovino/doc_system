@@ -21,8 +21,21 @@
                         {% if company == dept.department %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company=dept.department, solution_category=solution_category) }}">{{ dept.department }}</a></span></td>
                     </td>
                     {% endfor %}
+
                 </tr>
             </table>
+            {% if add_department_form %}
+            <span class="open-button" onclick="openDepartmentForm()">New Department</span><br>
+            <div class="form-popup" id="new-department">
+                <form action="" method="POST">
+                    {{ add_department_form.hidden_tag() }}
+                    {{ add_department_form.department }}<br><br>
+                    {{ add_department_form.department_submit }}    <button onclick="closeDepartmentForm()">Cancel</button><br>
+                    <!--<p>This is a test page</p>-->
+                    <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+                </form>
+            </div>
+            {% endif %}
             <span>Search for Solution</span>
         </nav>
         <div class="left-column">

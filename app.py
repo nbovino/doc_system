@@ -33,6 +33,7 @@ app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 def main():
     all_asset_types = db_connect.query_all(models.AssetTypes)
     data_functions.write_all_solution_data()
+    add_department_form = forms.AddDepartmentForm()
     if request.args.get('solution_category'):
         solution_category = request.args.get('solution_category')
     else:
@@ -41,9 +42,13 @@ def main():
         company = request.args.get('company')
     else:
         company = '0'
+    if add_department_form.department_submit.data and add_department_form.validate():
+        db_connect.insert_db(models.Departments(department=add_department_form.department.data))
+        return redirect(url_for('main'))
 
     return render_template('base.html',
                            all_departments=db_connect.query_all(models.Departments),
+                           add_department_form=add_department_form,
                            solution_category=solution_category,
                            company=company,
                            asset_types=all_asset_types)
@@ -197,8 +202,10 @@ def public_solution():
     else:
         redirect(url_for('main'))
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
+    if not solution.public:
+        return redirect(url_for('main'))
     return render_template('public_solution.html',
-                           solution_info = solution)
+                           solution_info=solution)
 
 
 @app.route('/view_one_asset', methods=['GET', 'POST'])
