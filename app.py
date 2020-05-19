@@ -193,7 +193,8 @@ def view_one_solution():
                            change_primary_asset_type_form=change_primary_asset_type_form,
                            solution_id=solution_id,
                            steps=solution.steps,
-                           title=solution.solution_title)
+                           title=solution.solution_title,
+                           public=solution.public)
 
 
 @app.route('/public_solution', methods=['GET', 'POST'])
@@ -452,7 +453,9 @@ def add_solution_post():
     asset_type = db_connect.query_one_db(model=models.AssetTypes,
                                          column=models.AssetTypes.id,
                                          v=data['asset_type'])
+
     print(data['solution'])
+    print("Got here!!!!!!!!")
     solution = data['solution'].split('&')
     for s in solution:
         print(s)
@@ -464,6 +467,12 @@ def add_solution_post():
         if 'solution_title' in s:
             title = s.split('=')[1]
             title = title.replace("%20", " ")
+        if 'public_solution' in s:
+            public = True
+        else:
+            public = False
+
+    print(public)
     # print(data['asset_type'])
     for i in temp_dict:
         print(i, temp_dict[i])
@@ -482,7 +491,8 @@ def add_solution_post():
                                           date_revised=datetime.datetime.now(),
                                           primary_asset_type=asset_type.id,
                                           associated_asset_types=[asset_type.id],
-                                          user=1))
+                                          user=1,
+                                          public=public))
 
     # if request.method == 'GET':
     #     return jsonify(combined_steps)

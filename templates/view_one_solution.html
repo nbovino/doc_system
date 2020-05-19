@@ -22,6 +22,8 @@
             <li class='ui-state-default'><textarea name='step' >{{ steps[step] }}</textarea><a href='#' class='delete'>Delete</a></li>
             {% endfor %}
         </ul>
+        <input type="checkbox" id="public-solution" name="public_solution" value="Public-Solution" {% if public %}checked{% endif %}>
+        <label for="public_solution">Make public</label></br>
         <input type="button" value="Add Step" onclick="addEditSolutionStep()">
         <input type='button' value="Cancel" onclick="closeEditSolutionForm()"></button>
         <button type='button' onclick="updateSolution({{ solution_id }})">Update Solution</button>
