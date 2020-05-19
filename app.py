@@ -60,6 +60,7 @@ def view_solutions():
         asset_type = request.args.get('asset_type')
     this_asset_type = db_connect.query_one_db(models.AssetTypes, models.AssetTypes.id, asset_type)
     return render_template('view_solutions.html',
+                           all_departments=db_connect.query_all(models.Departments),
                            asset_type=this_asset_type.asset_type,
                            asset_type_id=this_asset_type.id,
                            manufacturers=data_functions.manufacturers_as_dict(),

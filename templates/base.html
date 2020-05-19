@@ -21,7 +21,6 @@
                         {% if company == dept.department %} <span class="nav-selected"> {% endif %}<a href="{{ url_for('main', company=dept.department, solution_category=solution_category) }}">{{ dept.department }}</a></span></td>
                     </td>
                     {% endfor %}
-
                 </tr>
             </table>
             {% if add_department_form %}
