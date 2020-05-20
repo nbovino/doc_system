@@ -206,8 +206,14 @@ def public_solution():
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
     if not solution.public:
         return redirect(url_for('main'))
+    primary_asset_type = db_connect.query_one_db(model=models.AssetTypes,
+                                                 column=models.AssetTypes.id,
+                                                 v=solution.primary_asset_type)
     return render_template('public_solution.html',
-                           solution_info=solution)
+                           solution_info=solution,
+                           steps=solution.steps,
+                           primary_asset_type=primary_asset_type.asset_type,
+                           title=solution.solution_title)
 
 
 @app.route('/view_one_asset', methods=['GET', 'POST'])
@@ -424,38 +430,32 @@ def edit_solution_post():
         if 'solution_title' in s:
             title = s.split('=')[1]
             title = title.replace("%20", " ")
+        if 'public_solution' in s:
+            public = True
+        else:
+            public = False
     print(title, new_steps, id)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title,
                              v=title)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised,
                              v=datetime.datetime.now())
+    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.public, v=public)
     data_functions.write_all_solution_data()
     return new_steps
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])
 def add_solution_post():
-    # return render_template('add_solution.html', combined=combined_steps)
     data = request.form
-    # print(request.form)
     combined_steps = {}
     temp_dict = {}
     count = 1
-    # TODO: Put in the asset type into a variable to put in the associated asset types column
-    # for v in data.keys():
-    #     print(type(data[v]))
-    #     print(v)
-    #     print(data[v])
-    #     temp_dict[str(count)] = data[v]
-    #         print(data['solution'][v])
-    #         count += 1
+
     asset_type = db_connect.query_one_db(model=models.AssetTypes,
                                          column=models.AssetTypes.id,
                                          v=data['asset_type'])
 
-    print(data['solution'])
-    print("Got here!!!!!!!!")
     solution = data['solution'].split('&')
     for s in solution:
         print(s)
@@ -471,19 +471,9 @@ def add_solution_post():
             public = True
         else:
             public = False
-
-    print(public)
-    # print(data['asset_type'])
     for i in temp_dict:
         print(i, temp_dict[i])
     print(asset_type)
-    # for i in temp_dict:
-    #     print(i)
-    # print(v + " - " + data[v])
-    # print(data['solution_title'])
-    # print(temp_dict)
-    # combined_steps['Steps'] = temp_dict
-    # print(combined_steps)
     print(type(asset_type))
     db_connect.insert_db(models.Solutions(solution_title=title,
                                           steps=temp_dict,

@@ -156,3 +156,9 @@ background-color:#f1f1f1;
     font-size: 1.2em;
     height: 1.5em;
 }
+
+
+#solution-box {
+    border-color: black;
+    border-bottom: double;
+}

@@ -3,12 +3,17 @@
 {% block content %}
 
 <div id="js-solution">
+    <div id="solution-box">
     <h2>{{ title }} </h2> <button onclick="showEditSolutionForm()">Edit</button>
 
     {% for step in steps %}
     <p>{{ step }} - {{ steps[step] }}</p>
     {% endfor %}
-    {% if solution_id %}
+    </div>
+    {% if public %}
+    <p>This solution is visible to anyone. Send link below to share</p>
+    <a href="{{ url_for('public_solution', solution_id=solution_id) }}">Click this to view: {{ title }}</a>
+    {% endif %}
 </div>
 
 <div id="edit-solution-form-container" style="display: none">
@@ -81,7 +86,6 @@
     <!-- TODO: This is functionality that will be put in the python code for now-->
     <!--<button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>-->
 </div>
-{% endif %}
 
 
 {% endblock %}
