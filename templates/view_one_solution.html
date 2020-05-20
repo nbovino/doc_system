@@ -7,7 +7,7 @@
     <h2>{{ title }} </h2> <button onclick="showEditSolutionForm()">Edit</button>
 
     {% for step in steps %}
-    <p>{{ step }} - {{ steps[step] }}</p>
+    <p>{{ step }} - {{ steps[step]['Instruction'] }}</p>
     {% endfor %}
     </div>
     {% if public %}

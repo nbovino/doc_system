@@ -29,6 +29,18 @@ app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 # login_manager.init_app(app)
 
 
+@app.route('/test_form', methods=['GET', 'POST'])
+def test_form():
+    return render_template('test_form.html')
+
+
+@app.route('/test_submit_form', methods=['GET', 'POST'])
+def test_submit_form():
+    text = request.form["test_text"]
+    return render_template('test_submit_form.html',
+                           text_submitted=text)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def main():
     all_asset_types = db_connect.query_all(models.AssetTypes)

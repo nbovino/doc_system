@@ -1,3 +1,7 @@
+$('.sendButton').on('click', function() {
+    $.post( "/test_submit_form", $('#testForm').serialize())
+})
+
 function getUrlParam(parameter, defaultvalue){
     var urlparameter = defaultvalue;
     if(window.location.href.indexOf(parameter) > -1){
@@ -344,7 +348,9 @@ $(document).ready(function() {
         e.preventDefault();
 //        var newul = document.createElement('ul');
 //        newul.setAttribute('id', 'sortable')
-        var innerHTML = "<li class='ui-state-default'><textarea name='step" + x + "' ></textarea><a href='#' class='delete'>Delete</a></li>";
+        var innerHTML = "<li class='ui-state-default'><textarea name='step" + x + "' ></textarea>"
+        innerHTML += "<input type='file' name='step_images' multiple>"
+        innerHTML += "<a href='#' class='delete'>Delete</a></li>";
 //        document.getElementById("dynamic-input-steps").appendChild(newdiv);
         $("#dynamic-input-steps").append(innerHTML);
         x++;
