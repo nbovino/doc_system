@@ -461,8 +461,16 @@ def add_solution_post():
         print(s)
         if s[:4] == 'step':
             step = s.replace("%20", " ")
-            temp_dict[str(count)] = step.split('=')[1]
+            instructions = step.split('=')[1]
+            images = []  # This should be a list of strings that will be file paths to the solution step's images
+            # temp_dict[str(count)] = step.split('=')[1]
             print(s.split('=')[0] + ' - ' + s.split('=')[1])
+            # Code to test adding images
+            step_info = {
+                "Instruction": instructions,
+                "Images": images
+            }
+            temp_dict[str(count)] = step_info
             count += 1
         if 'solution_title' in s:
             title = s.split('=')[1]
