@@ -10,7 +10,9 @@
 </head>
 <body>
 <h1>Test submit form page</h1>
-<p>{{ text_submitted }}</p>
+{% for d in text_submitted %}\
+<p>{{ d }}</p>
+{% endfor %}
 
 </body>
 </html>

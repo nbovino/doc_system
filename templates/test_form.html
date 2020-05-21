@@ -9,7 +9,7 @@
     <script type="text/javascript" src="static/js/jquery-ui.js"></script>
 </head>
 <body>
-    <form id="testForm" action='{{ url_for("test_submit_form") }}'>
+    <form id="testForm" action='/test_submit_form' method="post">
         <input type="text" name="test_text" />
         <button class="sendButton">Send</button>
     </form>

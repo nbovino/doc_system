@@ -1,7 +1,3 @@
-$('.sendButton').on('click', function() {
-    $.post( "/test_submit_form", $('#testForm').serialize())
-})
-
 function getUrlParam(parameter, defaultvalue){
     var urlparameter = defaultvalue;
     if(window.location.href.indexOf(parameter) > -1){

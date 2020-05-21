@@ -36,9 +36,14 @@ def test_form():
 
 @app.route('/test_submit_form', methods=['GET', 'POST'])
 def test_submit_form():
-    text = request.form["test_text"]
+    if request.method == 'POST':
+        all_form_data = []
+        for f in request.form:
+            print(type(f))
+            print(f)
+            all_form_data.append(request.form["test_text"])
     return render_template('test_submit_form.html',
-                           text_submitted=text)
+                           text_submitted=all_form_data)
 
 
 @app.route('/', methods=['GET', 'POST'])
