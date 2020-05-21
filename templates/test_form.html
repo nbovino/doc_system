@@ -9,8 +9,9 @@
     <script type="text/javascript" src="static/js/jquery-ui.js"></script>
 </head>
 <body>
-    <form id="testForm" action='/test_submit_form' method="post">
+    <form id="testForm" action='/test_submit_form' method="post", enctype=multipart/form-data>
         <input type="text" name="test_text" />
+        <input type="file" name="test_image" accept=".jpg,.jpeg" />
         <button class="sendButton">Send</button>
     </form>
 {% if test_submitted %}

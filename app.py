@@ -6,9 +6,12 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import json
+import re
 from pathlib import Path
 import data_functions
 import time
+import os
+from werkzeug.utils import secure_filename
 
 import datetime
 import forms
@@ -22,7 +25,9 @@ HOST = '0.0.0.0'
 
 app = Flask(__name__)
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
-
+TEST_UPLOAD_FOLDER = "\static\data\images\\test_image_upload"
+app.config['UPLOAD_FOLDER'] = TEST_UPLOAD_FOLDER
+dirname = os.path.dirname(__file__)
 
 # login_manager = LoginManager()
 # login_manager.login_view = 'login'
@@ -37,13 +42,13 @@ def test_form():
 @app.route('/test_submit_form', methods=['GET', 'POST'])
 def test_submit_form():
     if request.method == 'POST':
-        all_form_data = []
-        for f in request.form:
-            print(type(f))
-            print(f)
-            all_form_data.append(request.form["test_text"])
-    return render_template('test_submit_form.html',
-                           text_submitted=all_form_data)
+        d, i, t = 'data', 'images', 'test_image_upload'
+        file = request.files['test_image']
+        filename = secure_filename(file.filename)
+        print(file)
+        file.save(dirname + TEST_UPLOAD_FOLDER, filename)
+        # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
+    return render_template('test_submit_form.html')
 
 
 @app.route('/', methods=['GET', 'POST'])
