@@ -18,6 +18,7 @@ import forms
 import db_connect
 import models
 import re
+import shutil
 
 DEBUG = True
 PORT = 8000
@@ -55,6 +56,7 @@ def test_submit_form():
         # print(file)
 
         file.save(file.filename)
+        shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
         # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
     return render_template('test_submit_form.html')
 
