@@ -25,7 +25,8 @@ HOST = '0.0.0.0'
 
 app = Flask(__name__)
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
-TEST_UPLOAD_FOLDER = "\static\data\images\\test_image_upload"
+TEST_UPLOAD_FOLDER = "\\documentation_system\static\data\images"
+# TEST_UPLOAD_FOLDER = "\\Users\Nate"
 app.config['UPLOAD_FOLDER'] = TEST_UPLOAD_FOLDER
 dirname = os.path.dirname(__file__)
 
@@ -45,8 +46,15 @@ def test_submit_form():
         d, i, t = 'data', 'images', 'test_image_upload'
         file = request.files['test_image']
         filename = secure_filename(file.filename)
-        print(file)
-        file.save(dirname + TEST_UPLOAD_FOLDER, filename)
+        # try:
+        #     os.mkdir(os.path.relpath(TEST_UPLOAD_FOLDER + "img_test"))
+        # except OSError:
+        #     print("Creation failed")
+        # else:
+        #     print("Successfully created!!!!!!!!")
+        # print(file)
+
+        file.save(file.filename)
         # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
     return render_template('test_submit_form.html')
 
