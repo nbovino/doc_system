@@ -45,8 +45,8 @@ def test_form():
 def test_submit_form():
     if request.method == 'POST':
         d, i, t = 'data', 'images', 'test_image_upload'
-        file = request.files['test_image']
-        filename = secure_filename(file.filename)
+        # file = request.files['test_image']
+        # filename = secure_filename(file.filename)
         # try:
         #     os.mkdir(os.path.relpath(TEST_UPLOAD_FOLDER + "img_test"))
         # except OSError:
@@ -54,9 +54,20 @@ def test_submit_form():
         # else:
         #     print("Successfully created!!!!!!!!")
         # print(file)
-
-        file.save(file.filename)
-        shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
+        data = request.form
+        print(type(data))
+        images = request.files
+        print(type(images))
+        # TODO: Make sure this saves the image with the correct step in the database (DB will only get the path
+        for i in images:
+            image = request.files[i]
+            image_name = secure_filename(image.filename)
+            image.save(image.filename)
+            shutil.move('\\documentation_system\\' + image.filename, '\\documentation_system\\static\data\images\\' + image.filename)
+        for d in data:
+            print(d)
+        # file.save(file.filename)
+        # shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
         # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
     return render_template('test_submit_form.html')
 
@@ -77,13 +88,14 @@ def main():
     if add_department_form.department_submit.data and add_department_form.validate():
         db_connect.insert_db(models.Departments(department=add_department_form.department.data))
         return redirect(url_for('main'))
-
-    return render_template('base.html',
-                           all_departments=db_connect.query_all(models.Departments),
-                           add_department_form=add_department_form,
-                           solution_category=solution_category,
-                           company=company,
-                           asset_types=all_asset_types)
+    # This is as a test for creating dynamic steps and sending image data through ajax
+    return render_template('test_form.html')
+    # return render_template('base.html',
+    #                        all_departments=db_connect.query_all(models.Departments),
+    #                        add_department_form=add_department_form,
+    #                        solution_category=solution_category,
+    #                        company=company,
+    #                        asset_types=all_asset_types)
 
 
 @app.route('/view_solutions', methods=['GET', 'POST'])

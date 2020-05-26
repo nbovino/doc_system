@@ -5,6 +5,19 @@ function getUrlParam(parameter, defaultvalue){
         }
     return urlparameter;
 }
+var stepCount = 0
+// This is for the test form
+function testFormAddStep() {
+    console.log('Added');
+    stepCount += 1;
+    var editTestFormHTML;
+    editTestFormHTML = "<li class='ui-state-default'><textarea name='step'></textarea>";
+    editTestFormHTML += "<input type='file' name='test_image" + stepCount + "' accept='.jpg,.jpeg'></li>";
+//              document.getElementById("dynamic-input-steps").appendChild(newdiv);
+    $("#dynamic-input-steps").append(editTestFormHTML);
+    console.log(editTestFormHTML);
+//    editTestFormHTML = "no more";
+}
 
 function wait() {
     alert("This was called!");
