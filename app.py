@@ -44,6 +44,7 @@ def test_form():
 @app.route('/test_submit_form', methods=['GET', 'POST'])
 def test_submit_form():
     if request.method == 'POST':
+        complete_solution = {}
         d, i, t = 'data', 'images', 'test_image_upload'
         # file = request.files['test_image']
         # filename = secure_filename(file.filename)
@@ -59,13 +60,45 @@ def test_submit_form():
         images = request.files
         print(type(images))
         # TODO: Make sure this saves the image with the correct step in the database (DB will only get the path
-        for i in images:
-            image = request.files[i]
-            image_name = secure_filename(image.filename)
-            image.save(image.filename)
-            shutil.move('\\documentation_system\\' + image.filename, '\\documentation_system\\static\data\images\\' + image.filename)
+        # for i in images:
+        #     print(i)
+        #     print(i[5:])
+        #     if request.files[i]:
+        #         print(i + " has a file")
+            # image = request.files[i]
+            # image_name = secure_filename(image.filename)
+            # image.save(image.filename)
+            # shutil.move('\\documentation_system\\' + image.filename, '\\documentation_system\\static\data\images\\' + image.filename)
         for d in data:
             print(d)
+            print(d[4:])
+        try:
+            os.mkdir('\\documentation_system\\static\data\\solution_images')
+        except FileExistsError:
+            print("directory already exists")
+        step_count = 1
+        for step in request.form:
+            try:
+                os.mkdir('\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+            except FileExistsError:
+                print("directory already exists")
+            for i in images:
+                if i[5:] == step[4:] and request.files[i]:
+                    image = request.files[i]
+                    image_name = secure_filename(image.filename)
+                    image.save(image.filename)
+                    shutil.move('\\documentation_system\\' + image.filename,
+                                '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                    image_location = '\\documentation_system\\static\data\\solution_images\\step' + str(step_count) +\
+                                     '\\' + image.filename
+                    print(image_location)
+            step_info = {
+                "Instruction": request.form[step],
+                "Images": image_location
+            }
+            complete_solution[str(step_count)] = step_info
+            step_count += 1
+        print(complete_solution)
         # file.save(file.filename)
         # shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
         # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
@@ -489,6 +522,8 @@ def edit_solution_post():
     return new_steps
 
 
+# TODO: This will need completely reworked to be able to save images
+# TODO: and not have to be used with an AJAX request but just a straight form
 @app.route('/add_solution_post', methods=['GET', 'POST'])
 def add_solution_post():
     data = request.form
