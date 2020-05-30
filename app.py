@@ -56,19 +56,8 @@ def test_submit_form():
         #     print("Successfully created!!!!!!!!")
         # print(file)
         data = request.form
-        print(type(data))
+        # print(type(data))
         images = request.files
-        print(type(images))
-        # TODO: Make sure this saves the image with the correct step in the database (DB will only get the path
-        # for i in images:
-        #     print(i)
-        #     print(i[5:])
-        #     if request.files[i]:
-        #         print(i + " has a file")
-            # image = request.files[i]
-            # image_name = secure_filename(image.filename)
-            # image.save(image.filename)
-            # shutil.move('\\documentation_system\\' + image.filename, '\\documentation_system\\static\data\images\\' + image.filename)
         for d in data:
             print(d)
             print(d[4:])
@@ -78,23 +67,24 @@ def test_submit_form():
             print("directory already exists")
         step_count = 1
         for step in request.form:
+            image_file_names = []
             try:
                 os.mkdir('\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
             except FileExistsError:
                 print("directory already exists")
             for i in images:
-                if i[5:] == step[4:] and request.files[i]:
-                    image = request.files[i]
-                    image_name = secure_filename(image.filename)
-                    image.save(image.filename)
-                    shutil.move('\\documentation_system\\' + image.filename,
-                                '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
-                    image_location = '\\documentation_system\\static\data\\solution_images\\step' + str(step_count) +\
-                                     '\\' + image.filename
-                    print(image_location)
+                if i[5:] == step[4:]:
+                    # images = request.files[i]
+                    step_images = request.files.getlist(i)
+                    for se in step_images:
+                        if se.filename:
+                            se.save(se.filename)
+                            shutil.move('\\documentation_system\\' + se.filename,
+                                        '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                            image_file_names.append(se.filename)
             step_info = {
                 "Instruction": request.form[step],
-                "Images": image_location
+                "Images": image_file_names
             }
             complete_solution[str(step_count)] = step_info
             step_count += 1
