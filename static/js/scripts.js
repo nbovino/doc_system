@@ -14,6 +14,22 @@ function getUrlParam(parameter, defaultvalue){
 function readURL(input, sc) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
+        //TODO: Need to incorporate the below loop to iterate through the multiple files selected and show all of them.
+//        $(function() {
+//          $(":file").change(function() {
+//            if (this.files && this.files[0]) {
+//              for (var i = 0; i < this.files.length; i++) {
+//                var reader = new FileReader();
+//                reader.onload = imageIsLoaded;
+//                reader.readAsDataURL(this.files[i]);
+//              }
+//            }
+//          });
+//        });
+//
+//        function imageIsLoaded(e) {
+//          $('#myImg').append('<img src=' + e.target.result + '>');
+//        };
 
         reader.onload = function (e) {
             $('#output' + sc)
