@@ -33,8 +33,8 @@ function testFormAddStep() {
     var editTestFormHTML;
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
     editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
-    editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple></li>";
-//    editTestFormHTML += "<p><img id='output" + stepCount + "' /></p></li>";
+    editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
+    editTestFormHTML += "<p><img id='output" + stepCount + "' /></p></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
     $("#dynamic-input-steps").append(editTestFormHTML);
     console.log(editTestFormHTML);
