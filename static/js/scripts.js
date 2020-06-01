@@ -5,6 +5,26 @@ function getUrlParam(parameter, defaultvalue){
         }
     return urlparameter;
 }
+
+//var loadFile = function(event, sc) {
+//    var thisImage = document.getElementById('output' + sc);
+//    image.src = URL.createObjectURL(event.target.files[0]);
+//}
+
+function readURL(input, sc) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#output' + sc)
+                .attr('src', e.target.result)
+                .width(150)
+                .height(200);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 var stepCount = 0
 // This is for the test form
 function testFormAddStep() {
@@ -12,7 +32,9 @@ function testFormAddStep() {
     stepCount += 1;
     var editTestFormHTML;
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
-    editTestFormHTML += "<input type='file' name='image" + stepCount + "' accept='.jpg,.jpeg' multiple></li>";
+    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple></li>";
+//    editTestFormHTML += "<p><img id='output" + stepCount + "' /></p></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
     $("#dynamic-input-steps").append(editTestFormHTML);
     console.log(editTestFormHTML);
