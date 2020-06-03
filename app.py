@@ -530,6 +530,7 @@ def add_solution_post():
         data = request.form
         # print(type(data))
         images = request.files
+        print(type(images))
         for d in data:
             print(d)
             print(d[4:])
@@ -548,11 +549,15 @@ def add_solution_post():
                 except FileExistsError:
                     print("directory already exists")
                 for i in images:
+                    print(i)
                     if i[5:] == step[4:]:
+                        print("IMAGE NUMBER EQUALS STEP NUMBER!!!!!!!!!!!!!!!!!!!")
                         # images = request.files[i]
                         step_images = request.files.getlist(i)
                         for se in step_images:
+                            print("THIS IS THE IMAGE!!!!!!!!!!!!!!!!!!!!!" + se)
                             if se.filename:
+                                print("GOING TO SAVE THE FILE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                                 se.save(se.filename)
                                 shutil.move('\\documentation_system\\' + se.filename,
                                             '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
