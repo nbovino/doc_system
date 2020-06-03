@@ -13,32 +13,35 @@ function getUrlParam(parameter, defaultvalue){
 
 function readURL(input, sc) {
     if (input.files && input.files[0]) {
+        var thisNode = document.getElementById("output" + sc);
+        thisNode.innerHTML = '';
         var reader = new FileReader();
         //TODO: Need to incorporate the below loop to iterate through the multiple files selected and show all of them.
 //        $(function() {
 //          $(":file").change(function() {
-//            if (this.files && this.files[0]) {
-//              for (var i = 0; i < this.files.length; i++) {
-//                var reader = new FileReader();
-//                reader.onload = imageIsLoaded;
-//                reader.readAsDataURL(this.files[i]);
-//              }
-//            }
-//          });
+            if (input.files && input.files[0]) {
+              for (var i = 0; i < input.files.length; i++) {
+                var reader = new FileReader();
+                reader.onload = imageIsLoaded;
+                reader.readAsDataURL(input.files[i]);
+              }
+            }
+          };
 //        });
 //
-//        function imageIsLoaded(e) {
-//          $('#myImg').append('<img src=' + e.target.result + '>');
-//        };
-
-        reader.onload = function (e) {
-            $('#output' + sc)
-                .attr('src', e.target.result)
-                .width(150)
-                .height(200);
+        function imageIsLoaded(e) {
+          $('#output' + sc).append('<img src=' + e.target.result + ' style="width: 150px; height: 150px">');
+          console.log("I got here!!!!!!!!!!!!!!!!!!!!!!!");
         };
-        reader.readAsDataURL(input.files[0]);
-    }
+
+//        reader.onload = function (e) {
+//            $('#output' + sc)
+//                .attr('src', e.target.result)
+//                .width(150)
+//                .height(200);
+//        };
+//        reader.readAsDataURL(input.files[0]);
+//    }
 }
 
 var stepCount = 0
@@ -50,7 +53,7 @@ function testFormAddStep() {
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
     editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
     editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
-    editTestFormHTML += "<p><img id='output" + stepCount + "' /></p></li>";
+    editTestFormHTML += "<p id='output" + stepCount + "'></p></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
     $("#dynamic-input-steps").append(editTestFormHTML);
     console.log(editTestFormHTML);
