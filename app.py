@@ -516,6 +516,7 @@ def edit_solution_post():
 def add_solution_post():
     if request.method == 'POST':
         complete_solution = {}
+        all_step_info = {}
         d, i, t = 'data', 'images', 'test_image_upload'
         # file = request.files['test_image']
         # filename = secure_filename(file.filename)
@@ -538,27 +539,32 @@ def add_solution_post():
             print("directory already exists")
         step_count = 1
         for step in request.form:
-            image_file_names = []
-            try:
-                os.mkdir('\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
-            except FileExistsError:
-                print("directory already exists")
-            for i in images:
-                if i[5:] == step[4:] and step[:4] == 'step':
-                    # images = request.files[i]
-                    step_images = request.files.getlist(i)
-                    for se in step_images:
-                        if se.filename:
-                            se.save(se.filename)
-                            shutil.move('\\documentation_system\\' + se.filename,
-                                        '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
-                            image_file_names.append(se.filename)
-            step_info = {
-                "Instruction": request.form[step],
-                "Images": image_file_names
-            }
-            complete_solution[str(step_count)] = step_info
-            step_count += 1
+            if step == 'solution_title':
+                complete_solution['Title'] = request.form['solution_title']
+            else:
+                image_file_names = []
+                try:
+                    os.mkdir('\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                except FileExistsError:
+                    print("directory already exists")
+                for i in images:
+                    if i[5:] == step[4:]:
+                        # images = request.files[i]
+                        step_images = request.files.getlist(i)
+                        for se in step_images:
+                            if se.filename:
+                                se.save(se.filename)
+                                shutil.move('\\documentation_system\\' + se.filename,
+                                            '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                                image_file_names.append(se.filename)
+                step_info = {
+                    "Instruction": request.form[step],
+                    "Images": image_file_names
+                }
+                all_step_info[str(step_count)] = step_info
+                step_count += 1
+
+        complete_solution['Steps'] = all_step_info
         print(complete_solution)
         # db_connect.insert_db(models.Solutions(solution_title=title,
         #                                       steps=temp_dict,
@@ -571,6 +577,7 @@ def add_solution_post():
         # file.save(file.filename)
         # shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
         # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
+        sid = 1
         return render_template('view_one_solution.html', solution_id=sid)
 
 
