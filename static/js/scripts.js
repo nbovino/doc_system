@@ -16,7 +16,6 @@ function readURL(input, sc) {
         var thisNode = document.getElementById("output" + sc);
         thisNode.innerHTML = '';
         var reader = new FileReader();
-        //TODO: Need to incorporate the below loop to iterate through the multiple files selected and show all of them.
 //        $(function() {
 //          $(":file").change(function() {
             if (input.files && input.files[0]) {
@@ -393,43 +392,61 @@ $(document).ready(function() {
     var submit_button = $("#add-solution-button")
     var add_form = $("#add-solution-form")
     var x = 1;
+    var stepCount = 0;
 
     $(add_button).click(function(e) {
-        e.preventDefault();
-//        var newul = document.createElement('ul');
-//        newul.setAttribute('id', 'sortable')
-        var innerHTML = "<li class='ui-state-default'><textarea name='step" + x + "' ></textarea>"
-        innerHTML += "<input type='file' name='step_images' multiple>"
+
+        console.log('Added');
+        stepCount += 1;
+        var innerHTML;
+        innerHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
+        innerHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
+        innerHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
+        innerHTML += "<p id='output" + stepCount + "'></p>";
         innerHTML += "<a href='#' class='delete'>Delete</a></li>";
-//        document.getElementById("dynamic-input-steps").appendChild(newdiv);
+    //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
         $("#dynamic-input-steps").append(innerHTML);
-        x++;
+        console.log(innerHTML);
+    //    editTestFormHTML = "no more";
+
+    // OLD ADD STEP DATA TO LINE 419
+//        e.preventDefault();
+////        var newul = document.createElement('ul');
+////        newul.setAttribute('id', 'sortable')
+//        var innerHTML = "<li class='ui-state-default'><textarea name='step" + x + "' ></textarea>"
+//        innerHTML += "<input type='file' name='step_images' multiple>"
+//        innerHTML += "<a href='#' class='delete'>Delete</a></li>";
+////        document.getElementById("dynamic-input-steps").appendChild(newdiv);
+//        $("#dynamic-input-steps").append(innerHTML);
+//        x++;
     });
 
     $(wrapper).on("click", ".delete", function(e) {
         e.preventDefault();
         $(this).parent('li').remove();
+        stepCount -= 1;
         x--;
     })
 
-    $(submit_button).click(function() {
-        let params = new URLSearchParams(location.search);
-        var asset_type = params.get('asset_type');
-
-        $.ajax({
-            url: '/add_solution_post',
-            data: {solution: $('#add-solution-form').serialize(), asset_type: asset_type},
-            type: 'POST',
-            success: function(response) {
-                console.log(response);
-//                alert('form was submitted!');
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
-    });
+// OLD AJAX TO SUBMIT THE FORM DATA TO LINE 432
+//    $(submit_button).click(function() {
+//        let params = new URLSearchParams(location.search);
+//        var asset_type = params.get('asset_type');
+//
+//        $.ajax({
+//            url: '/add_solution_post',
+//            data: {solution: $('#add-solution-form').serialize(), asset_type: asset_type},
+//            type: 'POST',
+//            success: function(response) {
+//                console.log(response);
+////                alert('form was submitted!');
+//            },
+//            error: function(error) {
+//                console.log(error);
+//            }
+//        });
+//        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
+//    });
 
 });
 

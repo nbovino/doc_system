@@ -24,7 +24,7 @@
         <p>Steps</p>
         <ul id="dynamic-input-steps">
             {% for step in steps %}
-            <li class='ui-state-default'><textarea name='step' >{{ steps[step] }}</textarea><a href='#' class='delete'>Delete</a></li>
+            <li class='ui-state-default'><textarea name='step' >{{ steps[step]['Instruction'] }}</textarea><a href='#' class='delete'>Delete</a></li>
             {% endfor %}
         </ul>
         <input type="checkbox" id="public-solution" name="public_solution" value="Public-Solution" {% if public %}checked{% endif %}>
