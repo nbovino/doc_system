@@ -59,6 +59,20 @@ function testFormAddStep() {
 //    editTestFormHTML = "no more";
 }
 
+function newSolutionAddStep() {
+    console.log('Added');
+    stepCount += 1;
+    var editTestFormHTML;
+    editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
+    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
+    editTestFormHTML += "<p id='output" + stepCount + "'></p></li>";
+//              document.getElementById("dynamic-input-steps").appendChild(newdiv);
+    $("#dynamic-input-steps").append(editTestFormHTML);
+    console.log(editTestFormHTML);
+//    editTestFormHTML = "no more";
+}
+
 function wait() {
     alert("This was called!");
 }
