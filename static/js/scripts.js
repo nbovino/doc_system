@@ -359,42 +359,45 @@ $('#result').on('click', 'li', function() {
 });
 
 //this searches but returns odd results. Could really use this later if made better.
-$.ajaxSetup({ cache: false });
-$('#search-solutions').keyup(function(){
-    let params = new URLSearchParams(location.search);
-    var url_solution_id = params.get('solution_id');
-    var resultsFound = 0;
-    $('#result').html('');
-    $('#state').val('');
-    var searchField = $('#search-solutions').val();
-    var expression = new RegExp(searchField, "i");
-    if (searchField != '') {
-        $.getJSON('static/data/all_solution_data.json', function(data) {
-        $.each(data, function(key, value){
-        if (value.title.search(expression) != -1)
-            {
-            resultsFound++;
-            if (url_solution_id != value.id) {
-                var htmlString = '<span title="' + value.primary_asset_type + '">'
-                htmlString += '<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title;
-                htmlString += '</li></span>';
-                $('#result').append(htmlString);
-    //            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
-    //          console.log(resultsFound);
-    //          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
-                }
-            }
-        });
-    });
-    setTimeout(function() {
-        if (resultsFound == 0 && $('#result').html() == '') {
-            showSnackbar();
-        }
-    }, 2000);
-
-    } else {
+$(function() {
+    $.ajaxSetup({ cache: false });
+    $('#search-solutions').keyup(function(){
+        console.log("key pressed");
+        let params = new URLSearchParams(location.search);
+        var url_solution_id = params.get('solution_id');
+        var resultsFound = 0;
         $('#result').html('');
-    }
+        $('#state').val('');
+        var searchField = $('#search-solutions').val();
+        var expression = new RegExp(searchField, "i");
+        if (searchField != '') {
+            $.getJSON('static/data/all_solution_data.json', function(data) {
+            $.each(data, function(key, value){
+            if (value.title.search(expression) != -1)
+                {
+                resultsFound++;
+                if (url_solution_id != value.id) {
+                    var htmlString = '<span title="' + value.primary_asset_type + '">'
+                    htmlString += '<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title;
+                    htmlString += '</li></span>';
+                    $('#result').append(htmlString);
+        //            $('#result').append('<li class="list-group-item link-class" value="' + value.id + '"> '+ value.title + '</li>');
+        //          console.log(resultsFound);
+        //          $('#result').append('<li class="list-group-item link-class"> '+ value.title + '|</span><span id="sidvalue" value="' + value.id + '"></span></li>');
+                    }
+                }
+            });
+        });
+        setTimeout(function() {
+            if (resultsFound == 0 && $('#result').html() == '') {
+                showSnackbar();
+            }
+        }, 2000);
+
+        } else {
+            $('#result').html('');
+        }
+    });
 });
 
 // This allows one to add steps to a solutions for a new solution
