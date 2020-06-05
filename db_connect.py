@@ -95,6 +95,13 @@ def query_one_db(model, column, v):
     return q
 
 
+def query_latest(model):
+    session = create_session()
+    q = session.query(model).order_by(model.id.desc()).first()
+    session.close()
+    return q
+
+
 def get_solution_asset_types(type_ids):
     type_names = []
     for i in type_ids:
