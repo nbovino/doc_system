@@ -517,27 +517,19 @@ def add_solution_post():
     if request.method == 'POST':
         db_connect.insert_db(models.Solutions())
         new_row = db_connect.query_latest(models.Solutions)
-        complete_solution = {}
         all_step_info = {}
         images = request.files
         data = request.form
         for d in data:
             print(d)
-
         try:
             os.mkdir('\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id))
         except FileExistsError:
             print("directory already exists")
         step_count = 1
         for step in request.form:
-            if step == 'solution_title':
-                complete_solution['Title'] = request.form['solution_title']
-            if step == 'asset_type':
-                print(step)
-            if step == 'public_solution':
-                print(step)
-            else:
-                image_file_names = []
+            image_file_names = []
+            if step[:4] == 'step':
                 try:
                     os.mkdir('\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
                 except FileExistsError:
@@ -553,41 +545,36 @@ def add_solution_post():
                                 shutil.move('\\documentation_system\\' + se.filename,
                                             '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
                                 image_file_names.append(se.filename)
-            step_info = {
-                "Instruction": request.form[step],
-                "Images": image_file_names
-            }
-            all_step_info[str(step_count)] = step_info
-            step_count += 1
-
-        complete_solution['Steps'] = all_step_info
-        print(complete_solution)
+                step_info = {
+                    "Instruction": data[step],
+                    "Images": image_file_names
+                }
+                all_step_info[str(step_count)] = step_info
+                step_count += 1
+        print(all_step_info)
+        if 'solution_title' in data:
+            title = data['solution_title']
+        else:
+            title = ''
+        if 'asset_type' in data:
+            asset_type = int(data['asset_type'])
+        else:
+            asset_type = None
         if 'public_solution' in data:
             ps = True
         else:
             ps = False
         s = models.Solutions
-        db_connect.update_column(model=s, id=new_row.id, column=s.solution_title, v=complete_solution['Title'])
+        db_connect.update_column(model=s, id=new_row.id, column=s.solution_title, v=title)
         db_connect.update_column(model=s, id=new_row.id, column=s.steps, v=all_step_info)
         db_connect.update_column(model=s, id=new_row.id, column=s.date_added, v=datetime.datetime.now())
         db_connect.update_column(model=s, id=new_row.id, column=s.date_revised, v=datetime.datetime.now())
-        db_connect.update_column(model=s, id=new_row.id, column=s.primary_asset_type, v=int(data['asset_type']))
-        db_connect.update_column(model=s, id=new_row.id, column=s.associated_asset_types, v=[int(data['asset_type'])])
+        db_connect.update_column(model=s, id=new_row.id, column=s.primary_asset_type, v=asset_type)
+        db_connect.update_column(model=s, id=new_row.id, column=s.associated_asset_types, v=[asset_type])
         db_connect.update_column(model=s, id=new_row.id, column=s.user, v=1)
         db_connect.update_column(model=s, id=new_row.id, column=s.public, v=ps)
 
-        # db_connect.insert_db(models.Solutions(solution_title=title,
-        #                                       steps=temp_dict,
-        #                                       date_added=datetime.datetime.now(),
-        #                                       date_revised=datetime.datetime.now(),
-        #                                       primary_asset_type=asset_type.id,
-        #                                       associated_asset_types=[asset_type.id],
-        #                                       user=1,
-        #                                       public=public))
-        # file.save(file.filename)
-        # shutil.move('\\documentation_system\\' + file.filename, '\\documentation_system\\static\data\images\\' + file.filename)
-        # os.rename(TEST_UPLOAD_FOLDER + filename, 'test.jpg')
-        return render_template('view_one_solution.html', solution_id=new_row.id)
+        return redirect(url_for('view_one_solution', solution_id=new_row.id))
 
 
 # TODO: This will need completely reworked to be able to save images
