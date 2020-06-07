@@ -232,84 +232,6 @@ function addEditSolutionStep() {
 }
 
 
-// This function allows you to edit the steps and title of a solution
-//$(document).ready(function() {
-//    $('#edit-solution-button').click(function(e) {
-//        var edit_add_button = $(".add-edit-step-field");
-//        document.getElementById("change-primary-button").style.display = "block";
-//        document.getElementById("edit-solution-form-container").style.display = "block";
-//        document.getElementById("js-solution").style.display = "none";
-//        var update_submit_button = $("#update-solution-button");
-//        var editSolutionHTML;
-//
-//        function edit_callback(response) {
-////            var deleteLink = document.getElementsByClassName('show-on-edit');
-////            for (var i = 0; i < deleteLink.length; i ++) {
-////                deleteLink[i].style.visibility = 'visible';
-////            }
-//
-//                console.log("I got here!")
-//                $(edit_add_button).click(function(e) {
-//                    e.preventDefault();
-////                    var x = 1;
-//    //              var newul = document.createElement('ul');
-//    //              newul.setAttribute('id', 'sortable')
-//                    console.log(editSolutionHTML + "This is before appending the text");
-//                    editSolutionHTML = "<li class='ui-state-default'><textarea name='step'></textarea><a href='#' class='delete'>Delete</a></li>";
-//    //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
-//                    $("#dynamic-input-steps-edit").append(editSolutionHTML);
-//                    console.log(editSolutionHTML);
-//                    editSolutionHTML = "no more";
-//                    console.log(editSolutionHTML + "After clearing");
-////                    x++;
-//                });
-////            var newHTML = "<form method='POST' action='#' id='edit-solution-form' name='edit-solution' role='form'>";
-////            newHTML = newHTML + "<label for='solution_title'>Solution Title:</label>";
-////            //TODO: make my own function to escape a string in JS or find one...
-////            newHTML = newHTML + '<input type="text" name="solution_title" required type="text" value="' + escapeRegExp(response["Title"]) + '"></br>';
-////            newHTML = newHTML + "</br><p>Steps</p><div id='dynamic-input-steps'>";
-////
-////            for (step in response['Steps']) {
-////                newHTML = newHTML + "<div>"
-////                newHTML = newHTML + "<textarea 'name='step" + step + "' value='" + escapeRegExp(response['Steps'][step]) + "'>";
-////                newHTML = newHTML + "</textarea><a href='#' class='delete'>Delete</a></br></br></div>";
-////                var totalSteps = step
-////            }
-////            newHTML = newHTML + "</div><input type='button' value='Add Step' class='add-step-field'><br><br>";
-////            newHTML = newHTML + "<span style='display: none'><input type='text' name='solution_id' required type='text' value='" + solution_id + "'></span>";
-////            newHTML = newHTML + "<button type='button' onClick='backToSolution(" + response['Solution_id'] + ")'>Cancel</button>";
-////            newHTML = newHTML + "<button type='button' onclick='updateSolution(" + response['Solution_id'] + ")'>Update Solution</button>";
-////            newHTML = newHTML + "</form>";
-////            document.getElementById('js-solution').innerHTML = newHTML;
-//
-//            $("#dynamic-input-steps-edit").on("click", ".delete", function(e) {
-//                e.preventDefault();
-//                $(this).parent('li').remove();
-////                totalSteps--;
-//            })
-//
-////            $(".add-step-field").click(function(e) {
-////                e.preventDefault();
-////                totalSteps++;
-////                var newdiv = document.createElement('div');
-////                newdiv.innerHTML = "Step: " + totalSteps + " <br><input type='text' name='step" + totalSteps + "' ><a href='#' class='delete'>Delete</a>";
-////                document.getElementById("dynamic-input-steps").appendChild(newdiv);
-////            });
-//        }
-//
-//
-//        $.ajax({
-//        'type': 'GET',
-//        'global': false,
-//        'url': '/static/data/one_solution.json',
-//        'success': function(data){
-//            console.log("success");
-//            edit_callback(data);
-//        }
-//        });
-//    });
-//});
-
 $('#hide-edit-asset-form').click(function(e) {
     document.getElementById("edit-asset-info").style.display = "none";
     document.getElementById("asset-info").style.display = "block";
@@ -345,21 +267,22 @@ function cancelAddAssocSolution() {
     document.getElementById("assoc-solution-buttons").style.display = "none";
 }
 
-$('#result').on('click', 'li', function() {
-    let params = new URLSearchParams(location.search);
-    var url_solution_id = params.get('solution_id');
-    var click_text = $(this).text();
-    var IDSelected = $(this)[0].value;
-    $('#search-solutions').val($.trim(click_text));
-    $("#result").html('');
-    var solution_id_text = document.getElementById("assoc_solution_id");
-    solution_id_text.setAttribute("value", IDSelected);
-    $('#main_solution_id').val(url_solution_id);
-    document.getElementById("assoc-solution-buttons").style.display = "block";
-});
+$(document).ready(function() {
+    $('#result').on('click', 'li', function() {
+        let params = new URLSearchParams(location.search);
+        console.log("Item clicked!!!!!")
+        var url_solution_id = params.get('solution_id');
+        var click_text = $(this).text();
+        var IDSelected = $(this)[0].value;
+        $('#search-solutions').val($.trim(click_text));
+        $("#result").html('');
+        var solution_id_text = document.getElementById("assoc_solution_id");
+        solution_id_text.setAttribute("value", IDSelected);
+        $('#main_solution_id').val(url_solution_id);
+        document.getElementById("assoc-solution-buttons").style.display = "block";
+    });
 
-//this searches but returns odd results. Could really use this later if made better.
-$(function() {
+    //this searches but returns odd results. Could really use this later if made better.
     $.ajaxSetup({ cache: false });
     $('#search-solutions').keyup(function(){
         console.log("key pressed");
@@ -398,7 +321,7 @@ $(function() {
             $('#result').html('');
         }
     });
-});
+})
 
 // This allows one to add steps to a solutions for a new solution
 $(document).ready(function() {
