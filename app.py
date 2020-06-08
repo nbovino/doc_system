@@ -24,7 +24,7 @@ DEBUG = True
 PORT = 8000
 HOST = '0.0.0.0'
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
 TEST_UPLOAD_FOLDER = "\\documentation_system\static\data\images"
 # TEST_UPLOAD_FOLDER = "\\Users\Nate"
@@ -160,7 +160,6 @@ def view_one_solution():
         for r in request.args.get('asset_types'):
             print(r)
     data_functions.one_solution_data(solution_id)
-    # print("this is solution ID" + str(solution_id))
     solution = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=solution_id)
     associated_asset_types = solution.associated_asset_types
     assoc_dict = {}
@@ -249,6 +248,16 @@ def view_one_solution():
                                          v=associated_solutions + [int(add_assoc_solution_form.assoc_solution_id.data)])
                 redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
+    # Get image filenames for each step in the solution
+    solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
+    step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
+    step_count = 1
+    step_images = {}
+    for s in step_folders:
+        step_images[step_count] = os.listdir(s)
+        step_count += 1
+    print(step_images)
+
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
                            associated_asset_types=data_functions.one_solution_asset_types(solution_id),
@@ -261,6 +270,7 @@ def view_one_solution():
                            solution_id=solution_id,
                            steps=solution.steps,
                            title=solution.solution_title,
+                           step_images=step_images,
                            public=solution.public)
 
 
