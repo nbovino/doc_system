@@ -8,9 +8,8 @@
     {% for step in steps %}
     <p>{{ step }} - {{ steps[step]['Instruction'] }}</p>
         <p>
-            {% for i in steps[step]['Images'] %}
-            <!--<img src='\\data\\solution_images\\sid{{ solution_id }}\\step{{ step }}\\{{ i }}' style="width: 150px; height: 150px">-->
-            <img src="{{ url_for('static', filename='data/solution_images/sid' + '{{ solution_id }}' + '/step' + '{{ step }}' + '/' + '{{ i }}') }}" style="width: 150px; height: 150px">
+            {% for i in step_images[step] %}
+            <img src="{{ url_for('static', filename=i) }}" style="width: 150px; height: 150px">
             {% endfor %}
         </p>
     {% endfor %}

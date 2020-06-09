@@ -250,15 +250,21 @@ def view_one_solution():
 
     # Get image filenames for each step in the solution
     solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
+    # solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
+    # solution_path = 'documentation_system/static/data/solution_images/sid' + solution_id
     step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
     step_count = 1
     step_images = {}
     # TODO: Make this join the full path name of the image in each step so it can put it into the filename in the html pages
     for s in step_folders:
         # This doesn't work because listdir(s) is a list of all the filenames in the directory
-        step_images[step_count] = solution_path + s + os.listdir(s)
+        this_step = []
+        for i in os.listdir(s):
+            this_step.append("data/solution_images/sid" + str(solution_id) + "/step" + str(step_count) + "/" + i)
+        step_images[str(step_count)] = this_step
         step_count += 1
-    print(step_images)
+    print(step_images['1'])
+
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
