@@ -253,8 +253,10 @@ def view_one_solution():
     step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
     step_count = 1
     step_images = {}
+    # TODO: Make this join the full path name of the image in each step so it can put it into the filename in the html pages
     for s in step_folders:
-        step_images[step_count] = os.listdir(s)
+        # This doesn't work because listdir(s) is a list of all the filenames in the directory
+        step_images[step_count] = solution_path + s + os.listdir(s)
         step_count += 1
     print(step_images)
 
