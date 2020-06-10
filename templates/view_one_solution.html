@@ -28,7 +28,12 @@
         <p>Steps</p>
         <ul id="dynamic-input-steps">
             {% for step in steps %}
-            <li class='ui-state-default'><textarea name='step' >{{ steps[step]['Instruction'] }}</textarea><a href='#' class='delete'>Delete</a></li>
+            <li class='ui-state-default'><textarea name='step' >{{ steps[step]['Instruction'] }}</textarea><a href='#' class='delete'>Delete</a></br>
+                {% for i in step_images[step] %}
+                <input type="checkbox" name="step{{ step }}img{{ i }}" style='background-image: url("{{ url_for('static', filename=i) }}"); width: 150px; height: 150px;' />
+                <!--<img src="{{ url_for('static', filename=i) }}" style="width: 150px; height: 150px">-->
+                {% endfor %}
+            </li>
             {% endfor %}
         </ul>
         <input type="checkbox" id="public-solution" name="public_solution" value="Public-Solution" {% if public %}checked{% endif %}>
