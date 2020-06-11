@@ -260,11 +260,12 @@ def view_one_solution():
         # This doesn't work because listdir(s) is a list of all the filenames in the directory
         this_step = []
         for i in os.listdir(s):
-            this_step.append("data/solution_images/sid" + str(solution_id) + "/step" + str(step_count) + "/" + i)
+            this_step.append(["data/solution_images/sid" + str(solution_id) + "/step" + str(step_count) + "/" + i, i])
         step_images[str(step_count)] = this_step
         step_count += 1
     print(step_images['1'])
-
+    # Info on view_one_solution page that may be useful on the edit checkbox for images
+    # style='background-image: url("{{ url_for('static', filename=i[0]) }}")'
 
     return render_template('view_one_solution.html',
                            asset_types=db_connect.query_all(models.AssetTypes),
@@ -279,7 +280,8 @@ def view_one_solution():
                            steps=solution.steps,
                            title=solution.solution_title,
                            step_images=step_images,
-                           public=solution.public)
+                           public=solution.public,
+                           )
 
 
 @app.route('/public_solution', methods=['GET', 'POST'])

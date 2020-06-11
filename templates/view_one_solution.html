@@ -9,7 +9,7 @@
     <p>{{ step }} - {{ steps[step]['Instruction'] }}</p>
         <p>
             {% for i in step_images[step] %}
-            <img src="{{ url_for('static', filename=i) }}" style="width: 150px; height: 150px">
+            <img src="{{ url_for('static', filename=i[0]) }}" style="width: 150px; height: 150px">
             {% endfor %}
         </p>
     {% endfor %}
@@ -30,7 +30,8 @@
             {% for step in steps %}
             <li class='ui-state-default'><textarea name='step' >{{ steps[step]['Instruction'] }}</textarea><a href='#' class='delete'>Delete</a></br>
                 {% for i in step_images[step] %}
-                <input type="checkbox" name="step{{ step }}img{{ i }}" style='background-image: url("{{ url_for('static', filename=i) }}"); width: 150px; height: 150px;' />
+                <input type="checkbox" class="checkable" name="step{{ step }}img{{ i[1] }}" style="display: none"/>
+                <label for="step{{ step }}img{{ i[1] }}"><img src="{{ url_for('static', filename=i[0]) }}" style="width: 150px; height: 150px"/></label>
                 <!--<img src="{{ url_for('static', filename=i) }}" style="width: 150px; height: 150px">-->
                 {% endfor %}
             </li>
@@ -95,6 +96,5 @@
     <!-- TODO: This is functionality that will be put in the python code for now-->
     <!--<button id="new-assoc-type" onClick="showAddAssocType()">New Asset Type</button>-->
 </div>
-
 
 {% endblock %}

@@ -162,3 +162,94 @@ background-color:#f1f1f1;
     border-color: black;
     border-bottom: double;
 }
+
+input[type=checkbox][class^="img-checkbox" {
+display: none;
+}
+
+/*
+input[type=checkbox] {
+display:none;
+}
+
+input#thing1[type=checkbox] + label
+{
+background-image: url("http://lorempixel.com/50/50/");
+border-color: white;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+
+input#thing2[type=checkbox] + label
+{
+background-image: url("http://lorempixel.com/g/50/50/");
+border-color: white;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+input#thing3[type=checkbox] + label
+{
+background-image: url("http://lorempixel.com/50/50/sports/1/");
+border-color: white;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+input#thing4[type=checkbox] + label
+{
+background-image: url("http://lorempixel.com/50/50/sports/");
+border-color: white;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+
+input#thing1[type=checkbox]:checked + label
+{
+border-color: red;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+
+input#thing2[type=checkbox]:checked + label
+{
+border-color: red;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+
+input#thing3[type=checkbox]:checked + label
+{
+border-color: red;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+input#thing4[type=checkbox]:checked + label
+{
+border-color: red;
+border-style: solid;
+height: 50px;
+width: 50px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+*/

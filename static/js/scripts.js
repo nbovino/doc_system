@@ -43,6 +43,10 @@ function readURL(input, sc) {
 //    }
 }
 
+$("img.checkable").click(function () {
+    $(this).toggleClass("checked");
+});
+
 var stepCount = 0
 // This is for the test form
 function testFormAddStep() {
