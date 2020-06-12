@@ -500,36 +500,43 @@ def add_solution():
 
 @app.route('/edit_solution_post', methods=['GET', 'POST'])
 def edit_solution_post():
-    # TODO: Be able to edit the associated solutions and associated assets
-    data = request.form
-    new_steps = {}
-    count = 1
-    for d in data:
-        print(d, data[d])
-    solution = data['solution'].split('&')
-    for s in solution:
-        print(s)
-        if s[:4] == 'step':
-            step = s.replace("%20", " ")
-            new_steps[str(count)] = step.split('=')[1]
-            print(s.split('=')[0] + ' - ' + s.split('=')[1])
-            count += 1
-        if 'solution_title' in s:
-            title = s.split('=')[1]
-            title = title.replace("%20", " ")
-        if 'public_solution' in s:
-            public = True
-        else:
-            public = False
-    print(title, new_steps, id)
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title,
-                             v=title)
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised,
-                             v=datetime.datetime.now())
-    db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.public, v=public)
-    data_functions.write_all_solution_data()
-    return new_steps
+    sid = 28
+    return redirect(url_for('view_one_solution', solution_id=sid))
+
+
+# This was used on the ajax version of edit solution
+# @app.route('/edit_solution_post', methods=['GET', 'POST'])
+# def edit_solution_post():
+#     # TODO: Be able to edit the associated solutions and associated assets
+#     data = request.form
+#     new_steps = {}
+#     count = 1
+#     for d in data:
+#         print(d, data[d])
+#     solution = data['solution'].split('&')
+#     for s in solution:
+#         print(s)
+#         if s[:4] == 'step':
+#             step = s.replace("%20", " ")
+#             new_steps[str(count)] = step.split('=')[1]
+#             print(s.split('=')[0] + ' - ' + s.split('=')[1])
+#             count += 1
+#         if 'solution_title' in s:
+#             title = s.split('=')[1]
+#             title = title.replace("%20", " ")
+#         if 'public_solution' in s:
+#             public = True
+#         else:
+#             public = False
+#     print(title, new_steps, id)
+#     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.solution_title,
+#                              v=title)
+#     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.steps, v=new_steps)
+#     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.date_revised,
+#                              v=datetime.datetime.now())
+#     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.public, v=public)
+#     data_functions.write_all_solution_data()
+#     return new_steps
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])

@@ -163,9 +163,6 @@ background-color:#f1f1f1;
     border-bottom: double;
 }
 
-input[type=checkbox][class^="img-checkbox" {
-display: none;
-}
 
 /*
 input[type=checkbox] {

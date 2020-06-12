@@ -43,9 +43,6 @@ function readURL(input, sc) {
 //    }
 }
 
-$("img.checkable").click(function () {
-    $(this).toggleClass("checked");
-});
 
 var stepCount = 0
 // This is for the test form
@@ -70,12 +67,46 @@ function newSolutionAddStep() {
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
     editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
     editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
-    editTestFormHTML += "<p id='output" + stepCount + "'></p></li>";
+    editTestFormHTML += "<p id='output" + stepCount + "'></p><a href='#' class='delete'>Delete</a></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
     $("#dynamic-input-steps").append(editTestFormHTML);
     console.log(editTestFormHTML);
 //    editTestFormHTML = "no more";
 }
+
+var lastStepCount;
+// Have to make a new version so the stepCount can increment from the last step
+function editSolutionAddStep() {
+    console.log('Added');
+    lastStepCount += 1;
+    var editTestFormHTML;
+    editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
+    editTestFormHTML += "<input type='file' id='step'" + lastStepCount + "images' name='image" + lastStepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += " onchange='readURL(this, " + lastStepCount + ")' multiple>";
+    editTestFormHTML += "<p id='output" + lastStepCount + "'></p><a href='#' class='delete'>Delete</a></li>";
+//              document.getElementById("dynamic-input-steps").appendChild(newdiv);
+    $("#dynamic-input-steps").append(editTestFormHTML);
+    console.log(editTestFormHTML);
+//    editTestFormHTML = "no more";
+}
+
+
+
+
+function highestStep(response) {
+    console.log(response['Highest_Step']);
+    lastStepCount = response['Highest_Step'];
+}
+
+$.ajax({
+    'type': 'GET',
+    'global': false,
+    'url': '/static/data/one_solution.json',
+    'success': function(data){
+        highestStep(data);
+    }
+});
+
 
 function wait() {
     alert("This was called!");
@@ -329,7 +360,6 @@ $(document).ready(function() {
 
 // This allows one to add steps to a solutions for a new solution
 $(document).ready(function() {
-
     var max_fields = 10;
     var wrapper = $("#dynamic-input-steps");
     var add_button = $(".add-step-field");
@@ -391,6 +421,9 @@ $(document).ready(function() {
 //        });
 //        window.location.href = '/view_solutions?asset_type=' + params.get('asset_type');
 //    });
+
+
+
 
 });
 

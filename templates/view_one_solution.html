@@ -21,27 +21,28 @@
 </div>
 
 <div id="edit-solution-form-container" style="display: none">
-    <form method='POST' action='' id='edit-solution-form' name='edit-solution' role='form'>
+    <form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>
         <label for="solution_title">Solution Title:</label>
         <input type="text" name="solution_title" required value="{{ title }}">
 
         <p>Steps</p>
         <ul id="dynamic-input-steps">
             {% for step in steps %}
-            <li class='ui-state-default'><textarea name='step' >{{ steps[step]['Instruction'] }}</textarea><a href='#' class='delete'>Delete</a></br>
+            <li class='ui-state-default'><textarea name='step{{ step }}' >{{ steps[step]['Instruction'] }}</textarea></br>
                 {% for i in step_images[step] %}
-                <input type="checkbox" class="checkable" name="step{{ step }}img{{ i[1] }}" style="display: none"/>
+                <input type="checkbox" class="img-checkable" name="step{{ step }}img{{ i[1] }}" />
                 <label for="step{{ step }}img{{ i[1] }}"><img src="{{ url_for('static', filename=i[0]) }}" style="width: 150px; height: 150px"/></label>
                 <!--<img src="{{ url_for('static', filename=i) }}" style="width: 150px; height: 150px">-->
                 {% endfor %}
+                <a href='#' class='delete'>Delete</a>
             </li>
             {% endfor %}
         </ul>
         <input type="checkbox" id="public-solution" name="public_solution" value="Public-Solution" {% if public %}checked{% endif %}>
         <label for="public_solution">Make public</label></br>
-        <input type="button" value="Add Step" onclick="addEditSolutionStep()">
+        <input type="button" value="Add Step" onclick="editSolutionAddStep()">
         <input type='button' value="Cancel" onclick="closeEditSolutionForm()"></button>
-        <button type='button' onclick="updateSolution({{ solution_id }})">Update Solution</button>
+        <input type="submit" value="Edit solution">
     </form>
 </div>
 </div>
