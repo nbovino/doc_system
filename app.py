@@ -550,7 +550,9 @@ def edit_solution_post():
         sol_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
         for d in data:
             print(d)
-
+        # TODO: Go through the data and create all new json data to update the DB with. As the steps are gone through
+        # TODO: The images will have to move with the step, possibly use a hashed name in each solution folder for the images
+        # TODO: That way if the step moves the file can be renamed and can be associated with the correct step.
         # Edit basics of solution
         if 'solution_title' in data:
             title = data['solution_title']
