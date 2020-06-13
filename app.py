@@ -257,16 +257,19 @@ def view_one_solution():
     step_images = {}
     f = open('\\documentation_system\\static\data\one_solution.json')
     solution_json = json.load(f)
-    for s in step_folders:
-        # This doesn't work because listdir(s) is a list of all the filenames in the directory
+    # for s in step_folders:
+    #     # This doesn't work because listdir(s) is a list of all the filenames in the directory
+    #     this_step = []
+    #     # for i in os.listdir(s):
+    #     # Getting the info from the JSON data instead of the folder because that is what will update when editing
+    #     # a solution so that is what it should pull from when selecting what images to get from the directory.
+    for s in solution_json['Steps']:
         this_step = []
-        # for i in os.listdir(s):
-        # Getting the info from the JSON data instead of the folder because that is what will update when editing
-        # a solution so that is what it should pull from when selecting what images to get from the directory.
         for i in solution_json['Steps'][str(step_count)]['Images']:
-            this_step.append(["data/solution_images/sid" + str(solution_id) + "/step" + str(step_count) + "/" + i, i])
+            this_step.append(["data/solution_images/sid" + str(solution_id) + "/" + i, i])
         step_images[str(step_count)] = this_step
         step_count += 1
+    print(step_images)
     # Info on view_one_solution page that may be useful on the edit checkbox for images
     # style='background-image: url("{{ url_for('static', filename=i[0]) }}")'
 
@@ -598,10 +601,10 @@ def add_solution_post():
         for step in request.form:
             image_file_names = []
             if step[:4] == 'step':
-                try:
-                    os.mkdir('\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                except FileExistsError:
-                    print("directory already exists")
+                # try:
+                #     os.mkdir('\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                # except FileExistsError:
+                #     print("directory already exists")
                 for i in images:
                     print(i)
                     if i[5:] == step[4:]:
@@ -609,9 +612,14 @@ def add_solution_post():
                         step_images = request.files.getlist(i)
                         for se in step_images:
                             if se.filename:
-                                se.save(se.filename)
-                                shutil.move('\\documentation_system\\' + se.filename,
-                                            '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                try:
+                                    se.save(se.filename)
+                                    shutil.move('\\documentation_system\\' + se.filename,
+                                                # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                '\\documentation_system\\static\data\\solution_images'
+                                                '\\sid' + str(new_row.id))
+                                except:
+                                    print('There was an error')
                                 image_file_names.append(se.filename)
                 step_info = {
                     "Instruction": data[step],
