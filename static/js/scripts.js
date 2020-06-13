@@ -80,7 +80,7 @@ function editSolutionAddStep() {
     console.log('Added');
     lastStepCount += 1;
     var editTestFormHTML;
-    editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
+    editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + lastStepCount + "'></textarea>";
     editTestFormHTML += "<input type='file' id='step'" + lastStepCount + "images' name='image" + lastStepCount + "' accept='.jpg,.jpeg'";
     editTestFormHTML += " onchange='readURL(this, " + lastStepCount + ")' multiple>";
     editTestFormHTML += "<p id='output" + lastStepCount + "'></p><a href='#' class='delete'>Delete</a></li>";

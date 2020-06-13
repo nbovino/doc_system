@@ -255,15 +255,18 @@ def view_one_solution():
     step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
     step_count = 1
     step_images = {}
-    # TODO: Make this join the full path name of the image in each step so it can put it into the filename in the html pages
+    f = open('\\documentation_system\\static\data\one_solution.json')
+    solution_json = json.load(f)
     for s in step_folders:
         # This doesn't work because listdir(s) is a list of all the filenames in the directory
         this_step = []
-        for i in os.listdir(s):
+        # for i in os.listdir(s):
+        # Getting the info from the JSON data instead of the folder because that is what will update when editing
+        # a solution so that is what it should pull from when selecting what images to get from the directory.
+        for i in solution_json['Steps'][str(step_count)]['Images']:
             this_step.append(["data/solution_images/sid" + str(solution_id) + "/step" + str(step_count) + "/" + i, i])
         step_images[str(step_count)] = this_step
         step_count += 1
-    print(step_images['1'])
     # Info on view_one_solution page that may be useful on the edit checkbox for images
     # style='background-image: url("{{ url_for('static', filename=i[0]) }}")'
 
@@ -498,12 +501,6 @@ def add_solution():
                            asset_types=db_connect.query_all(models.AssetTypes))
 
 
-@app.route('/edit_solution_post', methods=['GET', 'POST'])
-def edit_solution_post():
-    sid = 28
-    return redirect(url_for('view_one_solution', solution_id=sid))
-
-
 # This was used on the ajax version of edit solution
 # @app.route('/edit_solution_post', methods=['GET', 'POST'])
 # def edit_solution_post():
@@ -537,6 +534,48 @@ def edit_solution_post():
 #     db_connect.update_column(model=models.Solutions, id=data['solution_id'], column=models.Solutions.public, v=public)
 #     data_functions.write_all_solution_data()
 #     return new_steps
+
+
+@app.route('/edit_solution_post', methods=['GET', 'POST'])
+def edit_solution_post():
+    if request.method == 'POST':
+        all_step_info = {}
+        images = request.files
+        data = request.form
+        sid = int(data['solution_id'])
+        this_sol = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
+        # all_step_info = {}
+        # images = request.files
+        # data = request.form
+        sol_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
+        for d in data:
+            print(d)
+
+        # Edit basics of solution
+        if 'solution_title' in data:
+            title = data['solution_title']
+        else:
+            title = ''
+        if 'asset_type' in data:
+            asset_type = int(data['asset_type'])
+        else:
+            asset_type = None
+        if 'public_solution' in data:
+            ps = True
+        else:
+            ps = False
+
+        for step in request.form:
+            image_file_names = []
+            if step[:4] == 'step':
+                for i in images:
+                    print(i)
+        db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.solution_title, v=title)
+        # db_connect.update_column(model=models.Solutions, id=id, column=models.Solutions.steps, v=all_step_info)
+        db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.date_revised, v=datetime.datetime.now())
+        db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.user, v=1)
+        db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.public, v=ps)
+        return redirect(url_for('view_one_solution', solution_id=sid))
 
 
 @app.route('/add_solution_post', methods=['GET', 'POST'])
