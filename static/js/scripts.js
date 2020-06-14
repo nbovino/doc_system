@@ -1,4 +1,4 @@
-function getUrlParam(parameter, defaultvalue){
+    function getUrlParam(parameter, defaultvalue){
     var urlparameter = defaultvalue;
     if(window.location.href.indexOf(parameter) > -1){
         urlparameter = getUrlVars()[parameter];
@@ -11,6 +11,29 @@ function getUrlParam(parameter, defaultvalue){
 //    image.src = URL.createObjectURL(event.target.files[0]);
 //}
 
+function checkForSameImage(img) {
+    duplicateImage = false;
+    function checkImages(data) {
+
+        for (var i in data['Steps']) {
+            if(data['Steps'][i]['Images'].includes(img)) {
+              alert("A file with the name " + img + " is already in the solution. If you upload this file it will overwrite the image currently saved");
+            }
+        }
+    }
+
+
+   $.ajax({
+        'type': 'GET',
+        'global': false,
+        'url': '/static/data/one_solution.json',
+        'success': function(data){
+            console.log("Getting image data!!!!!!!!!!!!!!!");
+            checkImages(data);
+        }
+    });
+}
+
 function readURL(input, sc) {
     if (input.files && input.files[0]) {
         var thisNode = document.getElementById("output" + sc);
@@ -21,14 +44,18 @@ function readURL(input, sc) {
             if (input.files && input.files[0]) {
               for (var i = 0; i < input.files.length; i++) {
                 var reader = new FileReader();
+                checkForSameImage(input.files[i].name);
                 reader.onload = imageIsLoaded;
                 reader.readAsDataURL(input.files[i]);
+                // This checks if the image is already uploaded
+
               }
             }
           };
 //        });
 //
         function imageIsLoaded(e) {
+//          console.log(input.files[i].name);
           $('#output' + sc).append('<img src=' + e.target.result + ' style="width: 150px; height: 150px">');
           console.log("I got here!!!!!!!!!!!!!!!!!!!!!!!");
         };
@@ -51,7 +78,7 @@ function testFormAddStep() {
     stepCount += 1;
     var editTestFormHTML;
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
-    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg,.png'";
     editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
     editTestFormHTML += "<p id='output" + stepCount + "'></p></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
@@ -65,7 +92,7 @@ function newSolutionAddStep() {
     stepCount += 1;
     var editTestFormHTML;
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + stepCount + "'></textarea>";
-    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += "<input type='file' id='step'" + stepCount + "images' name='image" + stepCount + "' accept='.jpg,.jpeg,.png'";
     editTestFormHTML += " onchange='readURL(this, " + stepCount + ")' multiple>";
     editTestFormHTML += "<p id='output" + stepCount + "'></p><a href='#' class='delete'>Delete</a></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);
@@ -74,6 +101,7 @@ function newSolutionAddStep() {
 //    editTestFormHTML = "no more";
 }
 
+
 var lastStepCount;
 // Have to make a new version so the stepCount can increment from the last step
 function editSolutionAddStep() {
@@ -81,7 +109,7 @@ function editSolutionAddStep() {
     lastStepCount += 1;
     var editTestFormHTML;
     editTestFormHTML = "<li class='ui-state-default'><textarea name='step" + lastStepCount + "'></textarea>";
-    editTestFormHTML += "<input type='file' id='step'" + lastStepCount + "images' name='image" + lastStepCount + "' accept='.jpg,.jpeg'";
+    editTestFormHTML += "<input type='file' id='step'" + lastStepCount + "images' name='image" + lastStepCount + "' accept='.jpg,.jpeg,.png'";
     editTestFormHTML += " onchange='readURL(this, " + lastStepCount + ")' multiple>";
     editTestFormHTML += "<p id='output" + lastStepCount + "'></p><a href='#' class='delete'>Delete</a></li>";
 //              document.getElementById("dynamic-input-steps").appendChild(newdiv);

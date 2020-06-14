@@ -572,7 +572,13 @@ def edit_solution_post():
                                     print(se)
                                     if se.filename:
                                         try:
+                                            # src = '\\documentation_system'
+                                            # dst = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
+                                            # Keep the line immediately below this.
                                             se.save(se.filename)
+                                            # shutil.move(os.path.join(src, se.filename), os.path.join(dst, se.filename))
+                                            # print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
+                                            # Old way that works
                                             shutil.move('\\documentation_system\\' + se.filename,
                                                         # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
                                                         '\\documentation_system\\static\data\\solution_images'
@@ -590,36 +596,6 @@ def edit_solution_post():
                     }
                     all_step_info[str(step_count)] = step_info
                     step_count += 1
-            #     for i in images:
-            #         print(i)
-            #         if i[5:] == step[4:]:
-            #             # images = request.files[i]
-            #             step_images = request.files.getlist(i)
-            #             for se in step_images:
-            #                 if se.filename:
-            #                     try:
-            #                         se.save(se.filename)
-            #                         shutil.move('\\documentation_system\\' + se.filename,
-            #                                     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-            #                                     '\\documentation_system\\static\data\\solution_images'
-            #                                     '\\sid' + str(sid))
-            #                     except:
-            #                         print('There was an error, likely the file already exists')
-            #                     image_file_names.append(se.filename)
-            #                     print(image_file_names)
-            #     # This checks for images that are still going to be associated with the step
-            #     if 'img' in step:
-            #         print(step.split('img')[1])
-            #         image_file_names.append(step.split('img')[1])
-            #     image_file_names = list(dict.fromkeys(image_file_names))
-            #     if step[:4] == 'step' and 'img' not in step:
-            #         instruction = data[step]
-            #     step_info = {
-            #         "Instruction": instruction,
-            #         "Images": image_file_names
-            #     }
-            #     all_step_info[str(step_count)] = step_info
-            # step_count += 1
         if 'solution_title' in data:
             title = data['solution_title']
         else:
