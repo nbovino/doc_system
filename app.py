@@ -551,79 +551,54 @@ def edit_solution_post():
             print(i)
         data = request.form
         sid = int(data['solution_id'])
-        this_sol = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
-        # all_step_info = {}
-        # images = request.files
-        # data = request.form
-        sol_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
         # Edit basics of solution
-        # TODO: This is not an efficient way of doing this
+        # TODO: Slightly better way than before but possibly could be done better.
         step_count = 1
         for step in request.form:
+            image_file_names = []
             if step == 'solution_id' or step == 'solution_title':
-                pass
-            else:
-                if step[:4] == 'step' and 'img' not in step:
-                    current_step_no = step[4:]
-                    image_file_names = []
-                    for step_second in request.form:
-                        # For loop to append the list of new images added to the step
-                        for i in images:
-                            if i[5:] == current_step_no:
-                                step_images = request.files.getlist(i)
-                                print(step_images)
-                                for se in step_images:
-                                    print(se)
-                                    if se.filename:
-                                        try:
-                                            # se.save(se.filename)
-
-                                            # src_dir = '\\documentation_system\\'
-                                            # src_file = '\\documentation_system\\' + se.filename
-                                            # dst_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\'
-                                            # dst_file = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename
-                                            # # Keep the line immediately below this.
-                                            # se.save(se.filename)
-                                            delete_name = se.filename
-                                            if os.path.exists('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
-                                                os.remove('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
-                                                time.sleep(1)
-                                                se.save(se.filename)
-                                                time.sleep(1)
-                                                shutil.move('\\documentation_system\\' + se.filename,
-                                                            # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                            '\\documentation_system\\static\data\\solution_images'
-                                                            '\\sid' + str(sid))
-                                            else:
-                                                se.save(se.filename)
-                                                shutil.move('\\documentation_system\\' + se.filename,
-                                                            # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                            '\\documentation_system\\static\data\\solution_images'
-                                                            '\\sid' + str(sid))
-                                            # if os.path.exists(dst_file):
-                                            #     if os.path.samefile(src_file, dst_file):
-                                            #         continue
-                                            #     os.remove(dst_file)
-                                            #     shutil.move('\\documentation_system\\' + se.filename,
-                                            #     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                            #                 '\\documentation_system\\static\data\\solution_images'
-                                            #                 '\\sid' + str(sid))
-                                            # # shutil.move(os.path.join(src, se.filename), os.path.join(dst, se.filename))
-                                            # print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
-                                            # # Old way that works
-                                        except:
-                                            print('There was an error, likely the file already exists')
+                continue
+            elif step[:4] == 'step' and 'img' not in step:
+                current_step_no = step[4:]
+                for i in images:
+                    if i[5:] == current_step_no:
+                        step_images = request.files.getlist(i)
+                        for se in step_images:
+                            if se.filename:
+                                try:
+                                    delete_name = se.filename
+                                    # Deletes image if it already exists
+                                    if os.path.exists('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
+                                        os.remove('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
+                                        se.save(se.filename)
+                                        shutil.move('\\documentation_system\\' + se.filename,
+                                                    '\\documentation_system\\static\data\\solution_images'
+                                                    '\\sid' + str(sid))
                                         image_file_names.append(se.filename)
-                        # If statement to get the images that are going to still be included in this step
-                        if step_second[:4] == 'step' and 'img' in step_second and step_second[4:len(current_step_no) + 4] == current_step_no:
-                            image_file_names.append(step_second.split('img')[1])
-                    image_file_names = list(dict.fromkeys(image_file_names))
-                    step_info = {
-                        "Instruction": data[step],
-                        "Images": image_file_names
-                    }
-                    all_step_info[str(step_count)] = step_info
-                    step_count += 1
+                                    # If the file doesn't exists it just saves it to the folder.
+                                    else:
+                                        se.save(se.filename)
+                                        shutil.move('\\documentation_system\\' + se.filename,
+                                                    # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                    '\\documentation_system\\static\data\\solution_images'
+                                                    '\\sid' + str(sid))
+                                        image_file_names.append(se.filename)
+
+                                except:
+                                    print('There was an error, likely the file already exists')
+                # Goes through the steps again to compare the images wanting to be kept
+                for secondary_steps in request.form:
+                    # If statement to get the images that are going to still be included in this step
+                    if secondary_steps[:4] == 'step' and 'img' in secondary_steps and secondary_steps[4:len(current_step_no) + 4] == current_step_no:
+                        print(current_step_no)
+                        image_file_names.append(secondary_steps.split('img')[1])
+                image_file_names = list(dict.fromkeys(image_file_names))
+                step_info = {
+                    "Instruction": data[step],
+                    "Images": image_file_names
+                }
+                all_step_info[str(step_count)] = step_info
+                step_count += 1
         if 'solution_title' in data:
             title = data['solution_title']
         else:
