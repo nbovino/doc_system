@@ -571,27 +571,46 @@ def edit_solution_post():
                         for i in images:
                             if i[5:] == current_step_no:
                                 step_images = request.files.getlist(i)
+                                print(step_images)
                                 for se in step_images:
                                     print(se)
                                     if se.filename:
                                         try:
-                                            src_dir = '\\documentation_system\\'
-                                            src_file = '\\documentation_system\\' + se.filename
-                                            dst_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\'
-                                            dst_file = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename
-                                            # Keep the line immediately below this.
-                                            se.save(se.filename)
-                                            if os.path.exists(dst_file):
-                                                if os.path.samefile(src_file, dst_file):
-                                                    continue
-                                                os.remove(dst_file)
+                                            # se.save(se.filename)
+
+                                            # src_dir = '\\documentation_system\\'
+                                            # src_file = '\\documentation_system\\' + se.filename
+                                            # dst_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\'
+                                            # dst_file = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename
+                                            # # Keep the line immediately below this.
+                                            # se.save(se.filename)
+                                            delete_name = se.filename
+                                            if os.path.exists('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
+                                                os.remove('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
+                                                time.sleep(1)
+                                                se.save(se.filename)
+                                                time.sleep(1)
                                                 shutil.move('\\documentation_system\\' + se.filename,
-                                                # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                            # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
                                                             '\\documentation_system\\static\data\\solution_images'
                                                             '\\sid' + str(sid))
-                                            # shutil.move(os.path.join(src, se.filename), os.path.join(dst, se.filename))
-                                            print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
-                                            # Old way that works
+                                            else:
+                                                se.save(se.filename)
+                                                shutil.move('\\documentation_system\\' + se.filename,
+                                                            # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                            '\\documentation_system\\static\data\\solution_images'
+                                                            '\\sid' + str(sid))
+                                            # if os.path.exists(dst_file):
+                                            #     if os.path.samefile(src_file, dst_file):
+                                            #         continue
+                                            #     os.remove(dst_file)
+                                            #     shutil.move('\\documentation_system\\' + se.filename,
+                                            #     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                            #                 '\\documentation_system\\static\data\\solution_images'
+                                            #                 '\\sid' + str(sid))
+                                            # # shutil.move(os.path.join(src, se.filename), os.path.join(dst, se.filename))
+                                            # print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
+                                            # # Old way that works
                                         except:
                                             print('There was an error, likely the file already exists')
                                         image_file_names.append(se.filename)
@@ -650,7 +669,10 @@ def add_solution_post():
                         # images = request.files[i]
                         step_images = request.files.getlist(i)
                         for se in step_images:
+                            print(se)
+                            time.sleep(2)
                             if se.filename:
+
                                 try:
                                     se.save(se.filename)
                                     shutil.move('\\documentation_system\\' + se.filename,
