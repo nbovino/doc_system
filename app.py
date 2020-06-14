@@ -544,6 +544,8 @@ def edit_solution_post():
     if request.method == 'POST':
         all_step_info = {}
         images = request.files
+        for i in images:
+            print(i)
         data = request.form
         sid = int(data['solution_id'])
         this_sol = db_connect.query_one_db(model=models.Solutions, column=models.Solutions.id, v=sid)
@@ -551,35 +553,87 @@ def edit_solution_post():
         # images = request.files
         # data = request.form
         sol_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
-        for d in data:
-            print(d)
-        # TODO: Go through the data and create all new json data to update the DB with. As the steps are gone through
-        # TODO: The images will have to move with the step, possibly use a hashed name in each solution folder for the images
-        # TODO: That way if the step moves the file can be renamed and can be associated with the correct step.
         # Edit basics of solution
+        # TODO: This is not an efficient way of doing this
+        step_count = 1
+        for step in request.form:
+            if step == 'solution_id' or step == 'solution_title':
+                pass
+            else:
+                if step[:4] == 'step' and 'img' not in step:
+                    current_step_no = step[4:]
+                    image_file_names = []
+                    for step_second in request.form:
+                        # For loop to append the list of new images added to the step
+                        for i in images:
+                            if i[5:] == current_step_no:
+                                step_images = request.files.getlist(i)
+                                for se in step_images:
+                                    print(se)
+                                    if se.filename:
+                                        try:
+                                            se.save(se.filename)
+                                            shutil.move('\\documentation_system\\' + se.filename,
+                                                        # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                        '\\documentation_system\\static\data\\solution_images'
+                                                        '\\sid' + str(sid))
+                                        except:
+                                            print('There was an error, likely the file already exists')
+                                        image_file_names.append(se.filename)
+                        # If statement to get the images that are going to still be included in this step
+                        if step_second[:4] == 'step' and 'img' in step_second and step_second[4:len(current_step_no) + 4] == current_step_no:
+                            image_file_names.append(step_second.split('img')[1])
+                    image_file_names = list(dict.fromkeys(image_file_names))
+                    step_info = {
+                        "Instruction": data[step],
+                        "Images": image_file_names
+                    }
+                    all_step_info[str(step_count)] = step_info
+                    step_count += 1
+            #     for i in images:
+            #         print(i)
+            #         if i[5:] == step[4:]:
+            #             # images = request.files[i]
+            #             step_images = request.files.getlist(i)
+            #             for se in step_images:
+            #                 if se.filename:
+            #                     try:
+            #                         se.save(se.filename)
+            #                         shutil.move('\\documentation_system\\' + se.filename,
+            #                                     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+            #                                     '\\documentation_system\\static\data\\solution_images'
+            #                                     '\\sid' + str(sid))
+            #                     except:
+            #                         print('There was an error, likely the file already exists')
+            #                     image_file_names.append(se.filename)
+            #                     print(image_file_names)
+            #     # This checks for images that are still going to be associated with the step
+            #     if 'img' in step:
+            #         print(step.split('img')[1])
+            #         image_file_names.append(step.split('img')[1])
+            #     image_file_names = list(dict.fromkeys(image_file_names))
+            #     if step[:4] == 'step' and 'img' not in step:
+            #         instruction = data[step]
+            #     step_info = {
+            #         "Instruction": instruction,
+            #         "Images": image_file_names
+            #     }
+            #     all_step_info[str(step_count)] = step_info
+            # step_count += 1
         if 'solution_title' in data:
             title = data['solution_title']
         else:
             title = ''
-        if 'asset_type' in data:
-            asset_type = int(data['asset_type'])
-        else:
-            asset_type = None
         if 'public_solution' in data:
             ps = True
         else:
             ps = False
-
-        for step in request.form:
-            image_file_names = []
-            if step[:4] == 'step':
-                for i in images:
-                    print(i)
         db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.solution_title, v=title)
-        # db_connect.update_column(model=models.Solutions, id=id, column=models.Solutions.steps, v=all_step_info)
+        db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.steps, v=all_step_info)
         db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.date_revised, v=datetime.datetime.now())
         db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.user, v=1)
         db_connect.update_column(model=models.Solutions, id=sid, column=models.Solutions.public, v=ps)
+        print(all_step_info)
         return redirect(url_for('view_one_solution', solution_id=sid))
 
 

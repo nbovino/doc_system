@@ -21,7 +21,7 @@
 </div>
 
 <div id="edit-solution-form-container" style="display: none">
-    <form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form'>
+    <form method='POST' action='/edit_solution_post' id='edit-solution-form' name='edit-solution' role='form' enctype=multipart/form-data>
         <input type="text" name="solution_id" required value="{{ solution_id }}" style="display: none">
         <label for="solution_title">Solution Title:</label>
         <input type="text" name="solution_title" required value="{{ title }}">
