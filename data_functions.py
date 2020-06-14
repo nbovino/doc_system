@@ -61,7 +61,10 @@ def one_solution_data(solution_id):
     step_number = []
     for s in solution.steps:
         step_number.append(s)
-    solution_data["Highest_Step"] = max(step_number)
+    if len(step_number) > 0:
+        solution_data["Highest_Step"] = max(step_number)
+    else:
+        solution_data["Highest_Step"] = '0'
     solution_data["Associated_Asset_Types"] = solution.associated_asset_types
     solution_data["Primary_Asset_Type"] = solution.primary_asset_type
     data_folder = Path("static/data/one_solution.json")

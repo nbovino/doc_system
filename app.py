@@ -488,6 +488,9 @@ def add_asset_type():
 
 @app.route('/add_solution', methods=['GET', 'POST'])
 def add_solution():
+    data_folder = Path("static/data/one_solution.json")
+    with open(data_folder, 'w') as fp:
+        json.dump('', fp, indent=4)
     if request.args.get('message'):
         message = request.args.get('message')
     else:
@@ -572,17 +575,23 @@ def edit_solution_post():
                                     print(se)
                                     if se.filename:
                                         try:
-                                            # src = '\\documentation_system'
-                                            # dst = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid)
+                                            src_dir = '\\documentation_system\\'
+                                            src_file = '\\documentation_system\\' + se.filename
+                                            dst_dir = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\'
+                                            dst_file = '\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename
                                             # Keep the line immediately below this.
                                             se.save(se.filename)
+                                            if os.path.exists(dst_file):
+                                                if os.path.samefile(src_file, dst_file):
+                                                    continue
+                                                os.remove(dst_file)
+                                                shutil.move('\\documentation_system\\' + se.filename,
+                                                # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                            '\\documentation_system\\static\data\\solution_images'
+                                                            '\\sid' + str(sid))
                                             # shutil.move(os.path.join(src, se.filename), os.path.join(dst, se.filename))
-                                            # print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
+                                            print("File has been overwritten!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!$$$$$$$$$$$$$$$$$$$")
                                             # Old way that works
-                                            shutil.move('\\documentation_system\\' + se.filename,
-                                                        # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                        '\\documentation_system\\static\data\\solution_images'
-                                                        '\\sid' + str(sid))
                                         except:
                                             print('There was an error, likely the file already exists')
                                         image_file_names.append(se.filename)

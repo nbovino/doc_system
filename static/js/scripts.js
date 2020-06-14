@@ -119,11 +119,13 @@ function editSolutionAddStep() {
 }
 
 
-
-
 function highestStep(response) {
     console.log(response['Highest_Step']);
-    lastStepCount = response['Highest_Step'];
+    if (response['Highest_Step'] > '0') {
+        lastStepCount = response['Highest_Step'];
+    } else {
+        lastStepCount = '1';
+    }
 }
 
 $.ajax({
