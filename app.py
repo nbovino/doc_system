@@ -121,6 +121,13 @@ def main():
                            asset_types=all_asset_types)
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = forms.CreateAccountForm()
+    return render_template('login.html',
+                           form=form)
+
+
 @app.route('/view_solutions', methods=['GET', 'POST'])
 def view_solutions():
     if request.args.get('asset_type'):

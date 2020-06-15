@@ -1,8 +1,15 @@
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, SelectField, IntegerField, FloatField, DecimalField, BooleanField, SubmitField, SelectMultipleField
+from wtforms import StringField, TextAreaField, SelectField, IntegerField, FloatField, DecimalField, BooleanField, SubmitField, SelectMultipleField, PasswordField
 from wtforms.validators import (DataRequired, Email,
                                 Length, InputRequired)
 from wtforms.fields.html5 import DateField
+
+
+class CreateAccountForm(Form):
+    first_name = StringField("First Name", validators=[DataRequired()], render_kw={"placeholder": "First Name"})
+    last_name = StringField("Last Name", validators=[DataRequired()], render_kw={"placeholder": "Last Name"})
+    username = StringField("Username", validators=[DataRequired()], render_kw={"placeholder": "Username"})
+    password = PasswordField("Password", validators=[DataRequired()], render_kw={"placeholder": "Username"})
 
 
 class AddAssetTypeForm(Form):

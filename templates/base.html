@@ -25,7 +25,7 @@
                 </tr>
             </table>
             {% if add_department_form %}
-            <span class="open-button" onclick="openDepartmentForm()">New Department</span><br>
+            <span class="open-button" onclick="openDepartmentForm()">New Department</span>  <a href="{{ url_for('create_account') }}">Create Account</a><br>
             <div class="form-popup" id="new-department">
                 <form action="" method="POST">
                     {{ add_department_form.hidden_tag() }}
