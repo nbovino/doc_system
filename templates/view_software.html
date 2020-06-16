@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<h2>Software Information</h2>
+
+<div class="form-popup" id="new-software_company">
+    <form action="" method="POST">
+        {{ add_software_company_form.hidden_tag() }}
+        {{ add_software_company_form.software_company }}<br><br>
+        {{ add_software_company_form.software_company_submit }}    <button onclick="closeManufacturerForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+</div>
+
+<h3>Software</h3>
+<p><span class="open-button" onclick="openSoftwareCompanyForm()">Add Software Company</span></p>
+<span class="open-button" onclick="openSoftwareForm()">Add Software</span>
+{% for s in all_software %}
+    <p><a href="{{ url_for('view_one_solution', solution_id=solution.id) }}" title="Edit">
+        {{ solution.solution_title }} - Revised: {{ solution.date_revised.strftime( '%#m-%#d-%Y' ) }}</a></p>
+{% endfor %}
+
+{% endblock %}

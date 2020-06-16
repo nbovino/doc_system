@@ -71,3 +71,14 @@ class AddAssocSolutionForm(Form):
 class ChangePrimaryAssetTypeForm(Form):
     all_asset_types = SelectField(validators=[DataRequired()])
     change_primary_asset_type_submit = SubmitField('Change')
+
+
+class AddSoftwareCompanyForm(Form):
+    software_company = StringField(validators=[DataRequired()])
+    software_company_submit = SubmitField('Add Software Company')
+
+
+class AddSoftwareForm(Form):
+    software_company = SelectField(validators=[DataRequired()])
+    software_name = StringField(validators=[DataRequired()])
+    software_submit = SubmitField('Add Software')

@@ -121,6 +121,11 @@ def main():
                            asset_types=all_asset_types)
 
 
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    return render_template('create_account.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.CreateAccountForm()
@@ -144,6 +149,19 @@ def view_solutions():
                                                                                   column=models.Assets.asset_type,
                                                                                   v=this_asset_type.id)
                            )
+
+
+@app.route('/view_software', methods=['GET', 'POST'])
+def view_software():
+    all_software_companies = db_connect.query_all(models.SoftwareCompanies)
+    all_software = db_connect.query_all(models.Software)
+    add_software_company_form = forms.AddSoftwareCompanyForm()
+    add_software_form = forms.AddSoftwareForm()
+    return render_template('view_software.html',
+                           add_software_company_form=add_software_company_form,
+                           add_software_form=add_software_form,
+                           all_software_companies=all_software_companies,
+                           all_software=all_software)
 
 
 # @app.route('/add_type_to_solution', methods=['GET', 'POST'])

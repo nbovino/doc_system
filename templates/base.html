@@ -44,6 +44,7 @@
                 {% for asset_type in asset_types %}
                 <a href="{{ url_for('view_solutions', asset_type=asset_type.id) }}"><p>{{ asset_type.asset_type }}</p></a>
                 {% endfor %}
+                <a href="{{ url_for('view_software') }}">Software</a>
             </div>
             <!--Make this happen just in the page with javascript-->
             <div id="asset-type-buttons" style="display: none;">

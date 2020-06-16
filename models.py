@@ -86,11 +86,29 @@ class AssetTypes(Base):
     asset_type = Column(String, unique=True)
 
 
+class SoftwareCompanies(Base):
+    __tablename__ = 'SoftwareCompany'
+    id = Column(Integer, primary_key=True)
+    software_company = Column(String, unique=True)
+
+
 class Software(Base):
     __tablename__ = 'Software'
     id = Column(Integer, primary_key=True)
+    software_company = Column(Integer)
     software_name = Column(String, unique=True)
-    software_version = Column(String)
+
+
+class SoftwareLicensing(Base):
+    __tablename__ = 'SoftwareLicensing'
+    id = Column(Integer, primary_key=True)
+    software_name = Column(String, ForeignKey('Software.software_name'))
+    version = Column(String)
+    license_no = Column(String)
+    licensed_to = Column(String)
+    seats = Column(Integer)
+    expiration = Column(String)
+    assets_installed_on = Column(TEXT)
 
 
 class Solutions(Base):
