@@ -153,10 +153,16 @@ def view_solutions():
 
 @app.route('/view_software', methods=['GET', 'POST'])
 def view_software():
-    all_software_companies = db_connect.query_all(models.SoftwareCompanies)
     all_software = db_connect.query_all(models.Software)
     add_software_company_form = forms.AddSoftwareCompanyForm()
     add_software_form = forms.AddSoftwareForm()
+    all_software_companies = []
+    try:
+        for c in db_connect.query_all(models.SoftwareCompanies):
+            all_software_companies.append((str(c.id), c.software_company.title()))
+    except:
+        pass
+    add_software_form.software_company.choices = [('', 'Select Software Company')] + all_software_companies
     return render_template('view_software.html',
                            add_software_company_form=add_software_company_form,
                            add_software_form=add_software_form,
