@@ -3,8 +3,8 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy import exc
 import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+# import plotly.graph_objects as go
+# from plotly.subplots import make_subplots
 import json
 import re
 from pathlib import Path
@@ -26,10 +26,11 @@ HOST = '0.0.0.0'
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
-TEST_UPLOAD_FOLDER = "\\documentation_system\static\data\images"
+TEST_UPLOAD_FOLDER = "\\doc_system\static\data\images"
 # TEST_UPLOAD_FOLDER = "\\Users\Nate"
 app.config['UPLOAD_FOLDER'] = TEST_UPLOAD_FOLDER
 dirname = os.path.dirname(__file__)
+cwd = os.getcwd()
 
 # login_manager = LoginManager()
 # login_manager.login_view = 'login'
@@ -62,14 +63,14 @@ def test_submit_form():
             print(d)
             print(d[4:])
         try:
-            os.mkdir('\\documentation_system\\static\data\\solution_images')
+            os.mkdir(os.getcwd() + '\\static\\data\\solution_images')
         except FileExistsError:
             print("directory already exists")
         step_count = 1
         for step in request.form:
             image_file_names = []
             try:
-                os.mkdir('\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                os.mkdir(os.getcwd() + '\\static\\data\\solution_images\\step' + str(step_count))
             except FileExistsError:
                 print("directory already exists")
             for i in images:
@@ -79,8 +80,8 @@ def test_submit_form():
                     for se in step_images:
                         if se.filename:
                             se.save(se.filename)
-                            shutil.move('\\documentation_system\\' + se.filename,
-                                        '\\documentation_system\\static\data\\solution_images\\step' + str(step_count))
+                            shutil.move(os.getcwd() + '\\' + se.filename,
+                                        os.getcwd() + '\\static\data\\solution_images\\step' + str(step_count))
                             image_file_names.append(se.filename)
             step_info = {
                 "Instruction": request.form[step],
@@ -97,6 +98,7 @@ def test_submit_form():
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    print('Current CWD: ' + os.getcwd())
     all_asset_types = db_connect.query_all(models.AssetTypes)
     data_functions.write_all_solution_data()
     add_department_form = forms.AddDepartmentForm()
@@ -280,13 +282,13 @@ def view_one_solution():
                 redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     # Get image filenames for each step in the solution
-    solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
+    solution_path = os.getcwd() + '\\static\data\\solution_images\\sid' + solution_id
     # solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
     # solution_path = 'documentation_system/static/data/solution_images/sid' + solution_id
     step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
     step_count = 1
     step_images = {}
-    f = open('\\documentation_system\\static\data\one_solution.json')
+    f = open(os.getcwd() + '\\static\data\one_solution.json')
     solution_json = json.load(f)
     # for s in step_folders:
     #     # This doesn't work because listdir(s) is a list of all the filenames in the directory
@@ -599,19 +601,19 @@ def edit_solution_post():
                                 try:
                                     delete_name = se.filename
                                     # Deletes image if it already exists
-                                    if os.path.exists('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
-                                        os.remove('\\documentation_system\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
+                                    if os.path.exists(os.getcwd() + '\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
+                                        os.remove(os.getcwd() + '\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
                                         se.save(se.filename)
-                                        shutil.move('\\documentation_system\\' + se.filename,
-                                                    '\\documentation_system\\static\data\\solution_images'
+                                        shutil.move(os.getcwd() + '\\' + se.filename,
+                                                    os.getcwd() + '\\static\data\\solution_images'
                                                     '\\sid' + str(sid))
                                         image_file_names.append(se.filename)
                                     # If the file doesn't exists it just saves it to the folder.
                                     else:
                                         se.save(se.filename)
-                                        shutil.move('\\documentation_system\\' + se.filename,
+                                        shutil.move(os.getcwd() + '\\' + se.filename,
                                                     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                    '\\documentation_system\\static\data\\solution_images'
+                                                    os.getcwd() + '\\static\data\\solution_images'
                                                     '\\sid' + str(sid))
                                         image_file_names.append(se.filename)
 
@@ -658,7 +660,9 @@ def add_solution_post():
         for d in data:
             print(d)
         try:
-            os.mkdir('\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id))
+            os.mkdir(os.getcwd() + '\\static\\data\\solution_images\\sid' + str(new_row.id))
+            # os.mkdir('C:\\Users\\Nate\\PycharmProjects\\doc_system\\static\\data\\solution_images\\sid' + str(new_row.id))
+            # os.mkdir(os.path.join('doc_system','static', 'data', 'solution_images', 'sid' + str(new_row.id)))
         except FileExistsError:
             print("directory already exists")
         step_count = 1
@@ -681,9 +685,9 @@ def add_solution_post():
 
                                 try:
                                     se.save(se.filename)
-                                    shutil.move('\\documentation_system\\' + se.filename,
-                                                # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                '\\documentation_system\\static\data\\solution_images'
+                                    shutil.move(os.getcwd() + '\\' + se.filename,
+                                                # '\\doc_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
+                                                os.getcwd() + '\\static\data\\solution_images'
                                                 '\\sid' + str(new_row.id))
                                 except:
                                     print('There was an error')

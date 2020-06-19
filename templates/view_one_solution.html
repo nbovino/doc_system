@@ -29,7 +29,7 @@
         <ul id="dynamic-input-steps">
             {% for step in steps %}
             <li class='ui-state-default'><textarea name='step{{ step }}' >{{ steps[step]['Instruction'] }}</textarea>
-            <input type='file' id='step{{ step }}images' name='image{{ step }}' accept='.jpg,.jpeg' onchange='readURL(this, {{ step }})' multiple></br>
+            <input type='file' id='step{{ step }}images' name='image{{ step }}' accept='.jpg,.jpeg,.png' onchange='readURL(this, {{ step }})' multiple></br>
                 <span id='output{{ step }}'></span>
                 {% for i in step_images[step] %}
                 <input type="checkbox" class="img-checkable" name="step{{ step }}img{{ i[1] }}" checked/>

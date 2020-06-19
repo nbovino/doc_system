@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<h2>{{ asset_type }} Information</h2>
+<p>
+<table>
+    <tr>
+        <td><a href="{{ url_for('add_solution', asset_type=asset_type_id) }}">Add Solution</a></td>
+        <td><a href="{{ url_for('add_asset') }}">Add Asset</a></td>
+    </tr>
+</table>
+</p>
+<h3>Recently Added Solutions</h3>
+{% for solution in latest_five %}
+    <p><a href="{{ url_for('view_one_solution', solution_id=solution.id) }}" title="Edit">
+        {{ solution.solution_title }} - Revised: {{ solution.date_revised.strftime( '%#m-%#d-%Y' ) }}</a></p>
+{% endfor %}
+<div id="test-div"></div>
+<h3>Recently Added Assets</h3>
+<table>
+    <thead>
+    <td>Manufacturer</td>
+    <td>Model</td>
+    <td>Asset Tag</td>
+    <td>Date Revised</td>
+    </thead>
+{% for asset in latest_five_assets %}
+
+    <tr>
+        <td>{{ manufacturers[asset.manufacturer] }}</td>
+        <td>{{ asset.model }}</td>
+        <td>{{ asset.dia_asset_tag }}</td>
+        <td>{{ asset.date_revised.strftime( '%#m-%#d-%Y' ) }}</td>
+        <td><a href="{{ url_for('view_one_asset', asset_id=asset.id) }}" title="View Asset">View</a></td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
