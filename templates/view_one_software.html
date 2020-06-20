@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import render_field %}
+{% block content %}
+
+<h2>Software Information</h2>
+<!-- for adding the form later
+version = StringField(validators=[DataRequired()])
+    license_no = StringField(validators=[DataRequired()])
+    licensed_to = StringField()
+    seats = StringField()
+    expiration = DateField()
+    assets_installed_on = TextAreaField()
+-->
+<div class="form-popup" id="new-software-license">
+    <form action="" method="POST">
+        {{ add_software_license_form.hidden_tag() }}
+        <span style="display: none">{{ add_software_license_form.software_name }}</span>
+        {{ add_software_license_form.version }}<br>
+        {{ add_software_license_form.license_no }}<br>
+        {{ add_software_license_form.licensed_to }}<br>
+        {{ add_software_license_form.seats }}<br>
+        Expiration<br>
+        {{ add_software_license_form.expiration }}<br>
+        {{ add_software_license_form.assets_installed_on }}<br>
+        {{ add_software_license_form.add_license_submit }}    <button onclick="closeSoftwareLicenseForm()">Cancel</button><br>
+        <!--<p>This is a test page</p>-->
+        <!--<button type="submit" onclick="closeForm()">Submit</button>-->
+    </form>
+</div>
+<h3>Software Solutions</h3>
+<h3>Licensing</h3><span class="open-button" onclick="openSoftwareLicenseForm()">New License</span>
+{% for l in all_licenses %}
+<p>l</p>
+{% endfor %}
+
+{% endblock %}

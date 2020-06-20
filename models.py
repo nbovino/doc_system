@@ -102,7 +102,7 @@ class Software(Base):
 class SoftwareLicensing(Base):
     __tablename__ = 'SoftwareLicensing'
     id = Column(Integer, primary_key=True)
-    software_name = Column(String, ForeignKey('Software.software_name'))
+    software_name = Column(Integer, ForeignKey('Software.id'))
     version = Column(String)
     license_no = Column(String)
     licensed_to = Column(String)

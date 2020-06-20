@@ -162,3 +162,11 @@ def departments_as_dict():
     for d in all_departments:
         dept_dict[d.id] = d.department
     return dept_dict
+
+
+def software_companies_as_dict():
+    all_software_companies = db_connect.query_all(models.SoftwareCompanies)
+    software_co_dict = {}
+    for s in all_software_companies:
+        software_co_dict[s.id] = s.software_company
+    return software_co_dict

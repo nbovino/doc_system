@@ -186,6 +186,14 @@ function closeSoftwareForm() {
     document.getElementById("new-software").style.display = "none";
 }
 
+function openSoftwareLicenseForm() {
+    document.getElementById("new-software-license").style.display = "block";
+}
+
+function closeSoftwareLicenseForm() {
+    document.getElementById("new-software-license").style.display = "none";
+}
+
 function openSoftwareCompanyForm() {
     document.getElementById("new-software-company").style.display = "block";
 }

@@ -172,11 +172,48 @@ def view_software():
         db_connect.insert_db(models.Software(software_name=add_software_form.software_name.data,
                                              software_company=add_software_form.software_company.data))
         return redirect(url_for('view_software'))
+    s = data_functions.software_companies_as_dict()
+    for a in all_software:
+        print(s[a.software_company])
     return render_template('view_software.html',
                            add_software_company_form=add_software_company_form,
                            add_software_form=add_software_form,
-                           all_software_companies=all_software_companies,
+                           soft_company_dict=data_functions.software_companies_as_dict(),
                            all_software=all_software)
+
+
+@app.route('/view_one_software', methods=['GET', 'POST'])
+def view_one_software():
+    soft_id = request.args.get('soft_id')
+    add_software_license_form = forms.SoftwareLicensingForm()
+    all_licenses = db_connect.query_filtered(model=models.SoftwareLicensing,
+                                             model_column=models.SoftwareLicensing.software_name,
+                                             v=int(soft_id))
+    software_info = db_connect.query_one_db(model=models.Software,
+                                            column=models.Software.id,
+                                            v=int(soft_id))
+    # soft_co = db_connect.query_one_db(model=models.SoftwareCompanies,
+    #                                   column=models.SoftwareCompanies.software_company,
+    #                                   v=software_info.software_company)
+    if add_software_license_form.add_license_submit.data and add_software_license_form.validate():
+        print("GOT HERE!!!!!!!!!!!!!!!!!!!!!!!!")
+        db_connect.insert_db(models.SoftwareLicensing(software_name=add_software_license_form.software_name.data,
+                                                      version=add_software_license_form.version.data,
+                                                      license_no=add_software_license_form.license_no.data,
+                                                      licensed_to=add_software_license_form.licensed_to.data,
+                                                      seats=add_software_license_form.seats.data,
+                                                      expiration=add_software_license_form.expiration.data,
+                                                      assets_installed_on=add_software_license_form.assets_installed_on.data
+                                                      )
+                             )
+        return redirect(url_for('view_one_software', soft_id=add_software_license_form.software_name.data))
+    add_software_license_form.software_name.default = str(soft_id)
+    add_software_license_form.process()
+    return render_template('view_one_software.html',
+                           # soft_co=soft_co,
+                           software_info=software_info,
+                           all_licences=all_licenses,
+                           add_software_license_form=add_software_license_form)
 
 
 # @app.route('/add_type_to_solution', methods=['GET', 'POST'])

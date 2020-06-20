@@ -27,9 +27,10 @@
 <h3>Software</h3>
 <p><span class="open-button" onclick="openSoftwareCompanyForm()">Add Software Company</span></p>
 <span class="open-button" onclick="openSoftwareForm()">Add Software</span>
-<p>Latest software solutions</p>
+<p>Latest software</p>
 {% for s in all_software %}
-<p>{{ all_software_companies[s.id][1] }} - {{ s.software_name }}</p>
+{{ s }}
+<p><a href="{{ url_for('view_one_software', soft_id=s.id) }}">{{ soft_company_dict[s.software_company] }} - {{ s.software_name }}</a></p>
 {% endfor %}
 
 {% endblock %}

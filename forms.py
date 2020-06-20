@@ -82,3 +82,14 @@ class AddSoftwareForm(Form):
     software_company = SelectField(validators=[DataRequired()])
     software_name = StringField(validators=[DataRequired()])
     software_submit = SubmitField('Add Software')
+
+
+class SoftwareLicensingForm(Form):
+    software_name = StringField(validators=[DataRequired()])
+    version = StringField(validators=[DataRequired()], render_kw={"placeholder": "Version"})
+    license_no = StringField(validators=[DataRequired()], render_kw={"placeholder": "License No."})
+    licensed_to = StringField(render_kw={"placeholder": "Licenced to"})
+    seats = StringField(render_kw={"placeholder": "Seats"})
+    expiration = DateField()
+    assets_installed_on = TextAreaField(render_kw={"placeholder": "Assets Installed On"})
+    add_license_submit = SubmitField('Add License')
