@@ -178,6 +178,22 @@ function closeChangePrimaryForm() {
     document.getElementById("change-primary-form").style.display = "none";
 }
 
+function openSoftwareForm() {
+    document.getElementById("new-software").style.display = "block";
+}
+
+function closeSoftwareForm() {
+    document.getElementById("new-software").style.display = "none";
+}
+
+function openSoftwareCompanyForm() {
+    document.getElementById("new-software-company").style.display = "block";
+}
+
+function closeSoftwareCompanyForm() {
+    document.getElementById("new-software-company").style.display = "none";
+}
+
 function openAddAssocTypeForm() {
     document.getElementById("add-assoc-type-form").style.display = "block";
     document.getElementById("solution-type-button").style.display = "none";
@@ -197,6 +213,7 @@ function closeEditSolutionForm() {
     document.getElementById("edit-solution-form-container").style.display = "none";
     document.getElementById("js-solution").style.display = "block";
 }
+
 
 function updateSolution(sid){
     console.log("updating");

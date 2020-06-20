@@ -165,6 +165,13 @@ def view_software():
     except:
         pass
     add_software_form.software_company.choices = [('', 'Select Software Company')] + all_software_companies
+    if add_software_company_form.software_company_submit.data and add_software_company_form.validate():
+        db_connect.insert_db(models.SoftwareCompanies(software_company=add_software_company_form.software_company.data))
+        return redirect(url_for('view_software'))
+    if add_software_form.software_submit.data and add_software_form.validate():
+        db_connect.insert_db(models.Software(software_name=add_software_form.software_name.data,
+                                             software_company=add_software_form.software_company.data))
+        return redirect(url_for('view_software'))
     return render_template('view_software.html',
                            add_software_company_form=add_software_company_form,
                            add_software_form=add_software_form,
