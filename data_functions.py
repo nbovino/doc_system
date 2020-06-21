@@ -170,3 +170,10 @@ def software_companies_as_dict():
     for s in all_software_companies:
         software_co_dict[s.id] = s.software_company
     return software_co_dict
+
+def software_names_as_dict():
+    all_software = db_connect.query_all(models.Software)
+    software_name_dict = {}
+    for s in all_software:
+        software_name_dict[s.id] = s.software_name
+    return software_name_dict

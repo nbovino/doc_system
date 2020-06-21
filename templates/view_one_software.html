@@ -29,8 +29,18 @@ version = StringField(validators=[DataRequired()])
 </div>
 <h3>Software Solutions</h3>
 <h3>Licensing</h3><span class="open-button" onclick="openSoftwareLicenseForm()">New License</span>
+<table>
+    <thead>
+    <td>Sofware</td>
+    <td>Version</td>
+    </thead>
 {% for l in all_licenses %}
-<p>l</p>
+    <tr>
+        <td>{{ software_names[l.software_name] }}</td>
+        <td>{{ l.version }}</td>
+        <td><a href="" title="View all info">View</a></td>
+    </tr>
 {% endfor %}
+</table>
 
 {% endblock %}

@@ -2,7 +2,7 @@ from flask import (Flask, flash, render_template, redirect, url_for, request, se
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy import exc
-import pandas as pd
+# import pandas as pd
 # import plotly.graph_objects as go
 # from plotly.subplots import make_subplots
 import json
@@ -196,7 +196,6 @@ def view_one_software():
     #                                   column=models.SoftwareCompanies.software_company,
     #                                   v=software_info.software_company)
     if add_software_license_form.add_license_submit.data and add_software_license_form.validate():
-        print("GOT HERE!!!!!!!!!!!!!!!!!!!!!!!!")
         db_connect.insert_db(models.SoftwareLicensing(software_name=add_software_license_form.software_name.data,
                                                       version=add_software_license_form.version.data,
                                                       license_no=add_software_license_form.license_no.data,
@@ -212,7 +211,8 @@ def view_one_software():
     return render_template('view_one_software.html',
                            # soft_co=soft_co,
                            software_info=software_info,
-                           all_licences=all_licenses,
+                           all_licenses=all_licenses,
+                           software_names=data_functions.software_names_as_dict(),
                            add_software_license_form=add_software_license_form)
 
 
