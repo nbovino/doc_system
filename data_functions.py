@@ -147,15 +147,22 @@ def write_asset_data_to_json(asset_id=0):
     else:
         return None
 
-
+# This makes a dictionary of { Manufacturer: { Asset_Type: [ Model no. list ] }, Manufacturer: { Asset_Type: [ Model no. list ] }}
 def asset_models_by_manufacturer():
     all_manufacturers = db_connect.query_all(models.Manufacturers)
     all_asset_types = db_connect.query_all(models.AssetTypes)
-    for t in all_manufacturers:
-        for m in all_asset_types:
-            pass
-    return
-
+    model_by_manufacturer = {}
+    for m in all_manufacturers:
+        asset_type_list = {}
+        for t in all_asset_types:
+            model_numbers_for_type = []
+            q = db_connect.query_distinct_for_models(m.id, t.id)
+            for model_no in q:
+                model_numbers_for_type.append(model_no.model)
+            asset_type_list[t.id] = model_numbers_for_type
+        model_by_manufacturer[m.id] = asset_type_list
+    print(model_by_manufacturer)
+    return model_by_manufacturer
 
 
 def manufacturers_as_dict():

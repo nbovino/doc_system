@@ -57,11 +57,10 @@ def query_filtered(model, model_column, v):
 
 
 
-def query_distinct_for_models(manufacturer, asset_type, mv, av):
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    q = session.query(Assets).filter(manufacturer == mv). \
-                              filter(asset_type == av).distinct()
+def query_distinct_for_models(mv, av):
+    session = create_session()
+    q = session.query(Assets.model).filter(Assets.manufacturer == mv). \
+                              filter(Assets.asset_type == av).distinct()
     session.close()
     return q
 
