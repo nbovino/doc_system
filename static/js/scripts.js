@@ -222,15 +222,55 @@ function closeEditSolutionForm() {
     document.getElementById("js-solution").style.display = "block";
 }
 
-
+function insertModelToForm(formData) {
+    console.log(formData + 'SHOULD BE INSERTING NOW!!!!');
+    $('#model').val($.trim(formData));
+}
 
 function testing() {
     var addAssetAssetType = document.getElementById('add_asset_asset_type');
     var addAssetManufacturer = document.getElementById('add_asset_manufacturer');
     console.log(addAssetAssetType.options[addAssetAssetType.selectedIndex].value);
     console.log(addAssetManufacturer.options[addAssetManufacturer.selectedIndex].value);
+    var assetType = addAssetAssetType.options[addAssetAssetType.selectedIndex].value;
+    var assetManufacturer = addAssetManufacturer.options[addAssetManufacturer.selectedIndex].value;
     // TODO: This is where it would get model numbers from JSON data based on the values of the two select fields
-    console.log("CHANGED");
+
+//    function insertModelToForm(formData) {
+//        $('#model').val($.trim(formData));
+//    }
+
+    function generateModelList(data, assetType, assetManufacturer) {
+        if (data[assetManufacturer][assetType].length > 0) {
+            document.getElementById('ul-models').innerHTML='';
+            document.getElementById("models-in-db").style.display = "block";
+            for (var i in data[assetManufacturer][assetType]) {
+                console.log(data[assetManufacturer][assetType][i]);
+                var editListHTML = '<li><span onclick="insertModelToForm(this.textContext || this.innerText)">';
+                editListHTML += data[assetManufacturer][assetType][i] + "</span></li>";
+                $("#ul-models").append(editListHTML);
+            }
+        } else {
+            document.getElementById('ul-models').innerHTML='';
+            document.getElementById("models-in-db").style.display = "block";
+            $("#ul-models").append('<li>No Models in Database</li>');
+        }
+    };
+
+    if (assetManufacturer && assetType) {
+        $.ajax({
+            'type': 'GET',
+            'global': false,
+            'url': '/static/data/model_by_manufacturer.json',
+            'success': function(data){
+            generateModelList(data, assetType, assetManufacturer);
+            }
+        });
+    } else {
+        console.log("GOT HERE!!!!!!!! cancel the innerhtml");
+        document.getElementById("models-in-db").style.display = "none";
+        document.getElementById('ul-models').innerHTML='';
+    }
 }
 
 $(document).ready(function() {
