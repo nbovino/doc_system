@@ -532,7 +532,7 @@ def add_asset():
     add_asset_form.department.choices = [('', 'Select Department')] + all_departments
     add_asset_form.add_asset_manufacturer.choices = [('', 'Select Manufacturer')] + all_manufacturers
     if add_asset_form.asset_submit.data and add_asset_form.validate():
-        db_connect.insert_db(models.Assets(asset_type=add_asset_form.asset_type.data,
+        db_connect.insert_db(models.Assets(asset_type=add_asset_form.add_asset_asset_type.data,
                                            manufacturer=add_asset_form.add_asset_manufacturer.data,
                                            model=add_asset_form.model.data,
                                            serial_no=add_asset_form.serial_no.data,
@@ -545,7 +545,7 @@ def add_asset():
                                            date_revised=datetime.datetime.now()
                                            )
                              )
-        return redirect(url_for('view_solutions', asset_type=add_asset_form.asset_type.data))
+        return redirect(url_for('view_solutions', asset_type=add_asset_form.add_asset_asset_type.data))
 
     return render_template('add_asset.html',
                            asset_types=db_connect.query_all(models.AssetTypes),

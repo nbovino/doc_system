@@ -56,9 +56,18 @@ def query_filtered(model, model_column, v):
     return q
 
 
-def query_latest_five(model):
+
+def query_distinct_for_models(manufacturer, asset_type, mv, av):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
+    q = session.query(Assets).filter(manufacturer == mv). \
+                              filter(asset_type == av).distinct()
+    session.close()
+    return q
+
+
+def query_latest_five(model):
+    session = create_session()
     q = session.query(model).order_by(desc(model.date_revised)).limit(5).all()
     session.close()
     return q

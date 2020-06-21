@@ -5,7 +5,7 @@
 
 <div id="asset-info">
     <h2>{{ manufacturers[asset.manufacturer] }} - {{ asset.model }}</h2>
-    <button id="edit-asset-button">Edit</button>
+    <button id="edit-asset-button" onclick="showEditAssetForm()">Edit</button>
     <table>
         <tr><td>Serial No.</td><td>{{ asset.serial_no }}</td></tr>
         <tr><td>Diamond Tag</td><td>{{ asset.dia_asset_tag }}</td></tr>
@@ -21,7 +21,7 @@
         {% endif %}
     </table>
 </div>
-<div id="edit-asset-info" style="display: none">
+<div id="edit-asset-info" style="display: none" onclick="hideEditAssetForm()">
     <div class="form-popup" id="new-asset-type-form">
     <form action="" method="POST">
         {{ add_asset_type_form.hidden_tag() }}

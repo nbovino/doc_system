@@ -337,15 +337,25 @@ function addEditSolutionStep() {
 }
 
 
-$('#hide-edit-asset-form').click(function(e) {
-    document.getElementById("edit-asset-info").style.display = "none";
-    document.getElementById("asset-info").style.display = "block";
-});
-
-
-$('#edit-asset-button').click(function(e) {
+function showEditAssetForm() {
     document.getElementById("asset-info").style.display = "none";
     document.getElementById("edit-asset-info").style.display = "block";
+}
+
+function hideEditAssetForm() {
+    document.getElementById("asset-info").style.display = "block";
+    document.getElementById("edit-asset-info").style.display = "none";
+}
+
+//$('#hide-edit-asset-form').click(function(e) {
+//    document.getElementById("edit-asset-info").style.display = "none";
+//    document.getElementById("asset-info").style.display = "block";
+//});
+//
+//
+//$('#edit-asset-button').click(function(e) {
+//    document.getElementById("asset-info").style.display = "none";
+//    document.getElementById("edit-asset-info").style.display = "block";
 // Below is an attempt to do this in javascript. Likely just have to do this with Python.
 //    function asset_callback(response) {
 //        console.log(response["this_asset"]["Model"]);
@@ -359,7 +369,7 @@ $('#edit-asset-button').click(function(e) {
 //        asset_callback(data);
 //    }
 //    });
-});
+//});
 
 function showSnackbar() {
     var x = document.getElementById("snackbar");

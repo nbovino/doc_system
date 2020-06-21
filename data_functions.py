@@ -148,6 +148,16 @@ def write_asset_data_to_json(asset_id=0):
         return None
 
 
+def asset_models_by_manufacturer():
+    all_manufacturers = db_connect.query_all(models.Manufacturers)
+    all_asset_types = db_connect.query_all(models.AssetTypes)
+    for t in all_manufacturers:
+        for m in all_asset_types:
+            pass
+    return
+
+
+
 def manufacturers_as_dict():
     all_manufacturers = db_connect.query_all(models.Manufacturers)
     manufacturer_dict = {}
