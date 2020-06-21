@@ -223,6 +223,21 @@ function closeEditSolutionForm() {
 }
 
 
+
+function testing() {
+    var addAssetAssetType = document.getElementById('add_asset_asset_type');
+    var addAssetManufacturer = document.getElementById('add_asset_manufacturer');
+    console.log(addAssetAssetType.options[addAssetAssetType.selectedIndex].value);
+    console.log(addAssetManufacturer.options[addAssetManufacturer.selectedIndex].value);
+    // TODO: This is where it would get model numbers from JSON data based on the values of the two select fields
+    console.log("CHANGED");
+}
+
+$(document).ready(function() {
+$('#add_asset_asset_type').change(testing);
+$('#add_asset_manufacturer').change(testing);
+});
+
 function updateSolution(sid){
     console.log("updating");
     $.ajax({

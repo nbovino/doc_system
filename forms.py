@@ -18,8 +18,8 @@ class AddAssetTypeForm(Form):
 
 
 class AddAssetForm(Form):
-    asset_type = SelectField(label="Asset Type", validators=[DataRequired()])
-    manufacturer = SelectField(validators=[DataRequired()])
+    add_asset_asset_type = SelectField(label="Asset Type", validators=[DataRequired()])
+    add_asset_manufacturer = SelectField(validators=[DataRequired()])
     model = StringField("Model Number",  render_kw={"placeholder": "Model Number"})
     serial_no = StringField("Serial Number", render_kw={"placeholder": "Serial Number"})
     dia_asset_tag = StringField("Diamond Asset Tag", render_kw={"placeholder": "Diamond Tag Number"})

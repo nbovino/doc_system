@@ -33,8 +33,8 @@
 </div>
 <form action="" method="POST">
     {{ add_asset_form.hidden_tag() }}
-    {{ add_asset_form.asset_type }}    <span class="open-button" onclick="openAssetTypeForm()">New</span><br><!-- ideally this link should create a pop up to add new item -->
-    {{ add_asset_form.manufacturer }}    <span class="open-button" onclick="openManufacturerForm()">New</span><br><!-- this should do the same -->
+    {{ add_asset_form.add_asset_asset_type }}    <span class="open-button" onclick="openAssetTypeForm()">New</span><br><!-- ideally this link should create a pop up to add new item -->
+    {{ add_asset_form.add_asset_manufacturer }}    <span class="open-button" onclick="openManufacturerForm()">New</span><br><!-- this should do the same -->
     {{ add_asset_form.model }}<br>
     {{ add_asset_form.serial_no }}<br>
     {{ add_asset_form.dia_asset_tag }}<br>
