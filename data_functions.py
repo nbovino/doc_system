@@ -161,7 +161,9 @@ def asset_models_by_manufacturer():
                 model_numbers_for_type.append(model_no.model)
             asset_type_list[t.id] = model_numbers_for_type
         model_by_manufacturer[m.id] = asset_type_list
-    print(model_by_manufacturer)
+    data_folder = Path("static/data/model_by_manufacturer.json")
+    with open(data_folder, 'w') as fp:
+        json.dump(model_by_manufacturer, fp, indent=4)
     return model_by_manufacturer
 
 

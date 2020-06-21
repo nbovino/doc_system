@@ -98,6 +98,7 @@ def test_submit_form():
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
+    data_functions.asset_models_by_manufacturer()
     print('Current CWD: ' + os.getcwd())
     all_asset_types = db_connect.query_all(models.AssetTypes)
     data_functions.write_all_solution_data()
@@ -545,6 +546,7 @@ def add_asset():
                                            date_revised=datetime.datetime.now()
                                            )
                              )
+        data_functions.asset_models_by_manufacturer()
         return redirect(url_for('view_solutions', asset_type=add_asset_form.add_asset_asset_type.data))
 
     return render_template('add_asset.html',
