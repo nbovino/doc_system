@@ -20,9 +20,9 @@ import models
 import re
 import shutil
 
-# DEBUG = True
-# PORT = 8000
-# HOST = '0.0.0.0'
+DEBUG = True
+PORT = 8000
+HOST = '0.0.0.0'
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'nfj298RFERf4iwg4f4wfsrgSWFFELNFE:!#RefwkFpyio'
@@ -868,4 +868,4 @@ def edit_solution_remove_rel_asset_type():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run(debug=DEBUG, host=HOST, port=PORT)
