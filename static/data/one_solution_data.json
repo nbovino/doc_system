@@ -1,0 +1,10 @@
+{
+    "all_asset_types": {
+        "1": "Monitor",
+        "2": "PC"
+    },
+    "solution_asset_types": {
+        "2": "PC"
+    },
+    "associated_solutions": {}
+}

@@ -1,0 +1,39 @@
+{
+    "all_types": [
+        {
+            "id": 1,
+            "asset_type": "Monitor"
+        }
+    ],
+    "all_manufacturers": [
+        {
+            "id": 1,
+            "manufacturer": "Dell"
+        },
+        {
+            "id": 2,
+            "manufacturer": "HP"
+        },
+        {
+            "id": 3,
+            "manufacturer": "Acer"
+        }
+    ],
+    "all_departments": [
+        {
+            "id": 1,
+            "department": "Diamond"
+        }
+    ],
+    "this_asset": {
+        "Asset_Id": 1,
+        "Asset_Type": 1,
+        "Manufacturer": 3,
+        "Model": "V193",
+        "Serial_No": "12345",
+        "Dia_Asset_Tag": "1234",
+        "Description": "",
+        "Department": 1,
+        "Location": null
+    }
+}
