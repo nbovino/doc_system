@@ -7,10 +7,12 @@ from sqlalchemy import asc, desc
 from sqlalchemy.orm import sessionmaker
 from models import Base, Assets, AssetTypes, Solutions
 import os
+import psycopg2
 
 try:
     # engine = create_engine('sqlite:///docutest.db', echo=True)
-    engine = create_engine(os.environ["postgres://wnwyjyjotgvutc:38ed87d2070dba581e0ec605e8412bdaf5b231fa3228fd0e89d486de8218fa1b@ec2-34-197-188-147.compute-1.amazonaws.com:5432/df01j5v2r27q0f"])
+    # engine = create_engine(os.environ["postgres://wnwyjyjotgvutc:38ed87d2070dba581e0ec605e8412bdaf5b231fa3228fd0e89d486de8218fa1b@ec2-34-197-188-147.compute-1.amazonaws.com:5432/df01j5v2r27q0f"])
+    engine = psycopg2.connect("postgres://wnwyjyjotgvutc:38ed87d2070dba581e0ec605e8412bdaf5b231fa3228fd0e89d486de8218fa1b@ec2-34-197-188-147.compute-1.amazonaws.com:5432/df01j5v2r27q0f", sslmode='require')
     print("Opened database successfully")
 
 except Exception as e:
