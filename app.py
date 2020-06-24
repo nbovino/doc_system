@@ -217,14 +217,6 @@ def view_one_software():
                            add_software_license_form=add_software_license_form)
 
 
-# @app.route('/add_type_to_solution', methods=['GET', 'POST'])
-# def add_type_to_solution():
-#     form =  = request.add_type_to_solution_form['asset_types']
-#     for r in all_request:
-#         print(r)
-#     return redirect(url_for('main'))
-
-
 @app.route('/view_one_solution', methods=['GET', 'POST'])
 def view_one_solution():
     add_type_to_solution_form = forms.AddAssetTypeToSolutionForm()
