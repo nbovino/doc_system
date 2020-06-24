@@ -876,4 +876,4 @@ def edit_solution_remove_rel_asset_type():
 
 
 if __name__ == '__main__':
-    app.run(debug=DEBUG, host=HOST, port=PORT)
+    app.run(threaded=True, port=5000)
