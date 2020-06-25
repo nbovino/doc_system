@@ -241,8 +241,8 @@ def view_one_solution():
         assoc_dict[str(a_type.id)] = a_type.asset_type
     change_primary_choices = list(assoc_dict.items())
     change_primary_asset_type_form.all_asset_types.choices = change_primary_choices
-    data_folder = Path("static/data/assoc_types_for_solution.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/assoc_types_for_solution.json")
+    with open("static/data/assoc_types_for_solution.json", 'w') as fp:
         json.dump(assoc_dict, fp, indent=4)
     data_functions.write_asset_types_to_json()
 
@@ -319,13 +319,13 @@ def view_one_solution():
                 redirect(url_for('view_one_solution', solution_id=add_assoc_solution_form.main_solution_id.data))
 
     # Get image filenames for each step in the solution
-    solution_path = os.getcwd() + '\\static\data\\solution_images\\sid' + solution_id
+    solution_path = os.getcwd() + '/static/data/solution_images/sid' + solution_id
     # solution_path = '\\documentation_system\\static\data\\solution_images\\sid' + solution_id
     # solution_path = 'documentation_system/static/data/solution_images/sid' + solution_id
     step_folders = [f.path for f in os.scandir(solution_path) if f.is_dir()]
     step_count = 1
     step_images = {}
-    f = open(os.getcwd() + '\\static\data\one_solution.json')
+    f = open(os.getcwd() + '/static/data/one_solution.json')
     solution_json = json.load(f)
     # for s in step_folders:
     #     # This doesn't work because listdir(s) is a list of all the filenames in the directory
@@ -559,8 +559,8 @@ def add_asset_type():
 
 @app.route('/add_solution', methods=['GET', 'POST'])
 def add_solution():
-    data_folder = Path("static/data/one_solution.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/one_solution.json")
+    with open("static/data/one_solution.json", 'w') as fp:
         json.dump('', fp, indent=4)
     if request.args.get('message'):
         message = request.args.get('message')
@@ -639,20 +639,20 @@ def edit_solution_post():
                                 try:
                                     delete_name = se.filename
                                     # Deletes image if it already exists
-                                    if os.path.exists(os.getcwd() + '\\static\data\\solution_images\\sid' + str(sid) + '\\' + se.filename):
-                                        os.remove(os.getcwd() + '\\static\data\\solution_images\\sid' + str(sid) + '\\' + delete_name)
+                                    if os.path.exists(os.getcwd() + '/static/data/solution_images/sid' + str(sid) + '/' + se.filename):
+                                        os.remove(os.getcwd() + '/static/data/solution_images/sid' + str(sid) + '/' + delete_name)
                                         se.save(se.filename)
-                                        shutil.move(os.getcwd() + '\\' + se.filename,
-                                                    os.getcwd() + '\\static\data\\solution_images'
-                                                    '\\sid' + str(sid))
+                                        shutil.move(os.getcwd() + '/' + se.filename,
+                                                    os.getcwd() + '/static/data/solution_images'
+                                                    '/sid' + str(sid))
                                         image_file_names.append(se.filename)
                                     # If the file doesn't exists it just saves it to the folder.
                                     else:
                                         se.save(se.filename)
-                                        shutil.move(os.getcwd() + '\\' + se.filename,
+                                        shutil.move(os.getcwd() + '/' + se.filename,
                                                     # '\\documentation_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                    os.getcwd() + '\\static\data\\solution_images'
-                                                    '\\sid' + str(sid))
+                                                    os.getcwd() + '/static/data/solution_images'
+                                                    '/sid' + str(sid))
                                         image_file_names.append(se.filename)
 
                                 except:
@@ -698,7 +698,7 @@ def add_solution_post():
         for d in data:
             print(d)
         try:
-            os.mkdir(os.getcwd() + '\\static\\data\\solution_images\\sid' + str(new_row.id))
+            os.mkdir(os.getcwd() + '/static/data/solution_images/sid' + str(new_row.id))
             # os.mkdir('C:\\Users\\Nate\\PycharmProjects\\doc_system\\static\\data\\solution_images\\sid' + str(new_row.id))
             # os.mkdir(os.path.join('doc_system','static', 'data', 'solution_images', 'sid' + str(new_row.id)))
         except FileExistsError:
@@ -723,10 +723,10 @@ def add_solution_post():
 
                                 try:
                                     se.save(se.filename)
-                                    shutil.move(os.getcwd() + '\\' + se.filename,
+                                    shutil.move(os.getcwd() + '/' + se.filename,
                                                 # '\\doc_system\\static\data\\solution_images\\sid' + str(new_row.id) + '\\step' + str(step_count))
-                                                os.getcwd() + '\\static\data\\solution_images'
-                                                '\\sid' + str(new_row.id))
+                                                os.getcwd() + '/static/data/solution_images'
+                                                '/sid' + str(new_row.id))
                                 except:
                                     print('There was an error')
                                 image_file_names.append(se.filename)

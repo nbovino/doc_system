@@ -9,8 +9,8 @@ def write_asset_types_to_json():
     type_dict = {}
     for i in asset_types:
         type_dict[i.id] = i.asset_type
-    data_folder = Path("static/data/all_assoc_types.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/all_assoc_types.json")
+    with open("static/data/all_assoc_types.json", 'w') as fp:
         json.dump(type_dict, fp, indent=4)
     return type_dict
 
@@ -46,8 +46,8 @@ def one_solution_asset_types(solution_id):
         'solution_asset_types': solution_asset_types,
         'associated_solutions': associated_solutions,
     }
-    data_folder = Path("static/data/one_solution_data.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/one_solution_data.json")
+    with open("static/data/one_solution_data.json", 'w') as fp:
         json.dump(all_solution_data, fp, indent=4)
     return solution_asset_types
 
@@ -67,8 +67,8 @@ def one_solution_data(solution_id):
         solution_data["Highest_Step"] = '0'
     solution_data["Associated_Asset_Types"] = solution.associated_asset_types
     solution_data["Primary_Asset_Type"] = solution.primary_asset_type
-    data_folder = Path("static/data/one_solution.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/one_solution.json")
+    with open("static/data/one_solution.json", 'w') as fp:
         json.dump(solution_data, fp, indent=4)
     return None
 
@@ -85,8 +85,8 @@ def write_all_solution_data():
              'primary_asset_type': main_asset_type.asset_type
              }
         )
-    data_folder = Path("static/data/all_solution_data.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/all_solution_data.json")
+    with open("static/data/all_solution_data.json", 'w') as fp:
         json.dump(solution_data, fp, indent=4)
     return None
 
@@ -140,12 +140,13 @@ def write_asset_data_to_json(asset_id=0):
         asset_data['all_manufacturers'] = all_manufacturers
         asset_data['all_departments'] = all_departments
         asset_data['this_asset'] = write_one_asset_data_to_json(asset_id)
-        data_folder = Path("static/data/all_asset_data.json")
-        with open(data_folder, 'w') as fp:
+        # data_folder = Path("static/data/all_asset_data.json")
+        with open("static/data/all_asset_data.json", 'w') as fp:
             json.dump(asset_data, fp, indent=4)
         return None
     else:
         return None
+
 
 # This makes a dictionary of { Manufacturer: { Asset_Type: [ Model no. list ] }, Manufacturer: { Asset_Type: [ Model no. list ] }}
 def asset_models_by_manufacturer():
@@ -161,8 +162,8 @@ def asset_models_by_manufacturer():
                 model_numbers_for_type.append(model_no.model)
             asset_type_list[t.id] = model_numbers_for_type
         model_by_manufacturer[m.id] = asset_type_list
-    data_folder = Path("static/data/model_by_manufacturer.json")
-    with open(data_folder, 'w') as fp:
+    # data_folder = Path("static/data/model_by_manufacturer.json")
+    with open("static/data/model_by_manufacturer.json", 'w') as fp:
         json.dump(model_by_manufacturer, fp, indent=4)
     return model_by_manufacturer
 
