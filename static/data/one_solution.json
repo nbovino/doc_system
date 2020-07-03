@@ -1,15 +1,15 @@
 {
-    "Solution_id": 16,
-    "Title": "dsfdsfdsf",
+    "Solution_id": 1,
+    "Title": "asdfasdf",
     "Steps": {
         "1": {
-            "Instruction": "asdfaf",
+            "Instruction": "adsfsadf",
             "Images": []
         }
     },
     "Highest_Step": "1",
     "Associated_Asset_Types": [
-        2
+        1
     ],
-    "Primary_Asset_Type": 2
+    "Primary_Asset_Type": 1
 }
