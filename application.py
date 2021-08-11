@@ -867,5 +867,11 @@ def edit_solution_remove_rel_asset_type():
     return data
 
 
+@app.route('/delete_all_data', methods=['GET', 'POST'])
+def delete_all_data():
+    db_connect.delete_all_data()
+    return redirect(url_for('main'))
+
+
 if __name__ == '__main__':
     app.run(debug=DEBUG) #, host=HOST, port=PORT)

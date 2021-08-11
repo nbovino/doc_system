@@ -6,6 +6,10 @@ function getUrlParam(parameter, defaultvalue){
     return urlparameter;
 }
 
+function confirmDelete() {
+    confirm("Are you sure you want to delete everything in the database?\nThere is no way to undo this action.");
+}
+
 //var loadFile = function(event, sc) {
 //    var thisImage = document.getElementById('output' + sc);
 //    image.src = URL.createObjectURL(event.target.files[0]);

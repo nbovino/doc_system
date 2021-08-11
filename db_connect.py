@@ -138,3 +138,14 @@ def update_assoc_asset_types(sid, values):
         session.close()
     except exc.IntegrityError:
         print("Integrity Error!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
+def delete_all_data():
+    try:
+        print('delete all data')
+        session = create_session()
+        session.query(Solutions).delete()
+        session.commit()
+        session.close()
+    except:
+        print("not deleting!!!!")
