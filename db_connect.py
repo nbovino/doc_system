@@ -11,7 +11,8 @@ import psycopg2
 
 try:
     # engine = create_engine('sqlite:///docutest.db', echo=True)
-    engine = create_engine(os.environ["DOC_SYSTEM"])
+    # engine = create_engine(os.environ["DOC_SYSTEM"])
+    engine = create_engine(os.environ["AWS_PGDB"])
     print("Opened database successfully")
 
 except Exception as e:
