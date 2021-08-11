@@ -870,6 +870,7 @@ def edit_solution_remove_rel_asset_type():
 @app.route('/delete_all_data', methods=['GET', 'POST'])
 def delete_all_data():
     db_connect.delete_all_data()
+    print('test push')
     return redirect(url_for('main'))
 
 
